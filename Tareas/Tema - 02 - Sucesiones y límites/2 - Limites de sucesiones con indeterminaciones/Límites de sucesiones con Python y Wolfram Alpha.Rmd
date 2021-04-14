@@ -1,0 +1,147 @@
+---
+title: 'Tarea: Resolución de límites de sucesiones'
+author: "Ramon Ceballos"
+date: "7/4/2021"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# **Límites de sucesiones con Python y Wolfram Alpha**
+
+## 1. Calcula:
+
+$$\lim_{n\rightarrow \infty} \left(\frac{1+3+\cdots+(2n-1)}{n+1}\ -\ \frac{2n+1}{2}\right)$$
+
+**Wolfram Alpha**
+
+Limit of ((sum 2k-1, k=1 to n)/(n+1))-((2n+1)/2) when n tends to infinity
+
+**Python**
+
+```{python}
+from math import *
+import sympy as sp
+from sympy.abc import n,k
+
+sp.limit_seq(((Sum(2*k-1, (k, 1, n)))/(n+1))-((2*n+1)/2),n)
+```
+
+## 2. Calcula:
+
+$$\lim_{n\rightarrow \infty} \left(\frac{1}{2}\ +\ \frac{1}{2^2}\ +\ \cdots\ +\ \frac{1}{2^n}\right)$$
+
+**Wolfram Alpha**
+
+Limit of (sum 1/(2^k), k=1 to n) when n tends to infinity
+
+
+**Python**
+
+```{python}
+import sympy as sp
+from sympy.abc import n,k
+
+sp.limit_seq(Sum(1/(2**k), (k, 1, n)),n)
+```
+
+## 3. Calcula:
+
+$$\lim_{n\rightarrow \infty} \frac{n+(-1)^n}{n-{(-1)}^n}$$
+
+**Wolfram Alpha**
+
+Limit of (n+(-1)^n)/(n-(-1)^n) when n tends to infinity
+
+
+**Python**
+
+```{python}
+import sympy as sp
+from sympy.abc import n,k
+
+sp.limit_seq((n+(-1)**n)/(n-(-1)**n),n)
+```
+
+## 4. Calcula:
+
+Mira el PDF.
+
+**Wolfram Alpha**
+
+Limit of ((a^(n+1)+b^(n+1))/(a^n+b^n)) when n tends to infinity,  a>0, b>0
+
+
+## 5. Calcula:
+
+Mira el PDF.
+
+**Wolfram Alpha**
+
+Limit of (Sqrt[((n+1)/n)])^(1/(Sqrt[n+1]-Sqrt[n])) when n tends to infinity
+
+
+**Python**
+
+```{python}
+import sympy as sp
+from sympy.abc import n,k
+
+sp.limit_seq(((((n+1)/n))**0.5)**(1/((n+1)**0.5-n**0.5)),n)
+```
+
+## 6. Calcula:
+
+Mira el PDF.
+
+**Wolfram Alpha**
+
+Limit of (n*sin(n!)/(n^2+1)) when n tends to infinity
+
+**Python**
+
+```{python}
+import sympy as sp
+from sympy.abc import n,k
+
+sp.limit_seq(n*sin(factorial(n))/(n**2+1),n)
+```
+
+## 7. Calcula:
+
+Mira el PDF.
+
+**Wolfram Alpha**
+
+Limit of ((n^2+3)/(n^2+4n))^((n^2-1)/n) when n tends to infinity
+
+**Python**
+
+```{python}
+import sympy as sp
+from sympy.abc import n,k
+
+sp.limit_seq((((n**2)+3)/((n**2)+4*n))**(((n**2)-1)/n),n)
+```
+
+## 8. Calcula:
+
+Mira el PDF.
+
+**Wolfram Alpha**
+
+Limit of (Log[n+a]/Log[n])^(n*Log[n]) when n tends to infinity
+
+**Python**
+
+```{python}
+import sympy as sp
+from sympy.abc import n,a
+
+sp.limit_seq((log(n+a)/log(n))**(n*log(n)),n)
+```
+

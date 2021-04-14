@@ -1,0 +1,119 @@
+---
+title: "Problemas de límites con Python"
+author: "Ramon Ceballos"
+date: "13/4/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## 1. Calcula el límite siguiente en python:
+
+$$\lim_{x\rightarrow 0} \frac{\sqrt{1+2x}-\sqrt{1+3x}}{x+2x^2}$$
+
+```{python}
+import sympy as sp
+
+x = sp.Symbol("x")
+
+sp.limit((sp.sqrt(1+2*x)-sp.sqrt(1+3*x))/(x+2*x**2),x,0)
+```
+
+## 2. Demuestra usando python que no existe el $\lim_{x\rightarrow0}\cos\frac{1}{x}$ y que $\lim_{x\rightarrow0}x\cos\frac{1}{x}=0$
+ 
+```{python}
+import sympy as sp
+x = sp.Symbol("x")
+
+sp.limit(sp.cos(1/x),x,0)
+sp.limit(x*sp.cos(1/x),x,0)
+```
+ 
+## 3. Calcula los límites siguientes usando python:
+
+a) $\lim_{x\rightarrow 1} \frac{\sqrt{x}-1}{x-1}$
+
+```{python}
+sp.limit((sp.sqrt(x)-1)/(x-1),x,1)
+```
+
+b) $\lim_{x\rightarrow a} \frac{x^2-(a+1)x+a}{x^3-a^3}$, para a=2
+
+```{python}
+a=2
+sp.limit((x**2-(a+1)*x+a)/(x**3-a**3),x,a)
+```
+
+c) $\lim_{x\rightarrow 0}(\frac{1-x}{1+x})^{\frac{1}{x}}$
+
+```{python}
+sp.limit(((1-x)/(1+x))**(1/x),x,0)
+```
+
+d) $\lim_{x\rightarrow 0}\frac{1}{x}\log\sqrt{\frac{1+x}{1-x}}$
+
+```{python}
+sp.limit((1/x)*sp.log(sp.sqrt((1+x)/(1-x))),x,0)
+```
+
+## 4. Calcula los límites siguientes usando python:
+
+a) $\lim_{x\rightarrow 0}\frac{\sin {2x}}{3x-5x^3}$
+
+```{python}
+sp.limit(sp.sin(2*x)/(3*x-5*x**3),x,0)
+```
+
+b) $\lim_{x\rightarrow 0}\frac{\sqrt[3]{x^3+2x^4}}{\log{(1+2x)}}$
+
+```{python}
+sp.limit((x**3+2*x**4)**(1/3)/sp.log(1+2*x),x,0)
+```
+
+c) $\lim_{x\rightarrow 0}\frac{(x+1)^n-1}{nx}$
+
+```{python}
+import sympy as sp
+
+x = sp.Symbol("x")
+n = sp.Symbol("n")
+
+sp.limit(((x+1)**n - 1)/(n*x),x,0)
+```
+
+d) $\lim_{x\rightarrow 0}\frac{\sqrt[n]{x+1}-1}{x}$
+
+```{python}
+import sympy as sp
+
+x = sp.Symbol("x")
+n = sp.Symbol("n")
+
+sp.limit(((x+1)**(1/n)-1)/(x),x,0)
+```
+
+e) $\lim_{x\rightarrow 1}\frac{\tan {(x^2-1)}}{x-1}$
+
+```{python}
+sp.limit((sp.tan(x**2-1))/(x-1),x,1)
+```
+
+f) $\lim_{x\rightarrow 0}\frac{a^x-1}{x\log {a}}$
+
+```{python}
+import sympy as sp
+
+x = sp.Symbol("x")
+a = sp.Symbol("a")
+
+sp.limit((a**x-1)/(x*sp.log(a)),x,0)
+```
+
+
+
+

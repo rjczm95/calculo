@@ -1,0 +1,465 @@
+---
+title: 'Tarea: Intervalos'
+author: "Ramon Ceballos"
+date: "1/4/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 1. Resuelve las siguientes inecuaciones:
+
+*a. $|x-1|<3$*
+
+Resolvemos la desigualdad obteniendo dos intervalos que cumplen la condición descrita: $x<4$ y $x>-2$. Por tanto, la solución de la inecuación será el intervalo $(-2,4)$.
+
+Vamos a determinar su resolución a través de código Python.
+
+```{python}
+
+import sympy as sp
+
+x = sp.symbols("x")
+expr = abs(x-1)
+
+result = sp.solvers.inequalities.solve_univariate_inequality(expr<3,x)
+
+print(result)
+```
+
+*b. $|2-3x|<1$*
+
+Resolvemos la desigualdad obteniendo dos intervalos que cumplen la condición descrita: $x<1$ y $x>\frac{1}{3}$. Por tanto, la solución de la inecuación será el intervalo $(\frac{1}{3},1)$.
+
+Vamos a determinar su resolución a través de código Python.
+
+```{python}
+
+import sympy as sp
+
+x = sp.symbols("x")
+expr = abs(2-3*x)
+
+result = sp.solvers.inequalities.solve_univariate_inequality(expr<1,x)
+
+print(result)
+```
+
+*c. $|x-2|>3$*
+
+Resolvemos la desigualdad obteniendo dos intervalos que cumplen la condición descrita: $x<-1$ y $x>5$. Por tanto, la solución de la inecuación será el intervalo $(-\infty,-1) \cup (5,+\infty)$.
+
+Vamos a determinar su resolución a través de código Python.
+
+```{python}
+
+import sympy as sp
+
+x = sp.symbols("x")
+expr = abs(x-2)
+
+result = sp.solvers.inequalities.solve_univariate_inequality(expr>3,x)
+
+print(result)
+```
+
+
+
+## 2. Resuelve analiticamente y graficamente las siguientes inecuaciones:
+
+*a. $|5-\frac{1}{x}|<1$*
+
+Vamos a determinar su resolución a través de código Python.
+
+```{python}
+
+import sympy as sp
+
+x = sp.symbols("x")
+expr = abs(5-(1/x))
+
+result = sp.solvers.inequalities.solve_univariate_inequality(expr<1,x)
+
+print(result)
+```
+El intervalo que resuelve la inecuación será por tanto: $(\frac{1}{6},\frac{1}{4})$.
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+x = np.linspace(1,-1,1000)
+def f (x):
+  return abs(5-(1/x)) 
+plt.plot(x, f(x),color="black",linewidth=2)
+plt.axhline(1,0,color="red")
+plt.axhline(0,0,color="black")
+plt.ylim(-0.5,10)
+plt.show()
+
+```
+
+
+*b. $|x^2-2|\le 2$*
+
+Se cumple que $|x^2-2|\le 2$, si y solo si, $-2\le x^2-2\le 2$, es decir, si $0\le x^2\le 4$.
+
+Vamos a determinar su resolución a través de código Python.
+
+```{python}
+import sympy as sp
+
+x = sp.symbols("x")
+expr = abs(x**2-2)
+
+result = sp.solvers.inequalities.solve_univariate_inequality(expr<=2,x)
+
+print(result)
+```
+El intervalo que resuelve la inecuación será por tanto: $[-2,2]$.
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+x = np.linspace(10,-10,1000)
+def f (x):
+  return abs(x**2-2) 
+plt.plot(x, f(x),color="black",linewidth=2)
+plt.axhline(2,0,color="red")
+plt.axhline(0,0,color="black")
+plt.ylim(-0.5,4)
+plt.xlim(-4,4)
+plt.show()
+
+```
+
+## 3. Resuelve analiticamente y graficamente la inecuacion:
+
+Tenemos la inecuación $|x-4|<|x+2|$.
+
+Partiendo de que $|x|^2 = x^2$, entonces deducimos que:
+
+$$(|x-4|)^2<(|x+2|)^2$$
+$$x^2-8x+16<x^2+4x+4$$
+$$12x>12\  \rightarrow\  x>1$$
+
+Se deduce que le intervalo que resuelve la inecuación para $x$ es $(1,+\infty)$.
+
+Vamos a determinar su resolución a través de código Python.
+
+```{python}
+import sympy as sp
+
+x = sp.symbols("x")
+expr1 = abs(x-4)
+expr2 =abs(x+2)
+
+result = sp.solvers.inequalities.solve_univariate_inequality(expr1<expr2,x)
+
+print(result)
+```
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+x = np.linspace(10,-10,1000)
+def f1 (x):
+  return abs(x-4) 
+def f2 (x):
+  return abs(x+2)
+plt.plot(x, f1(x),color="black",linewidth=2,label="|x-4|")
+plt.plot(x, f2(x),color="blue",linewidth=2, label="|x+2|")
+plt.axhline(0,0,color="black")
+plt.axvline(1,0,color="red")
+plt.ylim(-0.5,10)
+plt.xlim(-10,10)
+plt.legend()
+plt.show()
+```
+
+## 4. Resuelve la siguiente inecuacion:
+
+Tenemos: $x<x^2-12<3x$
+
+Hemos de resolver dos inecuaciones para luego realziar una intersección de lo obtenido en ambas. 
+
+En el primer caso $x<x^2-12$, al resolver la inecuación de segundo grado se obtiene que la variable $x$ debe cumplir: $x<-3$ y $x>4$. Por tanto el intervalo que resuelve esta primera parte es $(-\infty,-3)\ \cup \ (4,+\infty)$.
+
+En el segundo caso $x^2-12<3x$, al resolver esta inecuación de segundo grado se obtiene que la variable $x$ debe cumplir: $x<\frac{3+\sqrt{57}}{2}$ y $x>\frac{3-\sqrt{57}}{2}$. Por tanto, el intervalo que resuelve este apartado es $(\frac{3-\sqrt{57}}{2},\frac{3+\sqrt{57}}{2})$
+
+Si hacemos la intersección entre ambos resultados $(-\infty,-3)\ \cup \ (4,+\infty)\ \cap \ (\frac{3-\sqrt{57}}{2},\frac{3+\sqrt{57}}{2})$, obtenemos que el intervalo que resuelve la expresión pedida en el ejercicio es $(4,\frac{3+\sqrt{57}}{2})$.
+
+Vamos a determinar su resolución a través de código Python.
+
+```{python}
+import sympy as sp
+
+x = sp.symbols("x")
+expr1 = x
+expr2 = (x**2)-12
+expr3 = 3*x
+
+result1 = sp.solvers.inequalities.solve_univariate_inequality(expr1<expr2,x)
+print(result1)
+
+result2 = sp.solvers.inequalities.solve_univariate_inequality(expr2<expr3,x)
+print(result2)
+```
+
+Vemos las gráficas de cada uno de las inecuaciones planteadas, para luego hacer una intersección.
+
+```{python}
+p1 = sp.plotting.plot_implicit(x<(x**2)-12,(x,-5.,6.),line_color="y")
+p2 = sp.plotting.plot_implicit((x**2)-12<3*x,(x,-5.,6.),line_color="c")
+```
+
+## 5. Resuelve la siguiente inecuacion:
+
+Tenemos: $0<|x-3|<\frac{1}{3}$
+
+Al ser valor absoluto de la primera expresión $0<|x-3|$ se determina que $x\ne3$. De la segunda expresión se obtiene que: $\frac{8}{3}<x<\frac{10}{3}$. Por tanto, el intervalo que resuelve el problema es $(\frac{8}{3},\frac{10}{3})$.
+
+Vamos a determinar su resolución a través de código Python.
+
+```{python}
+import sympy as sp
+
+x = sp.symbols("x")
+expr1 = abs(x-3)
+
+result1 = sp.solvers.inequalities.solve_univariate_inequality(expr1>0,x)
+print(result1)
+
+result2 = sp.solvers.inequalities.solve_univariate_inequality(expr1<1/3,x)
+print(result2)
+```
+
+## 6. Resuelve la siguiente inecuacion:
+
+Tenemos: $|x-2|+|x+2|\le 4$.
+
+Resolviendo la inecuación obtenemos que $x\le2$ y $x\ge-2$. Por tanto, la solución de la inecuación es el intervalo $(-2,2)$.
+
+Vamos a determinar su resolución a través de código Python para graficarlo.
+
+```{python}
+import matplotlib.pyplot as plt
+import numpy as np
+
+x = np.arange(-5,5,0.05)
+y = abs(x-2) + abs(x+2)
+
+plt.plot(x,y)
+plt.show()
+```
+
+## 7. Resuelve las siguientes inecuaciones:
+
+*a. $|x^2-3|>1$*
+
+Partimos de la inecuación de segundo grado $|x^2-3|>1$.
+
+Para la resolución de la inecuación es mejor partir de la siguiente expresión $|x^2-3|\le1$, la cual al desarrollarla obtenemos: $2<x^2<4$.
+
+Se observa que hay cuatro puntos donde la ecuación varía siendo mayor o menor de 1, estos puntos son $-\sqrt{2},\sqrt{2},-2,2$.
+
+Atendiendo a dichos puntos descritos la expresión $|x^2-3|>1$ se cumplirá en el intervalo $(-\infty,-2)\ \cup\ (\sqrt{-2},\sqrt{2})\ \cup\ (2,+\infty)$.
+
+Vamos a determinar su resolución a través de código Python.
+
+```{python}
+import sympy as sp
+
+x = sp.symbols("x")
+expr1 = abs((x**2)-3)
+
+
+result1 = sp.solvers.inequalities.solve_univariate_inequality(expr1>1,x)
+print(result1)
+
+```
+
+*b. $|x^2-x+1|>1$*
+
+Al igual que en el ejemplo $a$ partimos de la expresión $|x^2-x+1|<1$. Tenemos la expresión siguiente al desarrollar $-1<x^2-x+1<1$.
+
+Resolvemos cada parte de la inecuación obtenida. La primera parte, $-1<x^2-x+1$, no presenta soluciones reales al resolver, siendo positiva para todo $\mathbb{R}$. En cuanto a la segunda parte de la inecuación, $x^2-x+1<1$, se obtienen dos soluciones (0,1). Estudiando los intervalos que forman se obtiene que el intervalo solución de la inecuación es $(-\infty,0)\ \cup\ (1,+\infty)$. 
+
+Vamos a determinar su resolución a través de código Python.
+
+```{python}
+import sympy as sp
+
+x = sp.symbols("x")
+expr1 = abs((x**2)-x+1)
+
+
+result1 = sp.solvers.inequalities.solve_univariate_inequality(expr1>1,x)
+print(result1)
+
+```
+
+## 8. Resuelve la siguiente inecuacion:
+
+La inecuación es $\frac{|x-4|}{|x^2+5|}<1$.
+
+Se discierne que el denominador de la ecuacíon nunca puede ser cero, podemos poner la siguiente expresión $|x-4|<|x^2+5|$. Si resolvemos, discenimos que no hay solución en la recta real, por tanto el conjunto estudiado o es cierto para todo $\mathbb{R}$ o no lo es. Si sustituimos se comprueba facilmente que la solución de la inecuación es toda la recta real, el intervalo $(-\infty,+\infty)$.
+
+Vamos a determinar su resolución a través de código Python.
+
+```{python}
+import sympy as sp
+
+x = sp.var("x")
+expr = abs(x-4)/abs((x**2)+5)
+
+
+result1 = sp.solvers.inequalities.solve_univariate_inequality(expr<1,x)
+print(result1)
+```
+
+## 9. Representa graficamente los conjuntos de puntos (x, y) tales que:
+
+*a. x>y*
+
+Vamos a determinar su resolución a través de código Python.
+
+```{python}
+import sympy as sp
+
+x = sp.symbols("x")
+y = sp.symbols("y")
+
+p1 = sp.plot_implicit(x>y)
+```
+
+
+*b. $y\le 2$*
+
+Vamos a determinar su resolución a través de código Python.
+
+```{python}
+import sympy as sp
+
+x = sp.symbols("x")
+y = sp.symbols("y")
+
+p1 = sp.plot_implicit(y<=2,x)
+```
+
+*c. $|x-y| < 1$*
+
+Vamos a determinar su resolución a través de código Python.
+
+```{python}
+import sympy as sp
+
+x = sp.symbols("x")
+y = sp.symbols("y")
+
+p1 = sp.plot_implicit(abs(x-y)<1)
+```
+
+## 10. Representa graficamente los conjuntos de puntos (x, y) tales que:
+
+*a. $|x| + |y| = 1$*
+
+Vamos a determinar su resolución a través de código Python.
+
+```{python}
+import sympy as sp
+
+x = sp.symbols("x")
+y = sp.symbols("y")
+
+expr = abs(x)+abs(y) -1
+
+p1 = sp.plot_implicit(expr)
+```
+
+*b. $|x-1| = |y-1|$*
+
+Vamos a determinar su resolución a través de código Python.
+
+```{python}
+import sympy as sp
+
+x = sp.symbols("x")
+y = sp.symbols("y")
+
+expr = abs(x-1)-abs(y-1)
+
+p1 = sp.plot_implicit(expr)
+```
+
+*c. $x\cdot y = 0$*
+
+Vamos a determinar su resolución a través de código Python.
+
+```{python}
+import sympy as sp
+
+x = sp.symbols("x")
+y = sp.symbols("y")
+
+expr = x*y
+
+p1 = sp.plot_implicit(x*y, color="red",lw=5)
+```
+
+## 11. Representa graficamente los conjuntos de puntos (x, y) tales que:
+
+*a. $y = 2 - \frac{|x|}{x}$*
+
+Vamos a determinar su resolución a través de código Python.
+
+```{python}
+import sympy as sp
+
+x = sp.symbols("x")
+y = sp.symbols("y")
+
+expr = y-2+(abs(x)/x)
+
+p1 = sp.plot_implicit(expr, color="red",lw=5)
+```
+
+
+*b. $(x-1)^2 + (y-3)^2 < 1$*
+
+Vamos a determinar su resolución a través de código Python.
+
+```{python}
+import sympy as sp
+
+x = sp.symbols("x")
+y = sp.symbols("y")
+
+expr = (x-1)**2 + (y-3)**2
+
+p1 = sp.plot_implicit(expr<1, color="red")
+```
+
+
+*c. $\frac{x^2}{4}+\frac{y^2}{9} = 1$*
+
+Vamos a determinar su resolución a través de código Python.
+
+```{python}
+import sympy as sp
+
+x = sp.symbols("x")
+y = sp.symbols("y")
+
+expr = ((x**2)/4) + ((y**2)/9) - 1
+
+p1 = sp.plot_implicit(expr, color="red")
+```
+
+
+
+
+

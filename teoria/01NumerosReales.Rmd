@@ -2,8 +2,9 @@
 title: "Tema 1 - Números reales"
 author: "Juan Gabriel Gomila, Arnau Mir y Llorenç Valverde"
 date: ''
-output: 
-  ioslides_presentation: 
+output:
+  beamer_presentation: default
+  ioslides_presentation:
     css: Mery_style.css
     fig_caption: yes
     keep_md: yes
