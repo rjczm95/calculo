@@ -3937,3 +3937,4 @@ El cálculo de la integral en `Wolfram Alpha` se puede ver en el enlace siguient
 donde vemos que el valor de la integral es $\sqrt{\frac{\pi}{2}}$.
 
 </div>
+

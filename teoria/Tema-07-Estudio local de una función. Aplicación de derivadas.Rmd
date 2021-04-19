@@ -1,0 +1,714 @@
+---
+title: 'Tema 7: Estudio local de una función. Aplicación de derivadas'
+author: "Ramon Ceballos"
+date: "17/4/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# 1. Estudio local de una función. Introducción 
+
+Dada una función real de variable real $f$, en esta sección vamos a ver cómo podemos **representarla gráficamente** analizando un conjunto de características de la mismas, donde la mayoría de ellas están basadas en la **función derivada**.
+
+Antes de realizar dicho estudio necesitamos:
+
+* analizar el crecimiento, decrecimento y extremos locales de la función $f$ en el caso general, es decir, estudiando las derivadas de orden superior
+
+* analizar la concavidad y la convexidad de la función $f$ que definiremos más adelante.
+
+# 2. Crecimiento y extremos
+
+El teorema siguiente nos dice cuándo una función es creciente o decreciente y nos da condiciones para los extremos a partir de condiciones que tienen que verificar derivadas de orden superior de la función.
+
+<l class="prop">**Teorema.** </l>
+
+Sea $f:(a,b)\longrightarrow\mathbb{R}$ una función real de variable real y sea $x_0\in (a,b)$ un punto interior del dominio de $f$. Supongamos que existe un natural $n$ tal que $f$ es derivable hasta orden $2n+2$ en un entorno de $x_0$. Entonces:
+
+* Si $f'(x_0)=f''(x_0)=\cdots =f^{(2n)}(x_0)=0$ y $f^{(2n+1)}(x_0)\neq 0$, resulta que:
+  * si $f^{(2n+1)}(x_0)>0$, $f$ es creciente en $x_0$,
+  * si $f^{(2n+1)}(x_0)<0$, $f$ es decreciente en $x_0$.
+
+* Si $f'(x_0)=f''(x_0)=\cdots =f^{(2n-1)}(x_0)=0$ y $f^{(2n)}(x_0)\neq 0$, resulta que:
+  * si $f^{(2n)}(x_0)>0$, entonces $f$ tiene un mínimo en $x=x_0$,
+  * si $f^{(2n)}(x_0)<0$, entonces $f$ tiene un máximo en $x=x_0$.
+
+<l class="observ">**Observación.**</l> Si aplicamos la primera parte del teorema anterior para $n=0$, tenemos un resultado conocido: si $f'(x_0)>0$, $f$ es creciente en $x_0$ y si $f'(x_0)<0$, $f$ es decreciente en $x_0$. Por tanto, la primera parte del teorema generaliza dicho resultado.
+
+Respecto a la segunda parte del teorema, sabíamos que si $f$ tiene un extremo relativo en $x_0$, entonces $f'(x_0)=0$ y también sabíamos que el recíproco era falso. Esta segunda parte nos dice cuando dicho recíproco es cierto. Si lo aplicamos en el caso sencillo de que $n=1$, nos dice que si $f''(x_0)>0$, entonces $(x_0,f(x_0))$ es un mínimo relativo de $f$ y si $f''(x_0)<0$, entonces $(x_0,f(x_0))$ es un máximo relativo de $f$.
+
+**Demostración** (Contenido bastante técnico)
+
+Consideremos la expresión del polinomio de Taylor de grado $2n+1$ en $x_0$ junto con la expresión del resto de Lagrange.
+
+$$f(x)=\sum_{k=0}^{2n+1}\frac{f^{(k)}(x_0)}{k!}\cdot (x-x_0)^k + R_{2n+1}(x-x_0)$$
+
+Teniendo en cuenta que $f'(x_0)=f''(x_0)=\cdots = f^{2n}(x_0)=0$, la expresión anterior queda de la forma siguiente al ser $0$ los sumandos para $k=1,2,\ldots,2n$
+
+$$f(x)=f(x_0)+\frac{f^{(2n+1)}(x_0)}{(2n+1)!}\cdot (x-x_0)^{2n+1} + R_{2n+1}(x-x_0)$$
+
+Por tanto:
+
+$$\frac{f(x)-f(x_0)}{(x-x_0)^{2n+1}}=\frac{f^{(2n+1)}(x_0)}{(2n+1)!} +\frac{R_{2n+1}(x-x_0)}{(x-x_0)^{2n+1}}$$
+
+Como $R_{2n+1}(x-x_0)=\frac{f^{(2n+2)}(c)}{(2n+2)!}\cdot (x-x_0)^{2n+2}$, con $c\in <x,x_0>$, se verificará que:
+
+$$\lim_{x\to x_0}\frac{R_{2n+1}(x-x_0)}{(x-x_0)^{2n+1}}=\lim_{x\to x_0}\frac{f^{(2n+2)}(c)}{(2n+2)!}\cdot (x-x_0)=0$$
+
+La condición anterior nos dice que el término dominante en la expresión de $\frac{f(x)-f(x_0)}{(x-x_0)^{2n+1}}$ es el primero, $\frac{f^{(2n+1)}(x_0)}{(2n+1)!}$, ya que el segundo, $\frac{R_{2n+1}(x-x_0)}{(x-x_0)^{2n+1}}$, tiende a cero. Por tanto, para $x$ suficientemente próximo a $x_0$, el signo coincide.
+
+$$\mathrm{signo}\left(\frac{f(x)-f(x_0)}{(x-x_0)^{2n+1}}\right)=\mathrm{signo}\left(\frac{f^{(2n+1)}(x_0)}{(2n+1)!}\right)$$
+
+Probemos a continuación las tesis de la primera parte del teorema:
+
+* supongamos que $f^{(2n+1)}(x_0)>0$. En este caso, como $\mathrm{signo}\left(\frac{f(x)-f(x_0)}{(x-x_0)^{2n+1}}\right)=\mathrm{signo}\left(\frac{f^{(2n+1)}(x_0)}{(2n+1)!}\right)$, tendremos que $\frac{f(x)-f(x_0)}{(x-x_0)^{2n+1}} > 0$, y, como consecuencia $\frac{f(x)-f(x_0)}{(x-x_0)} > 0$ (ya que $2n+1$ es impar y el signo de $(x-x_0)^{2n+1}$ y $x-x_0$ es el mismo), condición que equivale a decir  que $f$ es creciente en $x_0$.
+
+* supongamos que $f^{(2n+1)}(x_0)<0$. En este caso, como $\mathrm{signo}\left(\frac{f(x)-f(x_0)}{(x-x_0)^{2n+1}}\right)=\mathrm{signo}\left(\frac{f^{(2n+1)}(x_0)}{(2n+1)!}\right)$, tendremos que $\frac{f(x)-f(x_0)}{(x-x_0)^{2n+1}} < 0$, y, como consecuencia $\frac{f(x)-f(x_0)}{(x-x_0)} < 0$ (por la misma razón que antes), condición que equivale a decir que $f$ es decreciente en $x_0$.
+
+Para la demostración de la segunda parte, consideremos la expresión del polinomio de Taylor de grado $2n$ en $x_0$ junto con la expresión del resto de Lagrange.
+
+$$f(x)=\sum_{k=0}^{2n}\frac{f^{(k)}(x_0)}{k!}\cdot (x-x_0)^k + R_{2n}(x-x_0)$$
+
+Teniendo en cuenta que $f'(x_0)=f''(x_0)=\cdots = f^{2n-1}(x_0)=0$, la expresión anterior queda de la forma siguiente al ser $0$ los sumandos para $k=1,2,\ldots,2n-1$
+
+$$f(x)=f(x_0)+\frac{f^{(2n)}(x_0)}{(2n)!}\cdot (x-x_0)^{2n} + R_{2n}(x-x_0)$$
+
+Por tanto:
+
+$$\frac{f(x)-f(x_0)}{(x-x_0)^{2n}}=\frac{f^{(2n)}(x_0)}{(2n)!} +\frac{R_{2n}(x-x_0)}{(x-x_0)^{2n}}$$
+
+Como $R_{2n}(x-x_0)=\frac{f^{(2n+1)}(c)}{(2n+1)!}\cdot (x-x_0)^{2n+1}$, con $c\in <x,x_0>$, se verificará que:
+
+$$\lim_{x\to x_0}\frac{R_{2n}(x-x_0)}{(x-x_0)^{2n}}=\lim_{x\to x_0}\frac{f^{(2n+1)}(c)}{(2n+1)!}\cdot (x-x_0)=0$$
+
+La condición anterior nos dice que el término dominante en la expresión de $\frac{f(x)-f(x_0)}{(x-x_0)^{2n}}$ es el primero, $\frac{f^{(2n)}(x_0)}{(2n)!}$, ya que el segundo, $\frac{R_{2n}(x-x_0)}{(x-x_0)^{2n}}$, tiende a cero. Por tanto, para $x$ suficientemente próximo a $x_0$, tenemos:
+
+$$\mathrm{signo}\left(\frac{f(x)-f(x_0)}{(x-x_0)^{2n}}\right)=\mathrm{signo}\left(\frac{f^{(2n)}(x_0)}{(2n)!}\right)$$
+
+Probemos a continuación las tesis de la segunda parte del teorema:
+
+* si $f^{(2n)}(x_0)>0$, como $\mathrm{signo}\left(\frac{f(x)-f(x_0)}{(x-x_0)^{2n}}\right)=\mathrm{signo}\left(\frac{f^{(2n)}(x_0)}{(2n)!}\right)$, tendremos que $\frac{f(x)-f(x_0)}{(x-x_0)^{2n}} > 0$, y, como consecuencia $f(x)-f(x_0) > 0$ (ya que $2n$ es par y el signo de $(x-x_0)^{2n}$ siempre es positivo), condición que equivale a decir que $f$ tiene un mínimo en $x_0$.
+
+* si $f^{(2n)}(x_0)<0$, como $\mathrm{signo}\left(\frac{f(x)-f(x_0)}{(x-x_0)^{2n}}\right)=\mathrm{signo}\left(\frac{f^{(2n)}(x_0)}{(2n)!}\right)$, tendremos que $\frac{f(x)-f(x_0)}{(x-x_0)^{2n}} < 0$, y, como consecuencia $f(x)-f(x_0) < 0$ (por la misma razón que antes), condición que  equivale a decir que $f$ tiene un máximo en $x_0$.
+
+# 3. Concavidad y convexidad
+
+La **concavidad/convexidad** de una función es una propiedad muy útil a la hora de representar dicha función. 
+
+De forma intuitiva, una **función convexa** es aquélla que está por **encima** de las rectas tangentes en sus puntos de su gráfica y una **función cóncava** es aquélla que está por **debajo**.
+
+Ver las dos gráficas siguientes.
+
+```{r, echo=FALSE, label=convexa2,fig.cap="",out.width = "650px"}
+knitr::include_graphics("Images/convexa2.png",dpi=1200)
+```
+
+
+```{r, echo=FALSE, label=concava2,fig.cap="",out.width = "650px"}
+knitr::include_graphics("Images/concava2.png",dpi=1200)
+```
+
+<l class="definition">**Definición, convexa.**</l>  Sea $f:(a,b)\longrightarrow\mathbb{R}$ una función real de variable real. Diremos que $f$ es **convexa** si, y sólo si, dados $x_1,x_2\in (a,b)$ y $t\in [0,1]$ entonces: 
+
+$$f(t\cdot x_1+(1-t)\cdot x_2)\leq t\cdot f(x_1)+(1-t)\cdot f(x_2)$$
+
+<l class="definition">**Definición, cóncava.**</l>  Sea $f:(a,b)\longrightarrow\mathbb{R}$ una función real de variable real. Diremos que $f$ es **cóncava** si, y sólo si, dados $x_1,x_2\in (a,b)$ y $t\in [0,1]$ entonces:
+
+$$f(t\cdot x_1+(1-t)\cdot x_2)\geq t\cdot f(x_1)+(1-t)\cdot f(x_2)$$
+
+Diremos que $f$ es **estrictamente convexa** o **estrictamente cóncava** si las desigualdades anteriores son estrictas.
+
+<l class="observ">**Observación.**</l> Las características de **concavidad** y **convexidad** están definidas para intervalos de la función y, por tanto, son **propiedades globales** de la función $f$.
+
+Gráficamente una función es convexa cuando dados dos valores cualesquiera $x_1<x_2$ dentro del dominio de la función, el trozo de la gráfica de la función entre $x_1$ y $x_2$ está **por debajo** de la recta que une los puntos $(x_1,f(x_1))$ y $(x_2,f(x_2))$. 
+
+Se puede ver en la figura siguiente.
+
+```{r, echo=FALSE, label=convexa,fig.cap="",out.width = "650px"}
+knitr::include_graphics("Images/convexa.png",dpi=1200)
+```
+
+La condición anterior es equivalente a que para todo punto $x$ del intervalo $[x_1,x_2]$, $f(x)$ es menor o igual que la imagen de $x$ por la recta que une los puntos $(x_1,f(x_1))$ y $(x_2,f(x_2))$
+
+La ecuación de la recta que une los puntos $(x_1,f(x_1))$ e $(x_2,f(x_2))$ es la siguiente:
+
+$$y=f(x_1)+\frac{f(x_2)-f(x_1)}{x_2-x_1}\cdot (x-x_1)$$
+
+Entonces decir que $f(x)$ es menor o igual que la imagen de $x$ por la recta que une los puntos $(x_1,f(x_1))$ y $(x_2,f(x_2))$ equivale a la expresión siguiente:
+
+$$f(x)\leq f(x_1)+\frac{f(x_2)-f(x_1)}{x_2-x_1}\cdot (x-x_1)$$
+
+Los puntos $x$ que están en el intervalo $[x_1,x_2]$ se pueden escribir como $t\cdot x_1+(1-t)\cdot x_2$ variando $t$ en el intervalo $[0,1]$. Por ejemplo, para $t=0$, obtenemos el extremo izquierdo $x_1$, para $t=1$, el extremo derecho $x_2$ y para $t=\frac{1}{2}$, el punto medio entre los dos valores $\frac{x_1+x_2}{2}$.
+
+La condición de convexidad sería la siguiente, dados $x_1< x_2$ y $t\in [0,1]$ se verifica:
+
+$$\begin{array}{rl}
+f(t\cdot x_1+(1-t)\cdot x_2) & \leq f(x_1)+\frac{f(x_2)-f(x_1)}{x_2-x_1}\cdot (t\cdot x_1+(1-t)\cdot x_2-x_1)\\
+f(t\cdot x_1+(1-t)\cdot x_2) & \leq f(x_1)+\frac{f(x_2)-f(x_1)}{x_2-x_1}\cdot (1-t)\cdot (x_2-x_1)\\
+f(t\cdot x_1+(1-t)\cdot x_2) & \leq f(x_1)+(f(x_2)-f(x_1))\cdot (1-t) \\
+f(t\cdot x_1+(1-t)\cdot x_2) & \leq t\cdot f(x_1)+(1-t)\cdot f(x_2)
+\end{array}$$
+
+La última desigualdad es la condición que tenemos en la definición de convexidad.
+
+La concavidad se razona de la misma manera, sólo se tiene que tener en cuenta que ahora dados dos valores cualesquiera $x_1<x_2$ dentro del dominio de la función, el trozo de la gráfica de la función entre $x_1$ y $x_2$ está **por encima** de la recta que une los puntos $(x_1,f(x_1))$ y $(x_2,f(x_2))$.
+
+Se puede ver en la figura siguiente.
+
+```{r, echo=FALSE, label=concava,fig.cap="",out.width = "650px"}
+knitr::include_graphics("Images/concava.png",dpi=1200)
+```
+
+## 3.1. Relación entre la concavidad y la convexidad con la recta tangente
+
+La proposición siguiente nos dice que la recta tangente en un punto de la gráfica de una función **convexa** (**cóncava**) está por **debajo** (**encima**) de la función tal como enunciamos al introducir los conceptos de **convexidad** y **concavidad**.
+
+<l class="prop">**Proposición 1.**</l> Sea $f:(a,b)\longrightarrow \mathbb{R}$ una función real de variable real. Suponemos que $f$ es derivable en $(a,b)$ con derivada continua. Entonces:
+
+* $f$ es **convexa** en $(a,b)$ si, y sólo si, se verifica que $f(x)\geq f(\hat{x})+f'(\hat{x})\cdot (x-\hat{x})$, para todo valor $x,\hat{x}\in (a,b)$ en dicho dominio.
+
+* si $f$ es **cóncava** en $(a,b)$ si, y sólo si, se verifica que $f(x)\leq f(\hat{x})+f'(\hat{x})\cdot (x-\hat{x})$, para todo valor $x,\hat{x}\in (a,b)$ en dicho dominio.
+
+<l class="observ">**Observación.**</l> Las condiciones anteriores equivalen a decir que si $f$ es **convexa** en un intervalo $(a,b)$ y $x,\hat{x}\in (a,b)$, entonces la imagen de $f$ en $x$ es mayor que la imagen de $x$ por la recta tangente de $f$ en $\hat{x}$. Por tanto, la recta tangente de $f$ en $\hat{x}$ tiene la ecuación siguiente: $y=f(\hat{x})+f'(\hat{x})\cdot (x-\hat{x})$, por tanto, la imagen de $x$ por la recta tangente será: $y=f(\hat{x})+f'(\hat{x})\cdot (x-\hat{x})$. 
+
+Entonces afirmar que $f(x)\geq f(\hat{x})+f'(\hat{x})\cdot (x-\hat{x})$ equivale a afirmar que la función en $x$ está por **encima** de la recta tangente en $\hat{x}$ tal como se observaba en el gráfico anterior.
+
+En el caso de que $f$ sea **cóncava**, la observación anterior es la misma pero en lugar de decir que la función está por encima, hemos de decir que la función está por **debajo**.
+
+**Demostración de la proposición** (Contenido bastante técnico)
+
+$\Rightarrow$ Supongamos que $f$ es convexa en $(a,b)$.
+
+Sean $x,\hat{x}\in (a,b)$ dos valores del dominio de $f$. Por ser $f$ convexa, se verifica la condición siguiente para todo valor $t\in  [0,1]$
+
+$$f(t\cdot x+(1-t)\cdot \hat{x})\leq t\cdot f(x)+(1-t)\cdot f(\hat{x})$$
+
+Operando, obtenemos:
+
+$$\frac{f(\hat{x}+t\cdot (x-\hat{x}))-f(\hat{x})}{t}\leq f(x)-f(\hat{x})$$
+
+Como la desigualdad anterior es cierta para todo valor de $t\in [0,1]$, si hacemos tender $t\to 0$ la parte de la izquierda obtenemos:
+
+$$\begin{array}{rl}
+\displaystyle \lim_{t\to 0}\frac{f(\hat{x}+t\cdot (x-\hat{x}))-f(\hat{x})}{t} & \leq f(x)-f(\hat{x})\\
+\displaystyle f'(\hat{x})\cdot (x-\hat{x})& \leq f(x)-f(\hat{x}) \\
+\displaystyle f(\hat{x})+f'(\hat{x})\cdot (x-\hat{x}) & \leq f(x)
+\end{array}$$
+
+Tal como queríamos ver. 
+
+El cálculo del límite $\displaystyle\lim_{t\to 0}\frac{f(\hat{x}+t\cdot (x-\hat{x}))-f(\hat{x})}{t}$ se puede realizar usando la regla de L'Hôpital.
+
+$$\begin{array}{rl}
+\displaystyle \lim_{t\to 0}\frac{f(\hat{x}+t\cdot (x-\hat{x}))-f(\hat{x})}{t}  &\displaystyle =\lim_{t\to 0}\frac{\frac{d}{dt}(f(\hat{x}+t\cdot (x-\hat{x}))-f(\hat{x}))}{1} \\ & \displaystyle = \lim_{t\to 0}f'(\hat{x}+t\cdot (x-\hat{x}))\cdot (x-\hat{x}) =f'(\hat{x})\cdot (x-\hat{x})
+\end{array}$$
+
+Donde hemos aplicado la regla de la cadena al derivar respecto la variable $t$.
+
+El caso en que $f$ sea **cóncava** se razona de manera similar.
+
+$\Leftarrow$ Supongamos ahora que $f(x)\geq f(\hat{x})+f'(\hat{x})\cdot (x-\hat{x})$, para todo valor $x,\hat{x}\in (a,b)$ en dicho dominio.
+
+Sea $t\in [0,1]$. Entonces, como $x_t = t\cdot x+(1-t)\cdot \hat{x}\in (a,b)$ podemos escribir que:
+
+$$\begin{array}{rl}
+f(x) & \geq f(x_t)+f'(x_t)\cdot (x-x_t), \\
+f(\hat{x}) & \geq f(x_t)+f'(x_t)\cdot (\hat{x}-x_t)
+\end{array}$$
+
+Multiplicando la primera desigualdad por $t$ y la segunda por $1-t$ y sumando, obtenemos:
+
+$$t\cdot f(x)+(1-t)\cdot f(\hat{x})\geq f(x_t)+f'(x_t) (t\cdot (x-x_t)+(1-t)\cdot (\hat{x}-x_t))$$
+
+Pero: 
+
+$$t\cdot (x-x_t)+(1-t)\cdot (\hat{x}-x_t) = t\cdot x+(1-t)\cdot \hat{x}-t\cdot x_t-(1-t)\cdot x_t=x_t-t\cdot x_t-x_t+t\cdot x_t =0$$
+
+En conclusión:
+
+$$t\cdot f(x)+(1-t)\cdot f(\hat{x})\geq f(x_t)=f(t\cdot x+(1-t)\cdot \hat{x})$$
+
+Condición que equivale a decir que $f$ es **convexa** en el intervalo $(a,b)$.
+
+La demostración en el caso en que  $f$ sea **cóncava** se razona de manera similar.
+
+
+# 4. Concavidad y convexidad. Punto de inflexión.
+
+Un punto de inflexión de una función es un punto donde a la izquierda del mismo la función tiene un tipo de convexidad (cóncava o convexa) y a la derecha, otro tipo de convexidad. Es decir, se pasa de cóncava a convexa o de convexa a cóncava:
+
+<l class="definition">**Definición de punto de inflexión.** </l>
+
+Sea $f:(a,b)\longrightarrow\mathbb{R}$ una función real de variable real. Sea $x_0\in (a,b)$ un punto del interior del dominio de $f$. Diremos que $x_0$ es un punto de inflexión si existe un valor $\delta >0$ tal que si $x\in (x_0-\delta,x_0)$, $f$ es **concava** (**convexa**) en $x$ y si $x\in (x_0,x_0+\delta)$, $f$ es **convexa** (**concava**) en $x$.
+
+Se puede ver en la figura siguiente.
+
+```{r, echo=FALSE, label=infle,fig.cap="",out.width = "650px"}
+knitr::include_graphics("Images/inflexion.png",dpi=1200)
+```
+
+El siguiente resultado caracteriza la concavidad y la convexidad de una función a partir de sus derivadas.
+
+<l class="prop">**Teorema.**</l> Sea $f:(a,b)\longrightarrow\mathbb{R}$ una función real de variable real. Sea $x_0\in (a,b)$ un punto del interior del dominio de $f$. Supongamos que $f$ es derivable tres veces con $f'''$ continua. Entonces:
+
+* si $f''(x_0) \neq0$, entonces 
+  * si $f''(x_0)>0$, tenemos que $f$ es **convexa** en un entorno de $x_0$ 
+  * si $f''(x_0)<0$, tenemos que $f$ es **cóncava** en un entorno de $x_0$.
+
+* si $f''(x_0)=0$ y $f'''(x_0)\neq 0$, entonces $f$ tiene un **punto de inflexión** en $x=x_0$.
+
+<l class="observ">**Observación.**</l> Si aplicamos el teorema anterior, obtenemos que si $f''(x_0)>0$, o, equivalentemente, que $f'$ es una función creciente en $x_0$, $f$ es **convexa** en un entorno de $x_0$ y si $f''(x_0)<0$, o, equivalentemente, que $f'$ es una función decreciente en $x_0$, $f$ es **cóncava** en un entorno de $x_0$.
+
+En el gráfico que vimos al principio de la sección se muestran en verde un conjunto de rectas tangentes a una función convexa en rojo. Fijaos que a medida que la variable $x$ aumenta, la pendiente de las rectas tangentes, es decir, la derivada va aumentando. Es decir, las rectas tangentes van subiendo. Se empieza con rectas tangentes de pendiente negativa, se llega a la recta tangente de pendiente cero (el mínimo) y se acaba con rectas tangentes de pendiente positiva.
+
+En el segundo gráfico que vimos al principio de la sección se muestra lo mismo pero para una función cóncava. Fijaos que a medida que la variable $x$ aumenta, la pendiente de las rectas tangentes, es decir, la derivada va disminuyendo. Es decir, las rectas tangentes van bajando. Se empieza con rectas tangentes de pendiente positiva, se llega a la recta tangente de pendiente cero (el máximo) y se acaba con rectas tangentes de pendiente negativa.
+
+**Demostración del teorema**. (Contenido bastante técnico)
+
+Demostremos la primera parte del teorema: supongamos que $f''(x_0)>0$. Vamos a ver que $f$ es **convexa** en un entorno de $x_0$.
+
+Como $f''$ es continua al ser $f$ tres veces derivable y $f''(x_0)>0$, existe un $\delta >0$ tal que $f''(x)>0$, para todo $x\in (x_0-\delta,x_0+\delta)$. Es decir, $f''$ es positiva en un entorno del punto $x_0$.
+
+Sean $x_1,x_2\in (x_0-\delta,x_0+\delta)$. Consideremos el desarrollo de Taylor de $f$ en $x_1$ de grado $1$, es decir, el polinomio de Taylor en $x_1$ de grado $1$ junto con el resto de Lagrange y aplicamos dicho desarrollo a $x_2$.
+
+$$f(x_2) =f(x_1)+f'(x_1)\cdot (x_2-x_1)+\frac{f''(c_{12})}{2!}\cdot (x_2-x_1)^2$$
+
+Donde $c_{12}\in <x_1,x_2>\subseteq (x_0-\delta,x_0+\delta)$.
+
+Como $f''$ es positiva en el intervalo $(x_0-\delta,x_0+\delta)$, tendremos que $f''(c_{12})>0$ y por tanto:
+
+$$f(x_2)\geq f(x_1)+f'(x_1)\cdot (x_2-x_1)$$
+
+Ya que $\frac{f''(c_{12})}{2!}\cdot (x_2-x_1)^2>0$.
+
+La condición anterior equivale a afirmar que $f$ en **convexa** en el entorno de $x_0$, $(x_0-\delta,x_0+\delta)$, usando la proposición anterior.
+
+El caso $f''(x_0)<0$ (**cóncava**) se razona de manera similar.
+
+Demostremos la segunda parte del teorema: supongamos ahora que $f''(x_0)=0$ y $f'''(x_0)\neq 0$.
+
+Supongamos para fijar ideas que $f'''(x_0)>0$ (el caso $f'''(x_0)<0$ se razonaría de forma similar).
+
+Como $\displaystyle f'''(x_0)=\lim_{x\to x_0}\frac{f''(x)-f''(x_0)}{x-x_0}=\lim_{x\to x_0}\frac{f''(x)}{x-x_0}>0$, tendremos que existe $\delta >0$ tal que $f''(x)>0$ si $x\in (x_0,x_0+\delta)$ y $f''(x)<0$ si $x\in (x_0-\delta,x_0)$. 
+
+Sean $x_1,x_2\in (x_0-\delta,x_0)$. Si consideramos otra vez el desarrollo de Taylor de $f$ en $x_1$ de grado $1$, y aplicamos dicho desarrollo a $x_2$, obtenemos:
+
+$$f(x_2) =f(x_1)+f'(x_1)\cdot (x_2-x_1)+\frac{f''(c_{12})}{2!}\cdot (x_2-x_1)^2$$
+
+Donde $c_{12}\in <x_1,x_2>\subseteq (x_0-\delta,x_0)$.
+
+Como $f''$ es negativa en el intervalo $(x_0-\delta,x_0)$, tendremos que $f''(c_{12})<0$ y por tanto:
+
+$$f(x_2)\leq f(x_1)+f'(x_1)\cdot (x_2-x_1)$$
+
+Ya que $\frac{f''(c_{12})}{2!}\cdot (x_2-x_1)^2<0$. Es decir, $f$ es **cóncava** en el intervalo $(x_0-\delta,x_0)$.
+
+Sean ahora $x_1,x_2\in (x_0,x_0+\delta)$. Si consideramos otra vez el desarrollo de Taylor de $f$ en $x_1$ de grado $1$, y aplicamos dicho desarrollo a $x_2$, obtenemos:
+
+$$f(x_2) =f(x_1)+f'(x_1)\cdot (x_2-x_1)+\frac{f''(c_{12})}{2!}\cdot (x_2-x_1)^2$$
+
+Donde $c_{12}\in <x_1,x_2>\subseteq (x_0,x_0+\delta)$.
+
+Como $f''$ es positiva en el intervalo $(x_0,x_0+\delta)$, tendremos que $f''(c_{12})>0$ y por tanto:
+
+$$f(x_2)\geq f(x_1)+f'(x_1)\cdot (x_2-x_1)$$
+
+Ya que $\frac{f''(c_{12})}{2!}\cdot (x_2-x_1)^2>0$. Es decir, $f$ es **convexa** en el intervalo $(x_0-\delta,x_0)$.
+
+En resumen, acabamos de demostrar que $x_0$ es un punto de inflexión, tal como queríamos ver.
+
+### **Ejemplo: estudio de la concavidad y convexidad de una función cúbica**
+
+Consideremos una **funció cúbica** general dependiente de cuatro **parámetros**: $f(x)=a x^3+b x^2+c x+d$, definida en todo el conjunto de números reales $\mathbb{R}$, donde $a,b,c$ y $d$ son los parámetros de los que depende donde suponemos que $a\neq 0$.
+
+Usando el resultado anterior, estudiar la **concavidad y convexidad** equivale a estudiar el signo de la **derivada segunda**: $f''(x)=2(3a x+b)$. Entonces:
+
+* si $f''(x)>0$, o si $x>-\frac{b}{3a}$, la función es **convexa**
+* si $f''(x)<0$, o si $x<-\frac{b}{3a}$, la función es **cóncava** 
+* si $f''(x)=0$, o si $x=-\frac{b}{3a}$, como $f'''(x)=6a\neq 0$, $f$ tiene un **punto de inflexión** en dicho punto
+
+En el enlace siguiente  [![](Images/wolfram.png)](https://www.wolframalpha.com/input/?i=plot+of+x%5E3-3+x%5E2%2B2+x-1) se muestra la gráfica de la función $f(x)=x^3-3 x^2+2x-1$, donde puede observarse que es convexa en la región $\left(-\frac{b}{3a},\infty\right)=\left(-\frac{-3}{3\cdot 1},\infty\right)=(1,\infty)$, cóncava en la región $(-\infty,1)$ y tiene un punto de inflexión en el punto $(1,`r 1-3+2-1`)$.
+
+# 5. Estudio local de una función
+
+Una de las aplicaciones más usadas del estudio de las derivadas de primer y segundo orden es la **representación aproximada de funciones**. 
+
+Las derivadas son una herramienta muy útil para calcular las regiones donde la función **crece y decrece**, donde la función es **convexa y cóncava** así como determinar los **extremos relativos** (**máximos y mínimos**) y los **puntos de inflexión.**
+
+Sin embargo, aparte del crecimiento y la concavidad, de cara a poder realizar una **representación aproximada de la gráfica de una función**, necesitamos estudiar otras propiedades.
+
+Concretamente, dichas propiedades son las siguientes:
+
+* Determinación del **dominio** de la función.
+* Cálculo del conjunto formado por sus **puntos de discontinuidad**.
+* Cálculo de los **puntos de corte** con el eje de abscisas o eje de las $x$ y el de ordenadas o eje de las $y$.
+* Estudio de las **simetrías** con respecto el eje de ordenadas o eje de las $y$ y respecto con el origen $(0,0)$.
+* Cálculo de las posibles **asíntotas**.
+* Cálculo de los **extremos relativos**, es decir, los **máximos y mínimos** de la función así como los intervalos de **crecimiento y decrecimiento** de la misma.
+* Cálculo de los **puntos de inflexión** de la función así como los intervalos de **convexidad** y **concavidad** de la misma.
+
+## 5.1. Determinación del **dominio** de la función
+
+Recordemos que el **dominio** de una función es el subconjunto de $\mathbb{R}$ donde está definida.
+
+### **Ejemplo**
+
+Consideremos la función $f(x)=\frac{x^3-3 x+2}{x^3-x}$. 
+
+Al ser una función **racional** (cociente de dos **polinomios**), el **dominio** de la misma serán todos los valores reales excepto aquellos que anulen el denominador.
+
+$$x^3-x=0,\ \Leftrightarrow x\cdot (x^2-1)=0,\ \Leftrightarrow x=0,\ x^2-1=0,\ \Leftrightarrow x=0,\ x=\pm 1$$
+
+Por tanto, el dominio de $f$ será el conjunto siguiente: $\mathbb{R}-\{-1,0,1\}$.
+
+## 5.2. Cálculo del conjunto formado por sus **puntos de discontinuidad**
+
+Recordemos que el conjunto de **puntos de discontinuidad** de una función son aquellos puntos de su dominio en los que la función no es continua.
+
+En el ejemplo anterior en donde $f(x)=\frac{x^3-3 x+2}{x^3-x}$, no hay **puntos de discontinuidad** ya que los únicos puntos en los que $f$ no es continua serían aquéllos en los que el denominador se anula pero éstos no pertenecen al dominio.
+
+## 5.3. Cálculo de los **puntos de corte**
+
+Para calcular los **puntos de corte** de una función $f(x)$ se tienen que realizar los procedimientos siguientes:
+
+* **Puntos de corte** con el eje de abscisas o eje de las $x$. Hay que resolver la ecuación $f(x)=0$. Sean (en caso que existan) $x_1,\ldots,x_n$ sus soluciones. Entonces los puntos de corte son $(x_1,0),\ldots (x_n,0)$.
+
+* **Punto de corte** con el eje de ordenadas o eje de las $y$. En este caso, sólo hay un punto de corte y es el siguiente: $(0,f(0))$.
+
+### **Ejemplo (continuación)**
+
+Los puntos de corte para la función $f(x)=\frac{x^3-3 x+2}{x^3-x}$ son los siguientes:
+
+* Eje de abscisas o eje X. Hay que resolver la ecuación siguiente: $\frac{x^3-3 x+2}{x^3-x}=0$, que equivale a resolver $x^3-3 x+2=0$. 
+
+Una solución de la ecuación anterior es $x=1$. Para hallar las demás, podemos descomponer el polinomio anterior usando la regla de Ruffini:
+
+<div class="center">
+| | $1$| $0$| $-3$|$2$|
+|---:|:---:|:---:|:---:|:---:|
+|$1$| |$1$|$1$|$-2$|
+||$1$|$1$|$-2$|$0$|
+</div>
+
+Las demás soluciones serán los ceros del polinomio $x^2+x-2=0$:
+
+$$x=\frac{-1\pm\sqrt{1+4\cdot 2}}{2}=\frac{-1\pm 3}{2}=1,-2$$
+
+Los puntos de corte con el eje de abscisas o eje $X$ son los siguientes: $(-2,0)$ y $(1,0)$.
+
+* El punto de corte con el eje de ordenadas o eje $Y$ no existe en este caso ya que el valor $x=0$ no es del dominio de la función tal como hemos indicado anteriormente.
+
+## 5.4. Estudio de las **simetrías**
+
+Averiguar si una función tiene **simetrías** es muy importante de cara a realizar una representación de la misma ya que nos dice cuál es el valor de $f(-x)$ a partir del valor de $f(x)$ para cualquier valor de $x$ de su dominio.
+
+Existen dos tipos de **simetrías**:
+
+* **Simetría** con respecto al eje de ordenadas o eje de las $y$.
+* **Simetría** con respecto al origen de coordenadas $(0,0)$.
+
+<l class="definition">**Definición de simetría con respecto al eje de ordenadas o eje de las $y$.**</l>  Dada $f$ una función real de variable real con dominio $D$, diremos que tiene simetría con respecto al eje $Y$ si para cualquier valor $x$ del dominio $D$, $-x$ también está en $D$ y además $f(-x)=f(x)$.
+
+<l class="definition">**Definición de simetría con respecto al origen de coordenadas $(0,0)$.**</l> Dada $f$ una función real de variable real con dominio $D$, diremos que tiene simetría con respecto al origen de coordenadas $(0,0)$ si para cualquier valor $x$ del dominio $D$, $-x$ también está en $D$ y además $f(-x)=-f(x)$.
+
+<l class="observ">**Observación:**</l> La única función real de variable real que tiene los dos tipos de **simetrías** es la función idénticamente nula $f(x)=0$ ya que si suponemos que $f$ tiene los dos tipos de simetrías, tenemos por un lado que $f(-x)=f(x)$ y por otro, que $f(-x)=-f(x)$. 
+
+En resumen $f(x)=-f(x)$, de donde deducimos que $f(x)=0$, para todo valor $x$ de su dominio.
+
+
+### **Ejemplo (continuación)**
+
+Veamos si la función $f(x)=\frac{x^3-3 x+2}{x^3-x}$ tiene algún tipo de simetría.
+
+El valor de $f(-x)$ vale:
+
+$$f(-x)=\frac{(-x)^3-3\cdot (-x)+2}{(-x)^3-(-x)}=\frac{-x^3+3x+2}{-x^3+x}$$
+
+Valor que, claramente es diferente de $f(x)$ y de $f(-x)$. Por tanto, la función $f(x)$ no presenta ningún tipo de simetría.
+
+Comprobémoslo con un valor concreto de $x$ de su dominio en `python`, por ejemplo $x=2$.
+
+```{python}
+def f(x):
+ return((x**3-3*x+2)/(x**3-x))
+ 
+f(2.)
+f(-2.)
+```
+
+## 5.5. Cálculo de las posibles **asíntotas**
+
+Una **asíntota** es una recta que se aproxima a la función de forma que la distancia entre dicha función y la **asíntota** tiende a cero en un límite determinado.
+
+Su determinación es clave a la hora de realizar una representación de la función ya que nos dice como se comporta dicha función en lugares remotos.
+
+Existen tres tipos de **asíntotas**.
+
+**1. Asíntotas horizontales**. Diremos que la recta horizontal $y=b$ para un $b$ determinado es una **asíntota horizontal** de la función $y=f(x)$ si, y sólo si, $\displaystyle\lim_{x\to\pm \infty}f(x)=b$.
+
+Es decir, $\displaystyle\lim_{x\to\pm\infty} (f(x)-b)=0$. En este caso, se dice que la recta $y=b$ es **tangente** a la función $f(x)$ en el infinito. En la gráfica siguiente vemos una función (en verde) que tiene por un lado, cuando $x\to \infty$ la **asíntota horizontal** $y=1$ (en rojo) y, por otro, cuando $x\to -\infty$ la **asíntota horizontal** $y=-1$ (en azul).
+
+```{r, echo=FALSE, label=ah,fig.cap="",out.width = "750px"}
+knitr::include_graphics("Images/AsintotaHorizontal.png",dpi=1200)
+```
+
+**2. Asíntotas verticales**. Diremos que la recta vertical $y=a$ para un $a$ determinado es una **asíntota vertical** de la función $y=f(x)$ si, y sólo si, $\displaystyle\lim_{x\to a}f(x)=\pm \infty$.
+
+En este caso, se dice que la recta $x=a$ es **tangente** a la función $f(x)$ en el infinito. En la gráfica siguiente vemos una función (en verde) que tiene una asíntota vertical en $x=1$ (en rojo). Observar que:
+
+$$\lim_{x\to 1^-} f(x)=\infty, \quad\lim_{x\to 1^+} f(x)=-\infty$$
+
+<l class="observ"> **Observación:** </l> Usualmente, los posibles valores de $a$ son puntos que no pertenecen al dominio de la función $f$. Por tanto, los puntos de discontinuidad de la función son buenos candidatos para hallar dichos valores de $a$.
+
+```{r, echo=FALSE, label=av,fig.cap="",out.width = "750px"}
+knitr::include_graphics("Images/AsintotaVertical.png",dpi=1200)
+```
+
+**3. Asíntotas oblicuas**. Diremos que la recta vertical $y=m x+n$ para unos $m$ y $n$ determinados es una **asíntota oblicua** de la función $y=f(x)$ si, y sólo si, $\displaystyle\lim_{x\to \pm\infty}(f(x)-(mx+n))=0$.
+
+En este caso, se dice que la recta $y=m x+n$ es **tangente** a la función $f(x)$ en el infinito. 
+
+Para hallar el valor de $m$, observar que el límite $\displaystyle\lim_{x\to\pm\infty}\frac{f(x)-(mx+n)}{x}=0$, ya que el numerador tiende a $0$ y el denominador, a $\pm\infty$, y $\frac{0}{\pm\infty}=0$. Operando el límite anterior, obtenemos **$m$**:
+
+$$\begin{array}{rl}
+\displaystyle \lim_{x\to\pm\infty}\frac{f(x)-(mx+n)}{x} & =0,\displaystyle \ \Leftrightarrow \lim_{x\to\pm\infty}\left(\frac{f(x)}{x}-m-\frac{n}{x}\right)=0,\Leftrightarrow\\  \displaystyle \lim_{x\to\pm\infty}\frac{f(x)}{x}-m & =0,\Leftrightarrow\displaystyle 
+m = \lim_{x\to\pm\infty}\frac{f(x)}{x}
+\end{array}$$
+
+Para hallar el **valor de $n$**, basta usar que $\displaystyle\lim_{x\to \pm\infty}(f(x)-(mx+n))=0$ y el valor de $m$ hallado anteriormente:
+
+$$\begin{array}{rl}
+\displaystyle \lim_{x\to \pm\infty}(f(x)-(mx+n)) & =0,\displaystyle \Leftrightarrow \lim_{x\to \pm\infty}(f(x)-mx)-n=0,\Leftrightarrow\\  n & =\displaystyle\lim_{x\to \pm\infty}(f(x)-mx)
+\end{array}$$
+
+En la gráfica siguiente vemos una función (en verde) que tiene la asíntota oblicua en $y=x$ (en rojo). En este caso, tendremos que los valores de $m$ y $n$ serán $m=1$ y $n=0$. Se puede observar que:
+
+$$\lim_{x\to\infty} (f(x)-x)=0,\quad \lim_{x\to -\infty} (f(x)-x)=0$$
+
+```{r, echo=FALSE, label=ao,fig.cap="",out.width = "750px"}
+knitr::include_graphics("Images/AsintotaOblicua.png",dpi=1200)
+```
+
+### **Ejemplo (continuación)**
+
+Hallemos las posibles asíntotas para la función $f(x)=\frac{x^3-3 x+2}{x^3-x}$:
+
+* Asíntotas horizontales. Para hallar las **asíntotas horizontales**, tenemos que hacer el límite de la función cuando el valor de $x$ tiende a $\pm\infty$.
+
+$$\lim_{x\to\pm \infty} f(x)=\lim_{x\to\pm \infty} \frac{x^3-3 x+2}{x^3-x}=1$$
+
+Entoces la recta horizontal $y=1$ sería una **asíntota horizontal** de nuestra función.
+
+* Asíntotas verticales. Como ya hemos indicado anteriormente, unos buenos candidatos para las posibles **asíntotas verticales** $x=a$ serían los valores de $a$ correspondientes a los puntos de discontinuidad. Recordemos que tenemos tres puntos de discontinuidad: $-1,0,1$. Probemos con cada uno de ellos haciendo el límite correspondiente:
+
+  * $x=-1$: $\displaystyle\lim_{x\to -1}f(x)=\lim_{x\to -1}\frac{x^3-3 x+2}{x^3-x}=\frac{`r (-1)^3-3*(-1)+2`}{`r (-1)^3-(-1)`}=\infty$ 
+
+De hecho para ser más explícitos, tendríamos que escribir:
+  
+$$\lim_{x\to -1^-}\frac{x^3-3 x+2}{x^3-x}=-\infty,\quad \lim_{x\to -1^+}\frac{x^3-3 x+2}{x^3-x}=+\infty$$
+
+Ya que si $x\to -1^-$, significa que $x<-1$ pero está cerca de $-1$. Veamos cuál es su signo para el valor $x=-1.001$ por ejemplo:
+
+```{python}
+f(-1.001)
+```
+
+Es decir, su valor tiende a $-\infty$. 
+
+Si hacemos $x\to -1^+$, significa que $x>-1$ pero está cerca de $-1$. Veamos cuál es su signo para el valor $x=-0.999$ por ejemplo:
+
+```{python}
+f(-0.999)
+```
+
+Es decir, su valor tiende a $+\infty$ tal como hemos indicado anteriormente. Por tanto, la recta vertical $x=-1$ es una **asíntota vertical**.
+
+  * $x=0$: $\displaystyle\lim_{x\to 0}f(x)=\lim_{x\to 0}\frac{x^3-3 x+2}{x^3-x}=\frac{`r (0)^3-3*(0)+2`}{`r (0)^3-(0)`}=\infty.$ 
+  
+De hecho para ser más explícitos, tendríamos que escribir:
+
+$$\lim_{x\to 0^-}\frac{x^3-3 x+2}{x^3-x}=+\infty,\quad \lim_{x\to 0^+}\frac{x^3-3 x+2}{x^3-x}=-\infty$$
+
+Por tanto, la recta vertical $x=0$ es una **asíntota vertical**.
+
+ * $x=1$: $\displaystyle\lim_{x\to 1}f(x)=\lim_{x\to 1}\frac{x^3-3 x+2}{x^3-x}=\frac{`r (1)^3-3*(1)+2`}{`r (1)^3-(1)`}$
+ 
+Como hemos obtenido una indeterminación, la resolvemos descomponiendo los polinomios del numerador y del denominador.
+
+$$\lim_{x\to 1}\frac{x^3-3 x+2}{x^3-x} =\lim_{x\to 1}\frac{(x^2+x-2)\cdot (x-1)}{x\cdot (x-1)\cdot (x+1)}= \lim_{x\to 1}\frac{(x^2+x-2)}{x\cdot (x+1)}=\frac{`r (1+1-2)`}{`r (1+1)`}=0$$
+
+Entonces, la recta $x=1$ no sería una **asíntota vertical**.
+
+* Asíntotas oblicuas. Existe la creencia sin justificar que dice que si una función tiene **asíntotas horizontales**, entonces no tiene **asíntotas oblicuas**. La razón de dicha creencia es que si $\displaystyle\lim_{x\to \pm \infty}f(x)=b\neq 0$, entonces el valor de la pendiente $m$ en la posible **asíntota oblicua** sería $0$, siendo dicha asíntota una **asíntota horizontal** ya que:
+
+$$\displaystyle m=\lim_{x\to\pm\infty}\frac{f(x)}{x}=\frac{b}{\pm\infty}=0$$
+
+Dicho razonamiento, aunque es válido la mayoría de las veces, tiene un pequeño problema en su línea argumental. No podemos asegurar que no exista una función $f(x)$ donde por ejemplo pase lo siguiente: $\displaystyle\lim_{x\to +\infty}=b$ pero $\displaystyle\lim_{x\to -\infty}\frac{f(x)}{x}=m\neq 0$. Es decir, que $f(x)$ tiene una **asíntota horizontal** cuando $x$ tiende a $+\infty$ y una **asíntota oblicua** cuando $x\to -\infty$.
+
+En resumen, aunque la mayoría de las veces no hace falta comprobar que haya **asíntotas oblicuas** si hay **horizontales**, hay que hacer la comprobación correspondiente.
+
+En nuestro ejemplo, no hay **asíntotas oblicuas** ya que la pendiente correspondiente es $0$.
+
+$$m=\lim_{x\to\pm\infty}\frac{f(x)}{x}=\lim_{x\to\pm\infty}\frac{x^3-3 x+2}{x\cdot (x^3-x)}=\lim_{x\to\pm\infty}\frac{x^3-3 x+2}{x^4-x^2}=0$$
+
+## 5.6. Estudio del crecimento y los extremos relativos de la función
+
+Para realizar una representación aproximada de una función, sólo es necesario conocer dos propiedades fundamentales: sus **asíntotas** y sus **extremos relativos**, es decir, sus **máximos y mínimos relativos.**
+
+Seguidamente, para confirmar que nuestro esbozo es correcto, podemos determinar sus **intervalos de crecimiento y decrecimiento** de la misma y comprobar que los resultados obtenidos son los observados visualmente.
+
+Vamos a dar un método práctico para realizar las dos tareas mencionadas anteriormente: el cálculo de sus **extremos relativos** y los **intervalos de crecimiento y decrecimiento.**
+
+Recordemos que una función **crece** en una región determinada de $\mathbb{R}$ si su derivada es **positiva** y **decrece** si su derivada es **negativa**.
+
+Recordemos también que los **extremos relativos** de la función deben verificar que su **derivada** debe ser nula. El primer paso será, pues, calcular los ceros de la ecuación $f'(x)=0$ calculando así los candidatos a **extremos relativos**.
+
+Sean, pues, $x_1,\ldots,x_n$ los ceros de la ecuación $f'(x)=0$ que son los candidatos a **extremos relativos**.
+
+Sean tambien $y_1,\ldots, y_k$ los **puntos de discontinuidad** de la función $f(x)$.
+
+Consideremos el conjunto unión de los conjuntos anteriores $\{x_1,\ldots,x_n\}\cup \{y_1,\ldots,y_k\}$ y nombremos $z_i$, $i=1,\ldots,k+n$ a sus elementos suponiendo éstos por orden creciente.
+
+$$\{x_1,\ldots,x_n\}\cup \{y_1,\ldots,y_k\} =\{z_1 < \cdots <z_{k+n}\}$$
+
+A continuación construímos la tabla siguiente:
+
+<div class="center">
+|$x$| $-\infty$| | $z_1$| |$z_2$|$\ldots$| |$z_{k+n}$| |$\infty$|
+|--|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
+|$y'$| |$\pm$| | $\pm$| |$\ldots$|$\pm$| |$\pm$| |
+|$y$| |$\nearrow \searrow$| |$\nearrow \searrow$| |$\ldots$|$\nearrow \searrow$| |$\nearrow \searrow$| |
+</div>
+
+En la segunda fila indicamos el signo de la derivada en los intervalos correspondientes, esto es, escribimos $+$ si el signo de la derivada en el intervalo $(-\infty,z_1)$ es positivo y escribimos $-$ si es negativo. Y lo mismo para los intervalos siguientes $(z_1,z_2)$ hasta llegar a $(z_{k+n},\infty)$. Para saber el signo de la derivada en un intervalo cualquiera, digamos $(z_{i-1},z_i)$, elegimos un valor $z$ que pertenezca a dicho intervalo, por ejemplo su punto medio $z=\frac{z_{i-1}+z_i}{2}$ y calculamos $f'(z)$ para saber su signo.
+
+En la tercera fila, dependiendo del signo de la derivada, indicamos el comportamiento de la función escribiendo el signo $\nearrow$ si la derivada es positiva $+$ y escribiendo el signo $\searrow$ si la derivada es negativa $-$.
+
+De esta manera si en un valor $z_i$, a la izquierda del mismo aparece el signo $\nearrow$ y a la derecha, el signo $\searrow$ observándose $\nearrow \searrow$ sabemos que en $z_i$ hay un **máximo relativo**. Si en cambio es al revés, es decir, a la izquierda del mismo aparece el signo $\searrow$ y a la derecha, el signo $\nearrow$ observándose $\searrow \nearrow$, sabemos que en $z_i$ hay un **mínimo relativo.**
+
+Los **intervalos de crecimiento** de la función $f$ serán aquéllos en los que aparece el signo $\nearrow$ y los **intervalos de decrecimiento** serán aquéllos en los que aparece el signo $\searrow$.
+
+### **Ejemplo (continuación)**
+
+Para hallar los **extremos relativos** y los **intervalos de crecimiento y decrecimiento** de la función $\frac{x^3-3 x+2}{x^3-x}$, tal como hemos indicado, resolvemos la ecuación $f'(x)=0$.
+
+En primer lugar, calculemos la función derivada $f'(x)$:
+
+$$\begin{array}{rl}
+f'(x) & =\frac{(3x^2-3)\cdot (x^3-x)-(3x^2-1)\cdot (x^3-3x+2)}{(x^3-x)^2}=\frac{3 x^5-6 x^3+3 x-(3 x^5-10 x^3+6 x^2+3 x-2)}{(x^3-x)^2}\\
+& = \frac{4 x^3-6 x^2+2}{(x^3-x)^2}=\frac{(4x+2)\cdot (x-1)^2}{x^2\cdot (x-1)^2\cdot (x+1)^2}=\frac{4x+2}{x^2\cdot (x+1)^2}
+\end{array}$$
+
+Para resolver la ecuación $f'(x)=0$, hemos de igualar a cero el numerador de la expresión anterior $4x+2=0$, obteniendo $x=-\frac{2}{4}=-\frac{1}{2}$
+
+Recordemos que los puntos de discontinuidad de la función $f$ eran $-1,0,1$. El conjunto de los $z_i$ será en nuestro caso: $\left\{-1,-\frac{1}{2},0,1\right\}$.
+
+A continuación construimos la tabla anterior para calcular los **intervalos de crecimiento y decrecimiento** y los **máximos y mínimos relativos** de la función:
+
+<div class="center">
+|$x$| $-\infty$| | $-1$| |$-\frac{1}{2}$| |$0$| |$1$| |$\infty$|
+|--|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
+|$y'$| |$-$| | $-$| |$+$| |$+$| |$+$|
+|$y$| |$\searrow$| |$\searrow$| |$\nearrow$| |$\nearrow$| |$\nearrow$| |
+</div>
+
+Observando la tabla anterior, concluimos que: 
+
+* Hay un **mínimo relativo** en el punto $\left(-\frac{1}{2},f\left(-\frac{1}{2}\right)\right)=\left(-\frac{1}{2},9\right)$
+* La función **crece** en la siguiente región de $\mathbb{R}$: $\left(-\frac{1}{2},0\right)\cup (0,1)\cup (1,\infty)$
+* La función **decrece** en la siguiente región de $\mathbb{R}$: $(-\infty,-1)\cup \left(-1,-\frac{1}{2}\right)$
+
+## 5.7. Concavidad y convexidad
+
+Saber en qué regiones una función es **cóncava o convexa**, ayuda de forma significativa a su representación.
+
+Vamos a dar un método parecido al estudio del **crecimiento y decrecimiento** de una función cambiando los papeles de $f'$ por $f''$.
+
+Recordemos que una función es **convexa** en una región de $\mathbb{R}$ si su derivada segunda es **positiva** y es **convexa**, si es **negativa**.
+
+Recordemos también que los **puntos de inflexión** deben verificar que su derivada segunda debe ser nula. El primer paso será, pues, calcular los ceros de la ecuación $f''(x)=0$ calculando de esta manera los candidatos a **puntos de inflexión**.
+
+Sean $\hat{x}_1,\ldots,\hat{x}_m$ los ceros de la ecuación $f''(x)=0$ que son los candidatos a los **puntos de inflexión**.
+
+Recordemos que $y_1,\ldots,y_k$ eran los **puntos de discontinuidad** de la función $f(x)$.
+
+Igual que antes, consideramos el conjunto unión de los conjuntos $\{\hat{x}_1,\ldots,\hat{x}_m\}\cup \{y_1,\ldots,y_k\}$ y nombramos $\hat{z}_1,\ldots,\hat{z}_{k+m}$ a sus elementos suponiendo éstos por orden creciente:
+
+$$\{\hat{x}_1,\ldots,\hat{x}_m\}\cup \{y_1,\ldots,y_k\}=\{\hat{z}_1 < \cdots <\hat{z}_{k+m}\}$$
+
+A continuación construímos la tabla siguiente:
+
+<div class="center">
+|$x$| $-\infty$| | $\hat{z}_1$| |$\hat{z}_2$|$\ldots$| |$\hat{z}_{k+m}$| |$\infty$|
+|--|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
+|$y''$| |$\pm$| | $\pm$| |$\ldots$|$\pm$| |$\pm$| |
+|$y$| |$\bigcup \bigcap$| |$\bigcup \bigcap$| |$\ldots$|$\bigcup \bigcap$| |$\bigcup \bigcap$| |
+</div>
+
+En la segunda fila indicamos el signo de la derivada segunda en los intervalos correspondientes, esto es, escribimos $+$ si el signo de la derivada en el intervalo $(-\infty,\hat{z}_1)$ es positivo y escribimos $-$ si es negativo. Y lo mismo para los intervalos siguientes $(\hat{z}_1,\hat{z}_2)$ hasta llegar a $(\hat{z}_{k+m},\infty)$. Para saber el signo de la derivada en un intervalo cualquiera, digamos $(z_{i-1},z_i)$, elegimos un valor $z$ que pertenezca a dicho intervalo, por ejemplo su punto medio $z=\frac{z_{i-1}+z_i}{2}$ y calculamos $f''(z)$ para saber su signo.
+
+En la tercera fila, dependiendo del signo de la derivada segunda, indicamos el comportamiento de la función escribiendo el signo $\bigcup$ si la derivada segunda es positiva $+$ y escribiendo el signo $\bigcap$ si la derivada segunda es negativa $-$.
+
+De esta manera si en un valor $\hat{z}_i$, a la izquierda del mismo aparece el signo $\bigcup$ y a la derecha, el signo $\bigcap$, o viceversa observándose $\bigcup \bigcap$, o $\bigcap \bigcup$ sabemos que en $z_i$ hay un **punto de inflexión**.
+
+Los **intervalos de convexidad** de la función $f$ serán aquéllos en los que aparece el signo $\bigcup$ y los **intervalos de concavidad** serán aquéllos en los que aparece el signo $\bigcap$.
+
+### **Ejemplo (continuación)**
+
+Para hallar los **puntos de inflexión** y los **intervalos de convexidad y concavidad** de la función $\frac{x^3-3 x+2}{x^3-x}$, tal como hemos indicado, resolvemos la ecuación $f''(x)=0$.
+
+En primer lugar, calculemos la función derivada $f''(x)$:
+
+$$\begin{array}{rl}
+f''(x) &  = \frac{4\cdot x^2\cdot (x+1)^2-(4x+2)\cdot (2x\cdot (x+1)^2+2x^2\cdot (x+1))}{x^4\cdot (x+1)^4}\\ & =\frac{4\cdot x\cdot (x+1)-(4x+2)\cdot (2 (x+1)+2x)}{x^3\cdot (x+1)^3}=\frac{-4(3 x^2+3 x+1)}{x^3\cdot (x+1)^3}
+\end{array}$$
+
+Para resolver la ecuación $f''(x)=0$, hemos de igualar a cero el numerador de la expresión anterior $3 x^2+3 x+1=0$, obteniendo $x=\frac{-3\pm\sqrt{9-3\cdot 4}}{6}=\frac{-3\pm\sqrt{-3}}{6}$. No tiene solución real, por tanto, la función no tiene **puntos de inflexión**.
+
+Recordemos que los puntos de discontinuidad de la función $f$ eran $-1,0,1$. El conjunto de los $\hat{z}_i$ será en nuestro caso: $\left\{-1,0,1\right\}$
+
+A continuación construimos la tabla anterior para calcular los **intervalos de convexidad y concavidad** de la función.
+
+<div class="center">
+|$x$| $-\infty$| | $-1$| |$0$| |$1$| |$\infty$|
+|--|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
+|$y''$| |$-$| | $+$| |$-$| |$-$| |
+|$y$| |$\bigcap$| |$\bigcup$| |$\bigcap$| |$\bigcap$| |
+</div>
+
+Observando la tabla anterior, concluimos que: 
+
+* la función es **convexa** en la siguiente región de $\mathbb{R}$: $(-1,0)$ 
+* la función es **cóncava** en la siguiente región de $\mathbb{R}$: $(-\infty,-1)\cup (0,1)\cup (1,\infty)$
+
+Las propiedades que hemos estado hallando que en forma de resumen son las siguientes:
+
+* Corte con los ejes: $(-2,0)$ y $(1,0)$.
+* Asíntotas: $y=1$, $x=-1$ y $x=0$.
+* Mínimo en $\left(-\frac{1}{2},9\right)$, $f$ crece en $\left(-\frac{1}{2},0\right)\cup (0,1)\cup (1,\infty)$ y decrece en $(-\infty,-1)\cup \left(-1,-\frac{1}{2}\right)$.
+* No tiene puntos de inflexión, es convexa en $(-1,0)$ y cóncava en $(-\infty,-1)\cup (0,1)\cup (1,\infty)$.
+
+En el gráfico siguiente hemos indicado las asíntotas (en rojo), los puntos de corte y el mínimo $(\bigcup)$. ¿Seríais capaces de acabar la representación gráfica?
+
+Si queréis ver el gráfico de la función que hemos desarrollado en `Wolfram Alpha`, id al enlace siguiente:
+[![](Images/wolfram.png)](https://www.wolframalpha.com/input/?i=plot+of+%28x%5E3+-+3+x+%2B+2%29%2F%28x%5E3+-+x%29%2C+x+between+-8+and+8+and+y+between+-20+and+20).
+
+```{r, echo=FALSE, label=repre,fig.cap="",out.width = "650px"}
+knitr::include_graphics("Images/Representacion.png",dpi=1200)
+```
+
+
+
+
+
+
+
+
+
+
+
+

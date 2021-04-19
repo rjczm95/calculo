@@ -2,7 +2,9 @@
 title: "Tema 4 - Límites y continuidad"
 author: "Ramon Ceballos"
 date: "12/4/2021"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -131,7 +133,6 @@ Si para un $\epsilon >0$ tomamos $\delta = \min \left\{1, \dfrac{2}{15} \epsilon
 $$\left|\dfrac{x^3-4}{x^2+1} -  \dfrac{4}{5}\right| < \epsilon$$
 
 Que era lo que queríamos demostrar. Este resultado se puede comprobar con `Wolfram Alpha` en este enlace: [![](Images/wolfram.png)](https://www.wolframalpha.com/input/?i=limit+%28x%5E3-4%29%2F%28x%5E2%2B1%29+as+x+tends+to+2)
-</div>
 
 ### **Observaciones** 
 
@@ -1209,8 +1210,6 @@ $|f^{-1}(y)-f^{-1}(y_0)| < \epsilon$.
 
 En los extremos del intervalo $f(a)$ y $f(b)$, es suficiente considerar $\delta = |f(a+\epsilon) -f(a)|$ en el primer caso y $\delta = |f(b-\epsilon) -f(b)|$.
 
-
-
 <l class="prop"> **Proposición 2**
 
 Sea $f: [a,b] \subset \mathbb{R} \rightarrow \mathbb{R}$ una función continua y estrictamente decreciente. Entonces: 
@@ -1254,7 +1253,7 @@ La **continuidad uniforme** es una propiedad de conjunto: una función puede ser
 
 ### Continuidad uniforme. Ejemplo de función uniformemente continua
 
-La funció $g(x)=\sqrt{x}$ es uniformemente continua en $(0,+\infty)$. Puesto que si $x,y \in (0,+\infty)$, con $x <y$, multiplicando y dividiendo por el conjugado de $\sqrt{y} - \sqrt{x}$ tendremos que:
+La función $g(x)=\sqrt{x}$ es uniformemente continua en $(0,+\infty)$. Puesto que si $x,y \in (0,+\infty)$, con $x <y$, multiplicando y dividiendo por el conjugado de $\sqrt{y} - \sqrt{x}$ tendremos que:
 
 $$\sqrt{y} - \sqrt{x} \leq \dfrac{y-x}{\sqrt{y} + \sqrt{x}} \leq \dfrac{y-x}{\sqrt{y-x}}= \sqrt{y-x}$$
 
@@ -1273,7 +1272,7 @@ Sea $f:A\subset \mathbb{R} \rightarrow \mathbb{R}$. $f$ es uniformemente continu
 Supongamos que $f$ es uniformemente continua, dado $\epsilon >0$ existe $\delta >0$ tal que para todo $x,y \in A$ tales que $|x-y| < \delta$, entonces $|f(x)-f(y)|< \epsilon$. Dado que $\delta >0$, existe $n_0 \in \mathbb{N}$ tal que para todo $n > n_0$ es $|x_n - y_n| < \delta$ y, por lo tanto es $|f(x_n) - f(y_n)| < \epsilon$, es decir que  $\lim_{n \rightarrow \infty}(f(x_n)- f(y_n)) =0$.
 
 Para el recíproco, supongamos que $f$ no es uniformemente continua, veremos que existe un par de sucesiones $x_n$ y $y_n$ tales que $\lim (x_n-y_n) =0$, en tanto que $\lim (f(x_n) -f(y_n)) \neq 0$.
-Ahora bien, por no ser $f$ uniformemente continua, existe un $\epsilon >0$ tal que para todo $\delta >0$ existe un par $x_{\delta}$, y $y_{\delta}$ tal que $|x_{\delta} - y_{\delta}| < \delta$ y $|f(x_{\delta})-f(y_{\delta})|  \geq \epsilon$. Por lo tanto es suficiente considerar $\delta_n = \dfrac{1}{n}$ y los correspondientes $x_n = x_{\delta_n}$ y $y_n=y_{\delta_n}$ para tener las dos sucesiones que satisfacen que $(x_n - y_n) \rightarrow 0$ en tanto que $|f(x_n)-f(y_n)| \geq \epsilon$.
+Ahora bien, por no ser $f$ uniformemente continua, existe un $\epsilon >0$ tal que para todo $\delta >0$ existe un par $x_{\delta}$, y $y_{\delta}$ tal que $|x_{\delta} - y_{\delta}| < \delta$ y $|f(x_{\delta})-f(y_{\delta})|  \geq \epsilon$. Por lo tanto es suficiente considerar $\delta_n = \dfrac{1}{n}$ y los correspondientes $x_n = x_{\delta_n}$ y $y_n=y_{\delta_n}$ para tener las dos sucesiones que satisfacen que $(x_n - y_n) \rightarrow 0$ en tanto que $|f(x_n)-f(y_n)| \geq \epsilon$. Esto seria falso.
 
 **Corolario**
 
@@ -1305,7 +1304,7 @@ La demostración es inmediata  a partir de la observación anterior: Sean $x_n$ 
 
 ## 10.3. Continuidad uniforme: La propiedad de Lipschitz
 
-Un ejemplo de condición que implica la continuidad uniforme sobre un conjunto -pero no al revés- és la llamada propiedad de **Lipschitz**:
+Un ejemplo de condición que implica la continuidad uniforme sobre un conjunto -pero no al revés- es la llamada propiedad de **Lipschitz**:
 
 <l class="definition"> **Definición** </l>
 
@@ -1333,6 +1332,7 @@ Sea $f:A \subset \mathbb{R} \rightarrow \mathbb{R}$ una función lipschitziana e
 Si $M >0$ es tal que $|f(x)-f(y)|\leq M|x-y|$, para todo $x,y \in A$, para cada $\epsilon >0$, sea $\delta < \dfrac{\epsilon}{M}$, entonces, siempre $|x-y| < \delta = \dfrac{\epsilon}{M}$, tendremos que:
 
 $$|f(x)-f(y)|\leq M|x-y| < M \dfrac{\epsilon}{M}= \epsilon$$
+
 Es decir, $f$ es uniformemente continua en $A$.
 
 ### **Ejemplo**
@@ -1359,12 +1359,11 @@ Toda función continua sobre un intervalo cerrado es uniformemente continua.
 
 Supongamos que $f$ no es uniformemente continua en $[a,b]$. De acuerdo con el corolario anterior, existen un $\epsilon >0$ y dos sucesiones $x_n$ y $y_n$ de puntos de $[a,b]$ tales que $\lim_{n \rightarrow \infty}(x_n-y_n)=0$ y $|f(x_n)-f(y_n)| > \epsilon$. 
 
-Dado que, tanto $x_n$, como $y_n$ estan acotadas por estar contenidas en $[a,b]$, de acuerdo con el teorema de Bolzano-Weierstrass, cada una de ellas tiene una subsucesión convergente. Sean estas $x_{n _k}$ y $y_{n_k}$, sea $l = \lim x_{n _k}$, tenemos que $|y_{n_k} -l|\leq |y_{n_k} - x_{n _k}| + |x_{n _k}-l|$ y, por lo tanto, dado que $\lim (x_n -y_n) =0$, tendremos que $\lim y_{n_k} =l$. Por consiguiente, tanto $f(x_{n_k}) \rightarrow f(l)$, como $f(y_{n_k}) \rightarrow f(l)$,es decir que $\lim (f(x_{n_k}) - f(y_{n_k})) = 0$ lo cual es absurdo, puesto que $|f(x_n)-f(y_n)| > \epsilon$ para todo $n$. 
+Dado que, tanto $x_n$, como $y_n$ estan acotadas por estar contenidas en $[a,b]$, de acuerdo con el teorema de Bolzano-Weierstrass, cada una de ellas tiene una subsucesión convergente. Sean estas $x_{n _k}$ y $y_{n_k}$, sea $l = \lim x_{n _k}$, tenemos que $|y_{n_k} -l|\leq |y_{n_k} - x_{n _k}| + |x_{n _k}-l|$ y, por lo tanto, dado que $\lim (x_n -y_n) =0$, tendremos que $\lim y_{n_k} =l$. Por consiguiente, tanto $f(x_{n_k}) \rightarrow f(l)$, como $f(y_{n_k}) \rightarrow f(l)$, es decir que $\lim (f(x_{n_k}) - f(y_{n_k})) = 0$ lo cual es absurdo, puesto que $|f(x_n)-f(y_n)| > \epsilon$ para todo $n$. 
 
 Queda así demostrado que si $f$ es continua sobre un intervalo cerrado, entonces $f$ es uniformemente continua.
 
-
-### 10.4.1. Continuidad uniforme: funciones escalonadas.
+### 10.5. Continuidad uniforme: funciones escalonadas
 
 Una consecuencia notable del resultado anterior es que, dada una función continua sobre un intervalo cerrado, podemos aproximar esta función  por una función constante a trozos.
 
@@ -1375,9 +1374,6 @@ Una consecuencia notable del resultado anterior es que, dada una función contin
 $$[a,x_1] \cup (x_1,x_2]  \ldots \cup (x_i,x_{i+1}] \cup \dots \cup (x_{n-1}, x_n] = [a,b]$$
 
 Representaremos la partición por el conjunto de extremos de los subintervalos que la definen: $\{a,x_1, \ldots,x_{n-1},b\}$
-
-
-<l class="definition"> **Definición** </l>
 
 Dada una partición $\{a,x_1, \ldots,x_{n-1},b\}$ de un intervalo $[a,b]$, $S:[a,b] \rightarrow \mathbb{R}$ es **una función escalonada** sobre $[a,b]$ si $S$ es constante sobre cada uno de los subintervalos de la partición.
 
@@ -1397,9 +1393,6 @@ $$S(x) =
 ```{r, echo=FALSE, label=escalonada,fig.cap="",out.width = "600px"}
 knitr::include_graphics("Images/escalonada.png",dpi=1200)
 ```
-
-
-## 10.5. Continuidad uniforme: funciones escalonadas.
 
 <l class="prop"> **Proposición** </l>
 
@@ -1425,20 +1418,16 @@ $$|f(x)-S_{\epsilon}(x)| = |f(x)-f(x_k)| < \epsilon$$
 
 Puesto que $|x-x_k| < \delta$, dado que $x \in I_k$.
 
-## Continuidad uniforme: funciones lineales a trozos.
+## 10.6. Continuidad uniforme: funciones lineales a trozos
 
 <l class="definition"> **Definición** </l>
 
-**Función lineal** entre dos intervalos, $f:[a,b] \rightarrow [c,d]$, es la función que tiene por gráfica el segmento que une los puntos $(a,c)$ y $(b,d)$, es decir la función definida por
-$$
-f(x) = \dfrac{d-c}{b-a}(x-a)+c.
-$$
+**Función lineal** entre dos intervalos, $f:[a,b] \rightarrow [c,d]$, es la función que tiene por gráfica el segmento que une los puntos $(a,c)$ y $(b,d)$, es decir la función definida por:
+
+$$f(x) = \dfrac{d-c}{b-a}(x-a)+c$$
 
 Está claro que una función lineal entre dos intervalos es siempre continua.
 
-## 10.6. Continuidad uniforme: funciones lineales a trozos.
-
-<l class="definition"> **Definición** </l>
 
 Una función entre dos intervalos $f:[a,b] \rightarrow [c,d]$ es **lineal a trozos** si existe una partición del intervalo $I_k$, $k=1, \ldots ,n$, tal que $f$ restringida a cada $I_k$ es una función lineal sobre dicho intervalo. 
 
@@ -1461,13 +1450,9 @@ $$|f(x)-g_{\epsilon}(x)|<\epsilon$$
 
 Por ser $f$ continua sobre $[a,b]$, es uniformemente continua. Por lo tanto, dado un $\epsilon > 0$, existe un $\delta >0$ tal que si $|x-y| < \delta$, entonces $|f(x)-f(y)|<\dfrac{\epsilon}{2}$. Sea $n \in \mathbb{N}$ tal que $h = \dfrac{b-a}{n} < \delta$ y sean $I_k$ los subintervalos de la partición de $[a,b]$ determinada por los puntos: 
 
-$$x_0=a,x_1=a+h, \ldots x_k=a+kh, \ldots x_{n-1}=a+(m-1)h,x_n=b$$
+$$x_0=a,x_1=a+h, \ldots x_k=a+kh, \ldots x_{n-1}=a+(n-1)h,x_n=b$$
 
-Entonces la función lineal, $g_{\epsilon}$ a trozos que une los puntos: 
-
-$$(x_{k-1}, f(x_{k-1})) \text{ y } (x_k, f(x_k))$$
-
-Es la función buscada. 
+Entonces la función lineal, $g_{\epsilon}$ a trozos que une los puntos $(x_{k-1}, f(x_{k-1})) \text{ y } (x_k, f(x_k))$ es la función buscada. 
 
 En efecto:
 
