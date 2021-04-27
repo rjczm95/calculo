@@ -1,0 +1,638 @@
+---
+title: "Tema 10. Aplicaciones de la integral"
+author: "Ramon Ceballos"
+date: "20/4/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Aplicaciones de las integrales
+
+## Introducción
+La **teoría de integración de Riemann** que hemos visto se introdujo básicamente para poder calcular áreas de funciones reales de variable real.
+
+Sin embargo, su aplicación puede extenderse al 
+
+* cálculo de longitudes de curvas: vamos a ver cómo calcular la longitud de una curva dada por una función $y=f(x)$ entre los puntos $(a,f(a))$ y $(b,f(b))$, 
+* cálculo de áreas de figuras planas dadas en forma paramétrica: vamos a generalizar el cálculo de áreas de figuras planas cuyas ecuaciones vienen dadas por ecuaciones del tipo $x=x(t)$ e $y=y(t)$, donde $t$ es el parámetro del área y se encuentra entre dos valores $t=t_0$ y $t=t_1$. Si la figura está cerrada, suponemos que $x(t_0)=x(t_1)$ e $y(t_0)=y(t_1)$,
+
+## Introducción
+* cálculo de volúmenes de revolución: si tenemos una función $f$ definida en un intervalo $[a,b]$ y la hacemos girar respecto de los ejes coordenados $X$ e $Y$, vamos a ver cómo calcular el volumen de la figura 3D que generamos y,
+* cálculo de áreas de revolución: estamos en el mismo caso anterior pero ahora, en lugar de calcular el volumen de la figura 3D que se genera, nos planteamos cómo calcular su área de revolución.
+
+Las demostraciones de muchas fórmulas que vamos a ver en esta sección se salen de los objectivos de un primer curso de cálculo ya que son necesarios conceptos de cálculo deferencial e integral de más de una variable. Por dicho motivo, vamos a ver su expresión con algún ejemplo sin la demostración correspondiente.
+
+## Longitud de una curva
+Dada una función $y=f(x)$ **integrable** definida en el intervalo $[a,b]$, la longitud del trozo de curva que va del punto $(a,f(a))$ al punto $(b,f(b))$ es la siguiente:
+$$
+L=\int_a^b\sqrt{1+f'(x)^2}\, dx.
+$$
+Si la curva viene dada en forma paramétrica $x=x(t)$ e $y=y(t)$, la longitud de la curva que va del punto $(x(t_0),y(t_0))$ al punto $(x(t_1),y(t_1))$ viene dada por:
+$$
+L=\int_{t_0}^{t_1}\sqrt{x'(t)^2 + y'(t)^2}\, dt.
+$$
+
+## Ejemplo
+<div class="example">
+**Ejemplo**
+
+Calculemos la longitud del trozo de parábola $y=x^2$ desde el punto $(1,1)$ hasta el punto $(2,4)$:
+
+
+```{r,echo=FALSE,fig.align='center'}
+xmin=-2
+xmax=2
+ymin=0
+ymax=4
+tolx=0.02*(xmax-xmin)
+toly=0.05*(ymax-ymin)
+quantsx=4
+quantsy=4
+f = function(x){x^2}
+plot(c(xmin-tolx,xmax+tolx,xmin-tolx,xmax+tolx),c(ymin-toly,ymin-toly,ymax+toly,ymax+toly),type="n",xlab="",ylab="",xaxt="n",yaxt="n",axes=FALSE)
+x=seq(from=xmin,to=xmax,by=0.01)
+#points(x,f(x),type="l")
+lines(c(0,0),c(ymin,ymax))
+lines(c(xmin,xmax),c(0,0))
+text(xmax-3*tolx,-3*tolx,"x")
+text(toly,ymax+toly/2,"y")
+for (i in 0:(quantsx)){
+  lines(rep(xmin+((xmax-xmin)/quantsx)*i,2),c(-0.5*toly,+0.5*toly))
+  text(xmin+((xmax-xmin)/quantsx)*i,-1.25*toly,xmin+((xmax-xmin)/quantsx)*i,cex=0.75)
+  }
+
+
+for (i in 0:(quantsy)){
+  lines(c(-tolx,tolx),ymin+rep(((ymax-ymin)/quantsy)*i,2))
+  text(-1.5*tolx,ymin+((ymax-ymin)/quantsy)*i,ymin+((ymax-ymin)/quantsy)*i,cex=0.75)
+}
+lines(x,f(x),col="black")
+#text(-2,-0.2,"a")
+#text(2,-0.2,"b")
+text(1.5,1.7,expression(x^2))
+text(1,0.7,"(1,1)")
+text(2.1,3.7,"(2,4)")
+points(c(1,2),c(1,4),pch=19)
+
+x2=seq(from=1,to=2,by=0.01)
+lines(x2,f(x2),col='firebrick2')
+```
+
+
+</div>
+
+## Ejemplo
+<div class="example">
+Aplicando la fórmula, la longitud del trozo de curva vale:
+$$
+L=\int_1^2 \sqrt{1+\left(\left(x^2\right)'\right)^2}\, dx = \int_1^2\sqrt{1+(2x)^2}\, dx = \int_1^2\sqrt{1+4x^2}\, dx.
+$$
+Para hallar la integral anterior, necesitamos hallar una primitiva de la función $\sqrt{1+4x^2}$.
+
+Para calcular dicha primitiva, realizaremos el cambio de variable siguiente: $x=\frac{1}{2}\sinh t =\frac{1}{2}\cdot \frac{\mathrm{e}^t-\mathrm{e}^{-t}}{2}.$ A la expresión $\frac{\mathrm{e}^t-\mathrm{e}^{-t}}{2}$ se le llama *seno hiperbólico* y a la expresión siguiente $\cosh t=\frac{\mathrm{e}^t+\mathrm{e}^{-t}}{2}$, *coseno hiperbólico*. El nombre de *hiperbólico* viene de que el seno y el coseno hiperbólicos verifican la siguiente ecuación:
+$$
+\cosh^2 t-\sinh^2 t=1,
+$$
+para todo valor de $t$. Las funciones seno y coseno hiperbólicas verifican las propiedades cuya demostración dejamos como ejercicio:
+
+* $(\sinh t)'=\cosh t$, $(\cosh t)'=\sinh t$.
+* $\sinh^{-1}(y)=\ln (y+\sqrt{y^2+1})$, $\cosh^{-1}(y)=\ln (y\pm \sqrt{y^2-1})$.
+</div>
+
+## Ejemplo
+<div class="example">
+Las gráficas del $\sinh x$ (en azul) y del $\cosh x$ (en rojo) para $x$ entre $-2$ y $2$ se muestran a continuación:
+
+```{r,echo=FALSE,fig.align='center'}
+xmin=-2
+xmax=2
+ymin=-3
+ymax=3
+tolx=0.02*(xmax-xmin)
+toly=0.05*(ymax-ymin)
+quantsx=4
+quantsy=4
+f = function(x){sinh(x)}
+plot(c(xmin-tolx,xmax+tolx,xmin-tolx,xmax+tolx),c(ymin-toly,ymin-toly,ymax+toly,ymax+toly),type="n",xlab="",ylab="",xaxt="n",yaxt="n",axes=FALSE)
+x=seq(from=xmin,to=xmax,by=0.01)
+#points(x,f(x),type="l")
+lines(c(0,0),c(ymin,ymax))
+lines(c(xmin,xmax),c(0,0))
+text(xmax-3*tolx,-3*tolx,"x")
+text(toly,ymax+toly/2,"y")
+for (i in 0:(quantsx)){
+  lines(rep(xmin+((xmax-xmin)/quantsx)*i,2),c(-0.5*toly,+0.5*toly))
+  text(xmin+((xmax-xmin)/quantsx)*i,-1.25*toly,xmin+((xmax-xmin)/quantsx)*i,cex=0.75)
+}
+
+
+for (i in 0:(quantsy)){
+  lines(c(-tolx,tolx),ymin+rep(((ymax-ymin)/quantsy)*i,2))
+  text(-1.5*tolx,ymin+((ymax-ymin)/quantsy)*i,ymin+((ymax-ymin)/quantsy)*i,cex=0.75)
+}
+lines(x,f(x),col='deepskyblue3')
+lines(x,cosh(x),col='firebrick2')
+```
+</div>
+
+## Ejemplo
+<div class="example">
+Para escribir el valor de la integral que nos da la longitud del trozo de curva hay que ver cómo se transforma la función en la nueva variable, hallar la relación entre los diferenciales y cómo se transforman los extremos de integración:
+
+* Transformación de la función: $\sqrt{1+4x^2}=\sqrt{1+4\cdot \frac{1}{4}\sinh^2 t}=\sqrt{1+\sinh^2 t}=\sqrt{\cosh^2 t}=\cosh t$.
+* Relación entre los diferenciales: $dx=\frac{1}{2}(\sinh t)'\, dt=\frac{1}{2}\cosh t\, dt$.
+* Transformación de los extremos de integración: 
+  * si $x=1$, el valor de $t$ correspondiente cumple $1=\frac{1}{2}\sinh t$. Es decir $\sinh t=2$, de donde $t=\sinh^{-1}(2)=\ln (2+\sqrt{2^2+1})=\ln(2+\sqrt{5})$.
+  * si $x=2$, el valor de $t$ correspondiente cumple $2=\frac{1}{2}\sinh t$. Es decir $\sinh t=4$, de donde $t=\sinh^{-1}(4)=\ln (4+\sqrt{4^2+1})=\ln(4+\sqrt{17})$.
+</div>
+
+## Ejemplo
+<div class="example">
+
+El valor de la longitud será, pues,
+$$
+\begin{array}{rl}
+L & =\displaystyle \int_{\ln(2+\sqrt{5})}^{\ln(4+\sqrt{17})}\cosh t\cdot \frac{1}{2}\cosh t\, dt=\frac{1}{2}\int_{\ln(2+\sqrt{5})}^{\ln(4+\sqrt{17})}\cosh^2 t\, dt=\frac{1}{2}\int_{\ln(2+\sqrt{5})}^{\ln(4+\sqrt{17})} \left(\frac{\mathrm{e}^t+\mathrm{e}^{-t}}{2}\right)^2\, dt \\ & \displaystyle =\frac{1}{8}\int_{\ln(2+\sqrt{5})}^{\ln(4+\sqrt{17})} (\mathrm{e}^{2t}+\mathrm{e}^{-2t}+2)\, dt=\frac{1}{8}\left[\frac{\mathrm{e}^{2t}}{2}-\frac{\mathrm{e}^{-2t}}{2}+2t\right]_{\ln(2+\sqrt{5})}^{\ln(4+\sqrt{17})}\\ & =\frac{1}{8}\left(\frac{(4+\sqrt{17})^2}{2}-\frac{1}{2(4+\sqrt{17})^2}+2\ln(4+\sqrt{17})-\left(\frac{(2+\sqrt{5})^2}{2}-\frac{1}{2(2+\sqrt{5})^2}+2\ln(2+\sqrt{5})\right)\right) \\ & = \frac{1}{4} (4\sqrt{17}-2\sqrt{5}+\ln(4+\sqrt{17})-\ln(2+\sqrt{5}))\approx `r round((1/4)*(4*sqrt(17)-2*sqrt(5)+log(4+sqrt(17))-log(2+sqrt(5))),4)`.
+\end{array}
+$$
+El cálculo de la integral en `Wolfram Alpha` se puede ver en el enlace siguiente:
+<l class="center">
+[![](Images/wolfram.png)](https://www.wolframalpha.com/input/?i=Integrate%5BSqrt%5B1%2B%282x%29%5E2%5D%2C%7Bx%2C1%2C2%7D%5D)
+</l>
+
+</div>
+
+## Cálculo de áreas de figuras planas
+Sabemos que dada una función $f$ integrable en un intervalo $[a,b]$, el valor de la integral $\displaystyle\int_a^b f(x)\,dx$ es el área de $f$ entre $a$ y $b$.
+
+Ahora bien, pensemos que si la función $f$ va por debajo del eje de las $X$, el área será negativa por propia definición de las **sumas superiores** e **inferiores** para definir la integral. Veamos un ejemplo:
+
+<div class="example">
+**Ejemplo**
+
+Consideremos la función $f(x)=-x^2$ definida en el intervalo $[-1,1]$. Como puede observarse en el gráfico siguiente, la función anterior va por debajo del eje de las $X$ donde hemos indicado en azul el área de la misma:
+</div>
+
+## Cálculo de áreas de figuras planas
+
+<div class="example">
+```{r,echo=FALSE,fig.align='center'}
+xmin=-1
+xmax=1
+ymin=-1
+ymax=0.5
+tolx=0.02*(xmax-xmin)
+toly=0.05*(ymax-ymin)
+quantsx=4
+quantsy=3
+f = function(x){-x^2}
+plot(c(xmin-tolx,xmax+tolx,xmin-tolx,xmax+tolx),c(ymin-toly,ymin-toly,ymax+toly,ymax+toly),type="n",xlab="",ylab="",xaxt="n",yaxt="n",axes=FALSE)
+x=seq(from=xmin,to=xmax,by=0.005)
+#points(x,f(x),type="l")
+lines(c(0,0),c(ymin,ymax))
+lines(c(xmin,xmax),c(0,0))
+text(xmax-3*tolx,3*tolx,"x")
+text(toly,ymax+toly/2,"y")
+for (i in 0:(quantsx)){
+  lines(rep(xmin+((xmax-xmin)/quantsx)*i,2),c(-0.5*toly,+0.5*toly))
+  text(xmin+((xmax-xmin)/quantsx)*i,1.25*toly,xmin+((xmax-xmin)/quantsx)*i,cex=0.75)
+}
+
+
+for (i in 0:(quantsy)){
+  lines(c(-tolx,tolx),ymin+rep(((ymax-ymin)/quantsy)*i,2))
+  text(-1.5*tolx,ymin+((ymax-ymin)/quantsy)*i,ymin+((ymax-ymin)/quantsy)*i,cex=0.75)
+}
+lines(x,f(x),col='firebrick2')
+for (i in 1:length(x)){
+  lines(c(x[i],x[i]),c(0,f(x[i])),col='deepskyblue3')}
+
+```
+</div>
+
+## Cálculo de áreas de figuras planas
+
+<div class="example">
+
+El valor de su integral será aplicando la regla de Barrow,
+$$
+\int_{-1}^1 (-x^2)\, dx = -\left[\frac{x^3}{3}\right]_{-1}^1 =-\left(\frac{1}{3}-\left(\frac{-1}{3}\right)\right)=-\frac{2}{3}.
+$$
+Obtenemos un valor negativo ya que como hemos indicado dicha función va por debajo del eje de las $X$.
+
+</div>
+
+¿Qué pasaría si la función tuviese zonas con valores positivos y negativos?
+En este caso se restarían las dos áreas: el área global sería la resta entre la zona donde la función $f$ es positiva y la zona donde la función $f$ es negativa.
+
+Veamos el ejemplo siguiente:
+
+## Cálculo de áreas de figuras planas
+
+<div class="example">
+**Ejemplo**
+
+Consideremos la función $f(x)=\sin x-\cos x$ definida en el intervalo $\left[0,\pi\right]$ donde hemos indicado con color azul el área negativa donde la función va por debajo del eje $X$ (intervalo $\left[0,\frac{\pi}{4}\right]$) y en color rojo el área positiva donde la función va por encima del eje $X$ (intervalo $\left[\frac{\pi}{4},\pi\right]$) 
+
+```{r,echo=FALSE,fig.align='center'}
+xmin=0
+xmax=pi
+ymin=-1.5
+ymax=1.5
+tolx=0.01*(xmax-xmin)
+toly=0.05*(ymax-ymin)
+quantsx=4
+quantsy=6
+f = function(x){sin(x)-cos(x)}
+plot(c(xmin-tolx,xmax+tolx,xmin-tolx,xmax+tolx),c(ymin-toly,ymin-toly,ymax+toly,ymax+toly),type="n",xlab="",ylab="",xaxt="n",yaxt="n",axes=FALSE)
+x=seq(from=xmin,to=xmax,by=0.01)
+#points(x,f(x),type="l")
+lines(c(0,0),c(ymin,ymax))
+lines(c(xmin,xmax),c(0,0))
+text(xmax-3*tolx,-2.5*tolx,"x")
+text(toly,ymax+toly,"y")
+for (i in 0:(quantsx)){
+  lines(rep(xmin+((xmax-xmin)/quantsx)*i,2),c(-0.5*toly,+0.5*toly))
+  ii=-2+0.5*i}
+text(xmin+((xmax-xmin)/quantsx)*1,-2*toly,expression(frac(pi,4)),cex=0.75)
+text(xmin+((xmax-xmin)/quantsx)*2,-2*toly,expression(frac(pi,2)),cex=0.75)
+text(xmin+((xmax-xmin)/quantsx)*3,-2*toly,expression(frac(3*pi,4)),cex=0.75)
+text(xmin+((xmax-xmin)/quantsx)*4,-2*toly,expression(pi),cex=0.75)
+
+for (i in 0:(quantsy)){
+  lines(c(-tolx,tolx),ymin+rep(((ymax-ymin)/quantsy)*i,2))
+  if (i==3){text(2.5*tolx,0.1+ymin+((ymax-ymin)/quantsy)*3,ymin+((ymax-ymin)/quantsy)*3,cex=0.75)}
+  else
+  {text(3*tolx,ymin+((ymax-ymin)/quantsy)*i,ymin+((ymax-ymin)/quantsy)*i,cex=0.75)}
+}
+lines(x,f(x),col='firebrick2')
+text(pi,1.3,"f(x)")
+xmenys=seq(from=0,to=pi/4,by=0.005)
+xmes=seq(from=pi/4,to=pi,by=0.005)
+for (i in 1:length(xmenys)){lines(c(xmenys[i],xmenys[i]),c(0,f(xmenys[i])),col='deepskyblue3')}
+for (i in 1:length(xmes)){lines(c(xmes[i],xmes[i]),c(0,f(xmes[i])),col='firebrick2')}
+```
+</div>
+
+## Cálculo de áreas de figuras planas
+
+<div class="example">
+Teniendo en cuenta que $F(x)=-\sin x-\cos x$ es una primitiva de la función $f$ si calculamos la integral entre $0$ y $\pi$ obtenemos:
+$$
+\begin{array}{rl}
+\displaystyle\int_0^\pi f(x)\, dx & =\displaystyle\int_0^\pi \sin x-\cos x \, dx = [-\sin x-\cos x]_0^\pi =-\sin\pi-\cos\pi -(\sin 0-\cos 0))\\ & =-(-1)-(-1)=2.
+\end{array}
+$$
+¿Qué representa el valor obtenido $2$? Pues es la suma entre el área roja y el área azul. Veámoslo:
+$$
+\begin{array}{rl}
+\mathrm{Área\ roja} &\displaystyle = \int_{\frac{\pi}{4}}^\pi \sin x-\cos x \, dx = [-\sin x-\cos x]_{\frac{\pi}{4}}^\pi = -\sin\pi-\cos\pi-\left(-\sin\left(\frac{\pi}{4}\right)-\cos\left(\frac{\pi}{4}\right)\right) \\ & =-(-1)-\left(-\frac{\sqrt{2}}{2}-\frac{\sqrt{2}}{2}\right)=1+\sqrt{2}\approx `r round(1+sqrt(2),4)`, \\
+\mathrm{Área\ azul} &\displaystyle = \int_0^{\frac{\pi}{4}} \sin x-\cos x \, dx = [-\sin x-\cos x]_0^{\frac{\pi}{4}} = -\sin\left(\frac{\pi}{4}\right)-\cos\left(\frac{\pi}{4}\right)-(\sin 0-\cos 0) \\ & =-\frac{\sqrt{2}}{2}-\frac{\sqrt{2}}{2}-(-1)=1-\sqrt{2}\approx `r round(1-sqrt(2),4)`. \\
+\end{array}
+$$
+</div>
+
+## Cálculo de áreas de figuras planas
+
+<div class="example">
+Fijémonos que el área roja es positiva mientras que la azul, es negativa. Si hacemos la suma, obtenemos el valor de la integral de la función $f$ entre $0$ y $\pi$:
+$$
+1+\sqrt{2}+(1-\sqrt{2})=2=\int_0^\pi \sin x-\cos x\, dx.
+$$
+Por tanto, si lo queremos obtener es el valor del área total, (área roja más área azul) tenemos que sumar las áreas rojas o positivas y restar las azules o negativas. En nuestro caso sería:
+$$
+1+\sqrt{2}-(1-\sqrt{2})=2\sqrt{2}.
+$$
+</div>
+
+Del ejemplo anterior, vemos que es clave hallar los valores donde $f$ se anula en el eje $X$ o hallar los ceros de $f$ ya que en dichos valores la función $f$ puede cambiar de signo y el área puede pasar de positiva a negativa o viceversa.
+
+
+## Cálculo de áreas de figuras planas
+<div class="example">
+El cálculo de las integrales anteriores en `Wolfram Alpha` se puede ver en los enlaces siguientes:
+
+* $\displaystyle\int_0^\pi \sin x-\cos x \, dx$:
+<l class="center">
+[![](Images/wolfram.png)](https://www.wolframalpha.com/input/?i=Integrate%5BSin%5Bx%5D-Cos%5Bx%5D%2C%7Bx%2C0%2CPi%7D%5D)
+</l>
+
+
+* Área roja: $\displaystyle\int_{\frac{\pi}{4}}^\pi \sin x-\cos x \, dx$:
+<l class="center">
+[![](Images/wolfram.png)](https://www.wolframalpha.com/input/?i=Integrate%5BSin%5Bx%5D-Cos%5Bx%5D%2C%7Bx%2CPi%2F4%2CPi%7D%5D)
+</l>
+
+* Área azul: $\displaystyle\int_0^{\frac{\pi}{4}} \sin x-\cos x \, dx$:
+<l class="center">
+[![](Images/wolfram.png)](https://www.wolframalpha.com/input/?i=Integrate%5BSin%5Bx%5D-Cos%5Bx%5D%2C%7Bx%2C0%2CPi%2F4%7D%5D)
+</l>
+</div>
+
+
+
+
+## Cálculo de áreas de figuras planas
+Generalicemos el problema anterior: imaginemos que tenemos dos funciones $f$ y $g$ definidas en el mismo intervalo $[a,b]$ y queremos hallar el área que hay entre dichas funciones. 
+
+Veamos un ejemplo para ilustrar nuestro problema:
+
+<div class="example">
+**Ejemplo**
+
+Consideremos las funciones $f(x)=\sin x-\cos x$ (en rojo) y $g(x)=\sin x+\cos x$ (en azul) definidas en el intervalo $[0,2\pi]$ y queremos hallar el área que hay entre dichas funciones.
+
+Como observamos en el gráfico siguiente, 
+
+* para $x\in \left[0,\frac{\pi}{2}\right]$, $g(x)\geq f(x)$,
+* para $x\in \left[\frac{\pi}{2},\frac{3\pi}{2}\right]$, $g(x)\leq f(x)$,
+* para $x\in \left[\frac{3\pi}{2},2\pi\right]$, $g(x)\geq f(x)$.
+</div>
+
+
+## Cálculo de áreas de figuras planas
+
+<div class="example">
+```{r,echo=FALSE,fig.align='center'}
+xmin=0
+xmax=2*pi
+ymin=-1.5
+ymax=1.5
+tolx=0.01*(xmax-xmin)
+toly=0.05*(ymax-ymin)
+quantsx=4
+quantsy=6
+f = function(x){sin(x)-cos(x)}
+g = function(x){sin(x)+cos(x)}
+plot(c(xmin-tolx,xmax+tolx,xmin-tolx,xmax+tolx),c(ymin-toly,ymin-toly,ymax+toly,ymax+toly),type="n",xlab="",ylab="",xaxt="n",yaxt="n",axes=FALSE)
+x=seq(from=xmin,to=xmax,by=0.01)
+#points(x,f(x),type="l")
+lines(c(0,0),c(ymin,ymax))
+lines(c(xmin,xmax),c(0,0))
+text(xmax-3*tolx,-2.5*tolx,"x")
+text(toly,ymax+toly,"y")
+for (i in 0:(quantsx)){
+  lines(rep(xmin+((xmax-xmin)/quantsx)*i,2),c(-0.5*toly,+0.5*toly))
+  ii=-2+0.5*i}
+text(xmin+((xmax-xmin)/quantsx)*1,-2*toly,expression(frac(pi,2)),cex=0.75)
+text(xmin+((xmax-xmin)/quantsx)*2,-2*toly,expression(pi),cex=0.75)
+text(xmin+((xmax-xmin)/quantsx)*3,-2*toly,expression(frac(3*pi,2)),cex=0.75)
+text(xmin+((xmax-xmin)/quantsx)*4,-2*toly,expression(2*pi),cex=0.75)
+
+for (i in 0:(quantsy)){
+  lines(c(-tolx,tolx),ymin+rep(((ymax-ymin)/quantsy)*i,2))
+  if (i==3){text(-2.5*tolx,0.1+ymin+((ymax-ymin)/quantsy)*3,ymin+((ymax-ymin)/quantsy)*3,cex=0.75)}
+  else
+  {text(-3*tolx,ymin+((ymax-ymin)/quantsy)*i,ymin+((ymax-ymin)/quantsy)*i,cex=0.75)}
+}
+lines(x,f(x),col='firebrick2')
+lines(x,g(x),col='deepskyblue3')
+text(pi,1.3,"f(x)")
+text(pi,-1.3,"g(x)")
+xmenys=seq(from=pi/4,to=3*pi/4,by=0.005)
+xmes=seq(from=0,to=pi/4,by=0.005)
+xmes=c(xmes,seq(from=3*pi/4,to=2*pi,by=0.005))
+#for (i in 1:length(xmenys)){lines(c(xmenys[i],xmenys[i]),c(f(xmenys[i]),g(xmenys[i])),col="springgreen3")}
+#for (i in 1:length(xmes)){lines(c(xmes[i],xmes[i]),c(g(xmes[i]),f(xmes[i])),col="springgreen3")}
+```
+</div>
+
+
+
+## Cálculo de áreas de figuras planas
+
+<div class="example">
+El área que queremos hallar está en verde:
+```{r,echo=FALSE,fig.align='center'}
+xmin=0
+xmax=2*pi
+ymin=-1.5
+ymax=1.5
+tolx=0.01*(xmax-xmin)
+toly=0.05*(ymax-ymin)
+quantsx=4
+quantsy=6
+f = function(x){sin(x)-cos(x)}
+g = function(x){sin(x)+cos(x)}
+plot(c(xmin-tolx,xmax+tolx,xmin-tolx,xmax+tolx),c(ymin-toly,ymin-toly,ymax+toly,ymax+toly),type="n",xlab="",ylab="",xaxt="n",yaxt="n",axes=FALSE)
+x=seq(from=xmin,to=xmax,by=0.01)
+#points(x,f(x),type="l")
+lines(c(0,0),c(ymin,ymax))
+lines(c(xmin,xmax),c(0,0))
+text(xmax-3*tolx,-2.5*tolx,"x")
+text(toly,ymax+toly,"y")
+for (i in 0:(quantsx)){
+  lines(rep(xmin+((xmax-xmin)/quantsx)*i,2),c(-0.5*toly,+0.5*toly))
+  ii=-2+0.5*i}
+text(xmin+((xmax-xmin)/quantsx)*1,-2*toly,expression(frac(pi,2)),cex=0.75)
+text(xmin+((xmax-xmin)/quantsx)*2,-2*toly,expression(pi),cex=0.75)
+text(xmin+((xmax-xmin)/quantsx)*3,-2*toly,expression(frac(3*pi,2)),cex=0.75)
+text(xmin+((xmax-xmin)/quantsx)*4,-2*toly,expression(2*pi),cex=0.75)
+
+for (i in 0:(quantsy)){
+  lines(c(-tolx,tolx),ymin+rep(((ymax-ymin)/quantsy)*i,2))
+  if (i==3){text(-2.5*tolx,0.1+ymin+((ymax-ymin)/quantsy)*3,ymin+((ymax-ymin)/quantsy)*3,cex=0.75)}
+  else
+  {text(-3*tolx,ymin+((ymax-ymin)/quantsy)*i,ymin+((ymax-ymin)/quantsy)*i,cex=0.75)}
+}
+lines(x,f(x),col="firebrick2")
+lines(x,g(x),col='deepskyblue3')
+text(pi,1.3,"f(x)")
+text(pi,-1.3,"g(x)")
+xmenys=seq(from=pi/4,to=3*pi/4,by=0.005)
+xmes=seq(from=0,to=pi/4,by=0.005)
+xmes=c(xmes,seq(from=3*pi/4,to=2*pi,by=0.005))
+for (i in 1:length(xmenys)){lines(c(xmenys[i],xmenys[i]),c(f(xmenys[i]),g(xmenys[i])),col="springgreen3")}
+for (i in 1:length(xmes)){lines(c(xmes[i],xmes[i]),c(g(xmes[i]),f(xmes[i])),col="springgreen3")}
+```
+</div>
+
+
+
+## Cálculo de áreas de figuras planas
+
+<div class="example">
+Entonces el área entre las dos funciones se expresará de la forma siguiente:
+$$
+\mathrm{Área}=\int_0^{\frac{\pi}{2}} (g(x)-f(x))\,dx +\int_{\frac{\pi}{2}}^{\frac{3\pi}{2}} (f(x)-g(x))\,dx +\int_{\frac{3\pi}{2}}^{2\pi} (g(x)-f(x))\,dx.
+$$
+Se puede observar que hemos integrado la función $g(x)-f(x)$ en aquellas zonas donde $g(x)\geq f(x)$ y hemos integrado $f(x)-g(x)$ en aquellas zonas donde $f(x)\geq g(x)$ para que el área siempre se sume y sea positiva.
+
+Usando que $g(x)-f(x)=2\cos x$ y $f(x)-g(x)=-2\cos x$, el valor del área entre $f$ y $g$ será:
+$$
+\begin{array}{rl}
+ & \displaystyle\int_0^{\frac{\pi}{2}}2\cos x\,dx +\int_{\frac{\pi}{2}}^{\frac{3\pi}{2}} (-2\cos x)\,dx +\int_{\frac{3\pi}{2}}^{2\pi} 2 \cos x\,dx = [2\sin x]_0^{\frac{\pi}{2}}-[2\sin x]_{\frac{\pi}{2}}^{\frac{3\pi}{2}}+[2\sin x]_{\frac{3\pi}{2}}^{2\pi}\\ & =2-(-2-2)+2=8.
+\end{array}
+$$
+El cálculo de la integral en `Wolfram Alpha` se puede ver en el enlace siguiente:
+<l class="center">
+[![](Images/wolfram.png)](https://www.wolframalpha.com/input/?i=Integrate%5B2+Cos%5Bx%5D%2C%7Bx%2C0%2CPi%2F2%7D%5D-Integrate%5B2+Cos%5Bx%5D%2C%7Bx%2CPi%2F2%2C3Pi%2F2%7D%5D%2BIntegrate%5B2+Cos%5Bx%5D%2C%7Bx%2C3Pi%2F2%2C2Pi%7D%5D)
+</l>
+
+
+</div>
+
+## Cálculo de áreas de figuras planas
+En general para hallar el área que enmarcan dos funciones $f$ y $g$ en un intervalo $[a,b]$ hay que seguir los pasos siguientes:
+
+* Resolver la ecuación $f(x)=g(x)$ para todos los valores $x\in [a,b]$. Sean $a\leq x_1 < x_2 <\cdots < x_n \leq b$.
+
+* Mirar el signo de la diferencia de funciones $f(x)-g(x)$ en el intervalo $[x_i,x_{i+1}]$. Para ello, basta considerar un punto de dicho intervalo, por ejemplo el punto medio $x_m=\frac{x_i+x_{i+1}}{2}$ y mirar que signo tiene el valor $f(x_m)-g(x_m)$. Sea $s_i$ el valor que nos indica el signo de $f(x)-g(x)$ en dicho intervalo:
+$$
+s_i =\begin{cases}
+1, & \mbox{si } f(x)-g(x)\geq 0,\\
+-1, & \mbox{si } f(x)-g(x)\leq 0.
+\end{cases}
+$$
+
+## Cálculo de áreas de figuras planas
+El área buscada será entonces:
+$$
+\begin{array}{rl}
+\mathrm{Área}  = &  \displaystyle s_0\int_a^{x_1} (f(x)-g(x))\, dx+s_1\int_{x_1}^{x_2} (f(x)-g(x))\, dx+\cdots \\ & \displaystyle +s_n\int_{x_n}^b (f(x)-g(x))\, dx.
+\end{array}
+$$
+
+<div class="example">
+**Ejemplo anterior**
+
+En el ejemplo anterior, los valores de $x_i$ son $x_1 =\frac{\pi}{2} < x_2 =\frac{3\pi}{2}$ y los valores de $s_i$ son: $s_0 = -1$, $s_1 =1$ y $s_2 =-1$.
+</div>
+
+
+## Volúmenes de revolución
+Consideremos una función $f(x)$ definida entre dos valores $a$ y $b$ y consideremos el sólido de revolución generado por dicha función al girar alrededor del eje $X$. El volumen de dicho sólido es el siguiente:
+$$
+V_X =\pi\int_a^b f(x)^2\, dx.
+$$
+
+
+## Volúmenes de revolución
+<div class="example">
+**Ejemplo: volumen de un cono**
+
+Un cono se puede obtener generando la función $f(x)=mx$, con $m>0$ alrededor del eje $X$ para $x\in [0,b]$:
+<div class="center">
+
+```{r, echo=FALSE, label=conx,fig.cap="",out.width = "500px"}
+knitr::include_graphics("Images/conox.png",dpi=1200)
+```
+</div>
+</div>
+
+
+## Volúmenes de revolución
+<div class="example">
+El volumen de dicho cono será:
+$$
+V_X = \pi \int_0^b (mx)^2\, dx =\pi m^2\left[\frac{x^3}{3}\right]_0^b =\pi m^2\frac{b^3}{3}.
+$$
+Fijaos que el cono considerado tiene una altura de $h=b$ unidades y un radio de la base de $r=f(m)=m\cdot b$ unidades.
+
+Entonces la expresión anterior del volumen del cono puede escribirse como: $V_X =\frac{1}{3}\pi r^2 h$, que es la fórmula conocida del volumen de un cono de altura $h$ y radio de la base $r$.
+
+El cálculo de la integral en `Wolfram Alpha` se puede ver en el enlace siguiente:
+<l class="center">
+[![](Images/wolfram.png)](https://www.wolframalpha.com/input/?i=Pi+Integrate%5B%28m+x%29%5E2%2C%7Bx%2C0%2Cb%7D%5D)
+</l>
+</div>
+
+## Volúmenes de revolución
+
+Si en lugar de girar alrededor del eje $X$, giramos alrededor del eje $Y$, el volumen del sólido de revolución generado es el siguiente:
+$$
+V_Y =2\pi\int_a^b x\cdot f(x)\, dx.
+$$
+
+## Volúmenes de revolución
+<div class="example">
+**Ejemplo: volumen de un cono**
+
+Vamos a calcular el volumen del cono del ejemplo anterior pero ahora vamos a girar la función $f(x)=mx$, con $m>0$ alrededor del eje $Y$ para $x\in [0,b]$:
+<div class="center">
+
+```{r, echo=FALSE, label=cony,fig.cap="",out.width = "500px"}
+knitr::include_graphics("Images/conoy.png",dpi=1200)
+```
+</div>
+</div>
+
+## Volúmenes de revolución
+<div class="example">
+El volumen de dicho cono será:
+$$
+V_Y = 2\pi \int_0^b x\cdot (mx)\, dx =2\pi m\left[\frac{x^3}{3}\right]_0^b =\frac{2}{3}\pi mb^3.
+$$
+El cono, como puede observase en la figura tiene una altura $h$ de $h=m\cdot b$ y un radio de la base, $r=b$. Por tanto, su volumen sería: $V =\frac{1}{3}\pi r^2 h=\frac{1}{3}\pi b^2\cdot m b=\frac{1}{3}\pi m b^3.$
+
+Observamos que las dos expresiones no coinciden. De hecho, el volumen $V_Y$, aplicando la fórmula, es el doble del volumen que uno esperaría hallar. ¿Qué ocurre?
+
+Pues que cuando giramos una figura alrededor del eje $Y$, obtenemos el volumen que hay entre la figura girada, el cono en nuestro caso y el cilindro correspondiente (ver figura siguiente):
+
+</div>
+
+
+## Volúmenes de revolución
+<div class="example">
+
+<div class="center">
+
+```{r, echo=FALSE, label=cony2,fig.cap="",out.width = "500px"}
+knitr::include_graphics("Images/conoy2.png",dpi=1200)
+```
+</div>
+</div>
+
+## Volúmenes de revolución
+<div class="example">
+Veámoslo. 
+
+El volumen del cilindro (en verde) de la figura anterior vale: $V_{\mathrm{cilindro}}=\pi r_{\mathrm{cilindro}}^2 h_{\mathrm{cilindro}}=\pi b^2\cdot mb=\pi m b^3$. 
+
+Como el volumen del cono vale $V_{\mathrm{cono}}=\frac{1}{3}\pi m b^3$, el volumen que hay entre el cilindro y el cono será:
+$$
+\pi m b^3 -\frac{1}{3}\pi m b^3=\frac{2}{3}\pi m b^3,
+$$
+que es el valor que hemos obtenido $V_Y$.
+
+El cálculo de la integral en `Wolfram Alpha` se puede ver en el enlace siguiente:
+<l class="center">
+[![](Images/wolfram.png)](https://www.wolframalpha.com/input/?i=2+Pi+Integrate%5Bx+%28m+x%29%2C%7Bx%2C0%2Cb%7D%5D)
+</l>
+
+
+</div>
+
+
+## Área de superficies de revolución
+
+Consideremos una función $f(x)$ definida entre dos valores $a$ y $b$ y consideremos el sólido de revolución generado por dicha función al girar alrededor del eje $X$. El área de la superficie generado por dicho sólido es el siguiente: 
+$$
+\mathrm{Área}_X=2\pi \int_a^b f(x)\cdot \sqrt{1+f'(x)^2}\, dx.
+$$
+Si en lugar de girar alrededor del eje $X$, queremos girar alrededor del eje $Y$, tenemos que escribir la variable $x$ en función de $y$, de la forma $x=g(y)$, la función $g$ será $f^{-1}$ y hallar los dos valores extremos $c$ y $d$ en el eje $Y$. El área de la superficie de revolución generada será, en este caso:
+$$
+\mathrm{Área}_Y=2\pi \int_c^d g(y)\cdot \sqrt{1+g'(y)^2}\, dy.
+$$
+
+## Área de superficies de revolución
+<div class="example">
+**Ejemplo del cono**
+
+Hallemos el área del cono anterior generado haciendo girar la función $f(x)=mx$ alrededor del eje $X$ para $x\in [0,b]$:
+$$
+\mathrm{Área}_X=2\pi \int_0^b mx\cdot \sqrt{1+m^2}\, dx =2\pi m\sqrt{1+m^2}\left[\frac{x^2}{2}\right]_0^b =\pi m\sqrt{1+m^2} b^2.
+$$
+Usando que la altura del cono es $h=b$ y el radio de la base, $r=bm=hm$, podemos escribir el área anterior en función de la altura del cono y del radio de la base: 
+$$
+\mathrm{Área}_X=\pi r h\sqrt{1+\left(\frac{r}{h}\right)^2}=\pi r\sqrt{r^2+h^2}.
+$$
+El cálculo de la integral en `Wolfram Alpha` se puede ver en el enlace siguiente:
+<l class="center">
+[![](Images/wolfram.png)](https://www.wolframalpha.com/input/?i=2+Pi+Integrate%5Bm+x++Sqrt%5B1%2Bm%5E2%5D%2C%7Bx%2C0%2Cb%7D%5D)
+</l>
+</div>
+

@@ -1,0 +1,1184 @@
+---
+title: "Tema 11 - Integración impropia"
+author: "Ramon Ceballos"
+date: "25/4/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Integración impropia
+
+## Introducción
+Las integrales que hemos visto hasta ahora están definidas en intervalos cerrados y acotados de la forma $[a,b]$.
+
+En esta sección vamos a generalizar la definición de integral de una función a intervalos de la forma $[a,\infty)$, $(-\infty,b]$ o incluso $(-\infty,\infty)$.
+
+También vamos a considerar intervalos semiabiertos de la forma $(a,b]$, $[a,b)$ donde la función $f$ tenga una asíntota vertical en $x=a$ o $x=b$, respectivamente.
+
+
+## Introducción
+
+Vayamos por partes, ¿cómo se realizará dicha generalización? Usando el concepto de límite:
+
+* para funciones $f$ definidas en intervalos de la forma $[a,\infty)$, $(-\infty,b]$, definiremos $\displaystyle\int_a^\infty f(x)\, dx$ o $\displaystyle\int_{-\infty}^b f(x)\, dx$ de la siguiente forma:
+$$
+\int_a^\infty f(x)\, dx =\lim_{t\to\infty}\int_a^t f(x)\, dx,\quad \int_{-\infty}^b f(x)\, dx=\lim_{t\to -\infty}\int_{t}^b f(x)\, dx.
+$$
+
+## Introducción
+
+A este tipo de integración se le denomina **integración impropia de primera especie** y se necesita que la función $f$ sea integrable en todo intervalo cerrado de la forma $[a,t]$ ($t>a$) o $[t,b]$ ($t<b$), respectivamente, para que tenga sentido realizar los límites correspondientes.
+
+Si el límite anterior existe, diremos que la **integral impropia** es **convergente**. En caso contrario, diremos que es **divergente**
+
+## Introducción
+```{r,echo=FALSE,fig.align='center'}
+xmin=0
+xmax=50
+ymin=0
+ymax=1
+tolx=0.02*(xmax-xmin)
+toly=0.05*(ymax-ymin)
+quantsx=4
+quantsy=4
+f = function(x){1/(x)}
+plot(c(xmin-tolx,xmax+tolx,xmin-tolx,xmax+tolx),c(ymin-toly,ymin-toly,ymax+toly,ymax+toly),type="n",xlab="",ylab="",xaxt="n",yaxt="n",axes=FALSE)
+x=seq(from=xmax/16,to=xmax,by=0.01)
+lines(c(0,0),c(ymin,ymax))
+lines(c(xmin,xmax),c(0,0))
+text(xmax-3*tolx,3*tolx,"x")
+text(3*tolx,ymax+toly/2,"y")
+for (i in 0:(quantsx)){
+  lines(rep(xmin+((xmax-xmin)/quantsx)*i,2),c(-0.5*toly,+0.5*toly))
+#  text(xmin+((xmax-xmin)/quantsx)*i,1.25*toly,xmin+((xmax-xmin)/quantsx)*i,cex=0.75)
+}
+
+
+for (i in 0:(quantsy)){
+  lines(c(-tolx,tolx),ymin+rep(((ymax-ymin)/quantsy)*i,2))
+#  text(-1.5*tolx,ymin+((ymax-ymin)/quantsy)*i,ymin+((ymax-ymin)/quantsy)*i,cex=0.75)
+}
+lines(x,f(x),col='firebrick2')
+lines(c(xmax/16,xmax/16),c(0,f(xmax/16)),col='deepskyblue3',lty=2)
+for (i in 1:length(x)){
+  lines(c(x[i],x[i]),c(0,f(x[i])),col='deepskyblue3')}
+text(xmax/16,-toly,expression(a))
+text(45,-toly,expression(x %->% infinity))
+
+```
+
+## Introducción
+
+* para funciones $f$ definidas en intervalos de la forma $[a,b)$ o $(a,b]$, en donde $f$ tiene una asíntota vertical en $x=a$ o $x=b$, respectivamente, definiremos $\displaystyle\int_a^b f(x)\, dx$ o $\displaystyle\int_{a}^b f(x)\, dx$ de la siguiente forma:
+$$
+\int_a^b f(x)\, dx =\lim_{t\to b^{-}}\int_a^t f(x)\, dx,\quad \int_{a}^b f(x)\, dx=\lim_{t\to a^+}\int_{t}^b f(x)\, dx.
+$$
+
+## Introducción
+A este tipo de integración se le denomina **integración impropia de segunda especie** y se necesita que la función $f$ sea integrable en todo intervalo cerrado de la forma $[a,t]$ ($a<t<b$) o $[t,b]$ ($a<t<b$), respectivamente, para que tenga sentido realizar los límites correspondientes.
+
+Si el límite anterior existe, diremos que la **integral impropia** es **convergente**. En caso contrario, diremos que es **divergente**
+
+
+## Introducción
+```{r,echo=FALSE,fig.align='center'}
+xmin=0
+xmax=1
+ymin=0
+ymax=100
+tolx=0.02*(xmax-xmin)
+toly=0.05*(ymax-ymin)
+quantsx=4
+quantsy=4
+f = function(x){1/(x)}
+plot(c(xmin-tolx,xmax+tolx,xmin-tolx,xmax+tolx),c(ymin-toly,ymin-toly,ymax+toly,ymax+toly),type="n",xlab="",ylab="",xaxt="n",yaxt="n",axes=FALSE)
+x=seq(from=tolx/100,to=xmax/2,by=0.0001)
+lines(c(0,0),c(ymin,ymax))
+lines(c(xmin,xmax),c(0,0))
+text(xmax-3*tolx,-150*tolx,"x")
+text(3*tolx,ymax+toly/2,"y")
+for (i in 0:(quantsx)){
+  lines(rep(xmin+((xmax-xmin)/quantsx)*i,2),c(-0.5*toly,+0.5*toly))
+  #  text(xmin+((xmax-xmin)/quantsx)*i,1.25*toly,xmin+((xmax-xmin)/quantsx)*i,cex=0.75)
+}
+
+
+for (i in 0:(quantsy)){
+  lines(c(-tolx,tolx),ymin+rep(((ymax-ymin)/quantsy)*i,2))
+  #  text(-1.5*tolx,ymin+((ymax-ymin)/quantsy)*i,ymin+((ymax-ymin)/quantsy)*i,cex=0.75)
+}
+lines(x,f(x),col='firebrick2')
+lines(c(xmax/16,xmax/16),c(0,f(xmax/16)),col='deepskyblue3',lty=2)
+for (i in 1:length(x)){
+  lines(c(x[i],x[i]),c(0,f(x[i])),col='deepskyblue3')}
+text(xmax/2,-toly,expression(b))
+text(tolx/2,-toly,expression(x %->% a))
+
+```
+
+
+## Introducción
+
+* para funciones $f$ definidas en intervalos de la forma $(-\infty,\infty)$ o $(a,b)$, en donde $f$ tiene una asíntota vertical en $x=a$ y $x=b$,  definiremos $\displaystyle\int_{-\infty}^\infty f(x)\, dx$ o $\displaystyle\int_{a}^b f(x)\, dx$ de la siguiente forma:
+$$
+\begin{array}{rl}
+\displaystyle \int_{-\infty}^\infty f(x)\, dx  & =\displaystyle\lim_{t\to -\infty}\int_t^c f(x)\, dx + \lim_{t\to \infty}\int_c^t f(x)\, dx,\\ 
+\displaystyle\int_{a}^b f(x)\, dx & =\displaystyle\lim_{t\to a^+}\int_{t}^c f(x)\, dx + \lim_{t\to b^-}\int_{c}^t f(x)\, dx,
+\end{array}
+$$
+donde $c\in (-\infty,\infty)$ o $c\in (a,b)$.
+
+## Introducción
+A este tipo de integración se le denomina **integración impropia de tercera especie** y se necesita que la función $f$ sea integrable en todo intervalo cerrado de la forma $[t,c]$ ($t<c$), $[c,t]$ ($c<t$) o $[t,c]$ ($t<c$), $[c,t]$ ($c<t$) respectivamente, para que tenga sentido realizar los límites correspondientes.
+
+Si los dos límites anteriores existen, diremos que la **integral impropia** es **convergente**. En caso contrario, diremos que es **divergente.**
+
+## Introducción
+```{r,echo=FALSE,fig.align='center'}
+xmin=-10
+xmax=10
+ymin=0
+ymax=2
+tolx=0.02*(xmax-xmin)
+toly=0.05*(ymax-ymin)
+quantsx=4
+quantsy=4
+f = function(x){1/(1+x^2)}
+plot(c(xmin-tolx,xmax+tolx,xmin-tolx,xmax+tolx),c(ymin-toly,ymin-toly,ymax+toly,ymax+toly),type="n",xlab="",ylab="",xaxt="n",yaxt="n",axes=FALSE)
+x=seq(from=xmin,to=xmax,by=0.01)
+lines(c(0,0),c(ymin,ymax))
+lines(c(xmin,xmax),c(0,0))
+text(xmax-3*tolx,-150*tolx,"x")
+text(3*tolx,ymax+toly/2,"y")
+for (i in 0:(quantsx)){
+  lines(rep(xmin+((xmax-xmin)/quantsx)*i,2),c(-0.5*toly,+0.5*toly))
+  #  text(xmin+((xmax-xmin)/quantsx)*i,1.25*toly,xmin+((xmax-xmin)/quantsx)*i,cex=0.75)
+}
+
+
+for (i in 0:(quantsy)){
+  lines(c(-tolx,tolx),ymin+rep(((ymax-ymin)/quantsy)*i,2))
+  #  text(-1.5*tolx,ymin+((ymax-ymin)/quantsy)*i,ymin+((ymax-ymin)/quantsy)*i,cex=0.75)
+}
+lines(x,f(x),col='firebrick2')
+lines(c(xmax/16,xmax/16),c(0,f(xmax/16)),col='deepskyblue3',lty=2)
+for (i in 1:length(x)){
+  lines(c(x[i],x[i]),c(0,f(x[i])),col='deepskyblue3')}
+text(xmax,-toly,expression(x %->% infinity))
+text(xmin,-toly,expression(x %->% -infinity))
+```
+
+
+## Introducción
+```{r,echo=FALSE,fig.align='center'}
+xmin=0
+xmax=1
+ymin=0
+ymax=100
+tolx=0.02*(xmax-xmin)
+toly=0.05*(ymax-ymin)
+quantsx=4
+quantsy=4
+f = function(x){1/(x*(1-x))}
+plot(c(xmin-tolx,xmax+tolx,xmin-tolx,xmax+tolx),c(ymin-toly,ymin-toly,ymax+toly,ymax+toly),type="n",xlab="",ylab="",xaxt="n",yaxt="n",axes=FALSE)
+x=seq(from=xmin,to=xmax,by=0.001)
+lines(c(0,0),c(ymin,ymax))
+lines(c(xmin,xmax),c(0,0))
+text(xmax-3*tolx,-150*tolx,"x")
+text(3*tolx,ymax+toly/2,"y")
+for (i in 0:(quantsx)){
+  lines(rep(xmin+((xmax-xmin)/quantsx)*i,2),c(-0.5*toly,+0.5*toly))
+  #  text(xmin+((xmax-xmin)/quantsx)*i,1.25*toly,xmin+((xmax-xmin)/quantsx)*i,cex=0.75)
+}
+
+
+for (i in 0:(quantsy)){
+  lines(c(-tolx,tolx),ymin+rep(((ymax-ymin)/quantsy)*i,2))
+  #  text(-1.5*tolx,ymin+((ymax-ymin)/quantsy)*i,ymin+((ymax-ymin)/quantsy)*i,cex=0.75)
+}
+lines(x,f(x),col='firebrick2')
+lines(c(xmax/16,xmax/16),c(0,f(xmax/16)),col='deepskyblue3',lty=2)
+for (i in 1:length(x)){
+  lines(c(x[i],x[i]),c(0,f(x[i])),col='deepskyblue3')}
+text(xmax,-toly,expression(x %->% b))
+text(xmin,-toly,expression(x %->% a))
+```
+
+## Integrales impropias de primera especie
+La definición formal de **integral impropia de primera especie** es la siguiente:
+
+<l class="definition">Definición de integral impropia de primera especie.</l>
+
+Sea $f:[a,\infty]\longrightarrow \mathbb{R}$ una función tal que es integrable en todo intervalo cerrado y acotado de la forma $[a,t]$ con $t>a$. En este caso, definimos la función $F$ como:
+$$
+F(t)=\int_a^t f(x)\, dx.
+$$
+Sea $\displaystyle L=\lim_{t\to\infty} F(t)$. Entonces:
+
+## Integrales impropias de primera especie
+* si $L$ no existe, diremos que la **integral impropia** $\displaystyle\int_a^\infty f(x)\, dx$ no existe en **sentido impropio**.
+* si $L=\infty$, diremos que la **integral impropia** existe, pero no es **convergente** y escribiremos $\displaystyle\int_a^\infty f(x)\, dx=\infty$.
+* si $L\in\mathbb{R}$, diremos que la **integral impropia** converge hacia $L$ y escribiremos $\displaystyle\int_a^\infty f(x)\, dx=L$.
+
+
+## Integrales impropias de primera especie
+<div class="example">
+**Ejemplo**
+
+Consideremos la familia de funciones siguiente: $f(x)=\frac{1}{x^p}$ con $p$ un valor real cualquiera definidas en el intervalo $[1,\infty)$. Queremos estudiar la convergencia de la **integral impropia** $\displaystyle\int_1^\infty f(x)\, dx=\int_1^\infty \frac{1}{x^p}\, dx$ en función del parámetro $p$.
+
+Para ello, consideramos un valor $t>1$ y calculamos la integral $\displaystyle\int_1^t f(x)\, dx=\int_1^t \frac{1}{x^p}\, dx$. Usando que la función $\frac{1}{(1-p)x^{p-1}}$ es una primitiva de $f(x)=\frac{1}{x^p}$, si $p\neq 1$, la integral vale:
+$$
+\int_1^t \frac{1}{x^p}\, dx =\left[\frac{1}{(1-p)x^{p-1}}\right]_1^t =\frac{1}{(1-p)}\left(\frac{1}{t^{p-1}}-1\right).
+$$
+Para $p=1$, una primitiva de la función $f(x)=\frac{1}{x}$ es $\ln x$. La integral será en este caso:
+$$
+\int_1^t \frac{1}{x}\, dx= [\ln x]_1^t =\ln t.
+$$
+</div>
+
+## Integrales impropias de primera especie
+<div class="example">
+Para estudiar la convergencia de la integral impropia $\displaystyle\int_1^\infty f(x)\, dx=\int_1^\infty \frac{1}{x^p}\, dx$, hemos de calcular el límite cuando $t\to\infty$ de las integrales calculadas anteriormente.
+
+Así, si $p\neq 1$, el límite vale:
+$$
+\lim_{t\to\infty} \int_1^t \frac{1}{x^p}\, dx =\lim_{t\to\infty} \frac{1}{(1-p)}\left(\frac{1}{t^{p-1}}-1\right).
+$$
+Llegados a este punto, nos fijamos que el límite anterior será finito si el exponente de $t$ en el denominador, $p-1$, es positivo, ya que de esta forma $\frac{1}{t^{p-1}}\to 0$. Si en cambio, el exponente $p-1$ es negativo, el límite anterior será infinito. Es decir:
+$$
+\lim_{t\to\infty} \int_1^t \frac{1}{x^p}\, dx =\begin{cases}\frac{1}{p-1}, &\mbox{si }p-1>0,\\
+\infty, & \mbox{si }p-1< 0.
+\end{cases}
+$$
+Falta estudiar el caso $p=1$:
+$$
+\lim_{t\to\infty} \int_1^t \frac{1}{x}\, dx =\lim_{t\to\infty}\ln t=\infty.
+$$
+</div>
+
+## Integrales impropias de primera especie
+<div class="example">
+En resumen, el valor de la integral impropia $\displaystyle\int_1^\infty f(x)\, dx=\int_1^\infty \frac{1}{x^p}\, dx$ es el siguiente:
+$$
+\int_1^\infty f(x)\, dx=\int_1^\infty \frac{1}{x^p}\, dx =\begin{cases}\frac{1}{p-1}, & \mbox{si }p>1,\\
+\infty, & \mbox{si }p\leq 1.\end{cases}
+$$
+El cálculo de la integral en `Wolfram Alpha` se puede ver en el enlace siguiente:
+<l class="center">
+[![](Images/wolfram.png)](https://www.wolframalpha.com/input/?i=Integrate%5B1%2Fx%5Ep%2C%7Bx%2C1%2CInfinity%7D%5D)
+</l>
+
+Se puede observar que las condiciones anteriores coinciden con las condiciones de convergencia de la serie armónica $\displaystyle \sum_{n=1}^\infty \frac{1}{n^p}$. Esto es debido, como veremos más adelante, al **Criterio integral de convergencia de una serie de números** donde se muestra que es equivalente estudiar la convergencia de una determinada integral impropia para una función $f$ a estudiar la convergencia de la serie numérica de términos $f(n)$, donde $n$ recorre los naturales.
+</div>
+
+## Criterios de convergencia
+A continuación vamos a dar un conjunto de criterios para saber si una **integral impropia de primera especie** es convergente o no sin necesidad de calcular el valor de las integrales $\displaystyle\int_a^t f(x)\, dx$ y sin necesidad de calcular el límite correspondiente.
+
+## Criterios de convergencia
+
+En primer lugar, necesitamos el siguiente lema previo:
+
+<l class="prop">Lema.</l>
+
+Sea $g:[a,\infty)\longrightarrow\mathbb{R}$ una función monótona creciente. Entonces:
+
+* si $g$ no está acotada, $\displaystyle\lim_{x\to\infty} g(x)=\infty$ y 
+* si $g$ está acotada, $\displaystyle \lim_{x\to\infty} g(x)=M$, donde $M=\sup\{g(x),\ |\ x\in [a,\infty)\}$.
+
+## Criterios de convergencia
+<div class="dem">
+**Demostración**
+
+* Supongamos que $g$ no está acotada. Veamos que $\displaystyle\lim_{x\to\infty} g(x)=\infty$, o dicho en otros términos, hemos de ver que para todo valor $C>0$, existe un valor $M_C>a$ tal que si $x>M_C>a$, entonces $g(x)>C$.
+
+Consideremos pues un valor $C>0$, como $g$ no está acotada, existe un valor $M_C>a$ tal que $g(M_C)>C$. Sea $x>M_C$, al ser $g$ creciente $g(x)\geq g(M_C)>C$, tal como queríamos ver.
+
+* Supongamos que $g$ está acotada y sea $M=\sup\{g(x),\ |\ x\in [a,\infty)\}$. Veamos que $\displaystyle \lim_{x\to\infty} g(x)=M$, o, dicho en otros términos, hemos de ver que para todo $\epsilon >0$, existe un valor $M_\epsilon >a$ tal que si $x>M_\epsilon >a$, entonces $|g(x)-M| = M-g(x)<\epsilon$.
+
+Sea $\epsilon >0$, entonces $M-\epsilon < M$, como $M$ es el supremo del conjunto $\{g(x),\ |\ x\in [a,\infty)\}$, y teniendo en cuenta que el supremo es la menor de las cotas inferiores, el valor $M-\epsilon$ no puede ser cota inferior del conjunto $\{g(x),\ |\ x\in [a,\infty)\}$. En este caso, existe un valor $M_\epsilon >a$ tal que $g(M_\epsilon)>M-\epsilon$, o, lo que es lo mismo, $M-g(M_\epsilon) <\epsilon$. Sea ahora un valor $x>M_\epsilon  >a$, como $g$ es creciente, $g(x)\geq g(M_\epsilon)$ y, por tanto, $M-g(x)\leq M-g(M_\epsilon)<\epsilon$.
+
+En resumen, dado un valor $\epsilon >0$, hemos hallado un valor $M_\epsilon >a$ tal que si $x>M_\epsilon$, $M-g(x)<\epsilon$, lo que significa que $\displaystyle \lim_{x\to\infty} g(x)=M$.
+</div>
+
+## Criterios de convergencia
+La proposición siguiente nos dice que si $f$ es positiva y la función $\displaystyle F(t)=\int_a^t f(x)\,dx$ está acotada, la **integral impropia** correspondiente es **convergente**:
+
+<l class="prop">Proposición.</l>
+
+Sea $f:[a,\infty)\longrightarrow\mathbb{R}$ una función positiva, $f(x)\geq 0$, para todo valor $x\geq a$. Entonces, la **integral impropia** $\displaystyle\int_a^\infty f(x)\, dx$ es **convergente** si, y sólo si, la función $\displaystyle F(t)=\int_a^t f(x)\,dx$ está **acotada.**
+
+
+## Criterios de convergencia
+<div class="dem">
+**Demostración**
+
+Al fer $f(x)\geq 0$, usando la propiedad de monotonía de la integral, tenemos que $F(t)\geq 0$ y es creciente ya que si $t_1 >t_2$,
+$$
+F(t_1)=\int_a^{t_1} f(x)\,dx = \int_a^{t_2} f(x)\,dx + \int_{t_2}^{t_1} f(x)\,dx\geq \int_a^{t_2} f(x)\,dx = F(t_2).
+$$
+Usando el lema anterior, $\displaystyle\lim_{t\to\infty}F(t)=\int_a^\infty f(x)\, dx$ existirá si, y sólo si, $F(t)$ está acotada, tal como queríamos ver.
+</div>
+
+## Criterios de convergencia
+Veamos el criterio de convergencia por comparación:
+
+<l class="prop">Proposición. Criterio de comparación.</l>
+
+Sean $f, g:[a,\infty)\longrightarrow\mathbb{R}$ funciones positivas, tal que, $f(x)\geq g(x)\geq 0$, para todo valor $x\geq a$. Entonces, 
+$$
+\int_a^\infty g(x)\, dx \leq \int_a^\infty f(x).
+$$
+En particular, si $\displaystyle\int_a^\infty f(x)\, dx$ **converge**, también lo hace $\displaystyle\int_a^\infty g(x)\, dx$ y si la integral $\displaystyle\int_a^\infty g(x)\, dx$ **diverge**, también lo hace la integral $\displaystyle\int_a^\infty f(x)\, dx$.
+
+## Criterios de convergencia
+<div class="dem">
+**Demostración**
+
+Sea $t>a$, como $g(x)\leq f(x)$, usando la propiedad de monotonía de la integral tenemos que $\displaystyle G(t)=\int_a^t g(x)\, dx\leq F(t)=\int_a^t f(x)\, dx$. 
+
+Entonces si $\displaystyle\int_a^\infty f(x)\, dx$ converge, por el lema anterior, $F(t)$ está acotada y por la desigualdad anterior, $G(t)$ también estará acotada. Por último, aplicando el lema otra vez, $\displaystyle\int_a^\infty g(x)\, dx$ converge.
+
+En cambio si $\displaystyle\int_a^\infty g(x)\, dx$ diverge, por el lema anterior $G(t)$ no está acotada y por la desigualdad anterior, $F(t)$ no está acotada tampoco y aplicando el lema otra vez $\displaystyle\int_a^\infty f(x)\, dx$ diverge.
+</div>
+
+## Criterios de convergencia
+<div class="example">
+**Ejemplo**
+
+Consideramos la función $f(x)=\frac{1}{1+x^n}$, con $n\in\mathbb{N}$ un número natural, y $x\in [1,\infty)$. 
+Veamos que la integral impropia $\displaystyle\int_1^\infty \frac{1}{1+x^n}\, dx$ es convergente.
+
+Si $n\geq 2$, como $\frac{1}{1+x^n}\leq \frac{1}{x^n}$, si $x>1$, como vimos anteriormente que la integral impropia $\displaystyle \frac{1}{x^n}\, dx$ es convergente si $n\geq 2$, la integral impropia $\displaystyle\int_1^\infty \frac{1}{1+x^n}\, dx$ también será convergente.
+
+Si $n=1$, miramos la convergencia directamente calculando el límite correspondiente:
+$$
+\int_1^\infty\frac{1}{1+x}\, dx=\lim_{t\to\infty}\int_1^t\frac{1}{1+x}\, dx=\lim_{t\to\infty}\left[\ln (1+x)\right]_1^t =\lim_{t\to\infty}(\ln(1+t)-\ln 2)=\infty.
+$$
+
+El cálculo de la integral en `Wolfram Alpha` para $n=1$ se puede ver en el enlace siguiente:
+<l class="center">
+[![](Images/wolfram.png)](https://www.wolframalpha.com/input/?i=Integrate%5B1%2F%281%2Bx%29%2C%7Bx%2C1%2CInfinity%7D%5D+)
+</l>
+</div>
+
+
+## Criterios de convergencia
+<l class="prop">Proposición. Criterio de comparación por cociente.</l>
+
+Sean $f,g:[a,\infty)\longrightarrow\mathbb{R}$ dos funciones positivas, $f(x)\geq 0$, $g(x)\geq 0$, para todo $x\geq a$. Si $\displaystyle\lim_{x\to\infty}\frac{f(x)}{g(x)}=L\neq 0$, entonces las integrales $\displaystyle\int_a^\infty f(x)\, dx$ y $\displaystyle\int_a^\infty g(x)\, dx$ tienen el mismo carácter, es decir, una es convergente si, y sólo si, la otra también es convergente.
+
+
+## Criterios de convergencia
+<div class="dem">
+**Demostración**
+
+Como $f(x),g(x)\geq 0$ para todo valor $x\geq a$, tendremos que $\frac{f(x)}{g(x)}\geq 0$ y, por tanto, el límite $\displaystyle\lim_{x\to\infty}\frac{f(x)}{g(x)}=L\geq 0$ y al ser $L\neq 0$, concluimos que $L>0$.
+
+
+Como $\displaystyle\lim_{x\to\infty}\frac{f(x)}{g(x)}=L\neq 0$, dado cualquier valor $\epsilon >0$, existe un valor $M_\epsilon >a$ tal que si $x>M_\epsilon$, $\left|\frac{f(x)}{g(x)}-L\right|<\epsilon$.
+
+Sea $\epsilon =\frac{L}{2}>0$. Para este $\epsilon$, existe un valor $M_\epsilon >0$ tal que $x>M_\epsilon$, $\left|\frac{f(x)}{g(x)}-L\right|<\frac{L}{2}$. La condición anterior es equivalente a:
+$$
+-\frac{L}{2} < \frac{f(x)}{g(x)}-L <\frac{L}{2},\ \Rightarrow \frac{L}{2}<\frac{f(x)}{g(x)}<\frac{3L}{2}.
+$$
+
+</div>
+
+## Criterios de convergencia
+<div class="dem">
+Tenemos por un lado que si $x>M_\epsilon$ que $f(x)<\frac{3L}{2}g(x)$. Por una proposición anterior, si $\displaystyle\int_a^\infty g(x)\, dx$ es convergente, tambien lo será $\displaystyle\int_a^\infty f(x)\, dx$.
+
+Por otro lado, tenemos que si $x>M_\epsilon$ que $g(x) < \frac{2}{L} f(x)$. Aplicando otra vez la proposición anterior, si $\displaystyle\int_a^\infty f(x)\, dx$ es convergente, tambien lo será $\displaystyle\int_a^\infty g(x)\, dx$.
+</div>
+
+
+## Criterios de convergencia
+<div class="example">
+**Ejemplo**
+
+Consideremos la función $f(x)=\frac{p_n(x)}{q_m(x)}$, donde $p_n(x)$ y $q_m(x)$ son dos polinomios de grados $n$ y $m$ respectivamente, definida en $[a,\infty)$ donde suponemos que $q_m(x)\neq 0$, para todo valor $x\in [a,\infty)$.
+
+La suposición anterior es para que la función $f$ no tenga ninguna asíntota vertical ya que es este caso, la integral impropia $\displaystyle\int_a^\infty f(x)\, dx$ no sería de primera especie sino de tercera.
+
+Suponemos que $p_n(x)=a_n x^n+\cdots$ y $q_m(x)=b_m x^m+\cdots$. 
+
+Sea $g(x)=x^{n-m}$. Si hacemos el límite del cociente $\frac{f(x)}{g(x)}$, obtenemos:
+$$
+\lim_{x\to\infty}\frac{f(x)}{g(x)}=\lim_{x\to\infty}\frac{\frac{p_n(x)}{q_m(x)}}{x^{n-m}} = \lim_{x\to\infty}\frac{p_n(x)}{x^{n-m}\cdot q_m(x)}=\lim_{x\to\infty}\frac{a_n x^n+\cdots}{b_m x^n +\cdots}=\frac{a_n}{b_m}\neq 0.
+$$
+Por tanto, las integrales impropias $\displaystyle \int_a^\infty\frac{p_n(x)}{q_m(x)}\, dx$ y $\displaystyle\int_a^\infty x^{n-m}\, dx$ tienen el mismo carácter.
+</div>
+
+
+## Criterios de convergencia
+<div class="example">
+En un ejemplo anterior vimos que la integral impropia $\displaystyle\int_a^\infty x^{n-m}\, dx$ es convergente si, y sólo si, $m-n>1$ o $m>n+1$. 
+
+Por tanto, la integral impropia que nos ocupa $\displaystyle \int_a^\infty\frac{p_n(x)}{q_m(x)}\, dx$ será convergente si la diferencia de grados entre el denominador y el numerador es mayor o igual que $2$, es decir $m-n\geq 2$.
+
+Por ejemplo, podemos afirmar que la integral impropia siguiente $\displaystyle \int_1^\infty \frac{x^3+x^2+x+1}{x^m+1}\,dx$ es convergente para todo valor de $m\geq 5$ y si $m\leq 4$, será divergente.
+
+El cálculo de la integral en `Wolfram Alpha` para $m=5$ se puede ver en el enlace siguiente:
+<l class="center">
+[![](Images/wolfram.png)](https://www.wolframalpha.com/input/?i=Integrate%5B%28x%5E3%2Bx%5E2%2Bx%2B1%29%2F%281%2Bx%5E5%29%2C%7Bx%2C1%2CInfinity%7D%5D+)
+</l>
+</div>
+
+## Criterios de convergencia
+<l class="observ">Observación.</l>
+
+En el caso en que $\displaystyle\lim_{x\to\infty}\frac{f(x)}{g(x)}=0$, podemos afirmar lo siguiente:
+
+* si $\displaystyle\int_a^\infty g(x)\, dx$ es convergente, también lo es $\displaystyle\int_a^\infty f(x)\, dx$.
+* si $\displaystyle\int_a^\infty f(x)\, dx$ es divergente, también lo es $\displaystyle\int_a^\infty g(x)\, dx$.
+
+<div class="exercise">
+**Ejercicio**
+
+Demostrar las dos afirmaciones anteriores.
+</div>
+
+## Criterios de convergencia
+<l class="prop">Proposición. Criterio de convergencia de Cauchy.</l>
+
+Sea $f:[a,\infty)\longrightarrow\mathbb{R}$ una función tal que para todo $t>a$, la función $f$ es integrable en el intervalo $[a,t]$. Entonces las afirmaciones siguientes son equivalentes:
+
+1. La integral impropia $\displaystyle\int_a^\infty f(x)\, dx$ converge.
+
+2. Existe un valor $L\in\mathbb{R}$ tal que para todo valor de $\epsilon >0$, existe un valor $M_\epsilon >a$ tal que si $t\geq M_\epsilon$, entonces $\displaystyle\left|\int_a^\infty f(x)\, dx-L\right|<\epsilon$.
+
+
+## Criterios de convergencia
+<ol start="3">
+  <li>Existe un valor $N\in\mathbb{R}$ tal que si $\{t_n\}_n$ es una sucesión que tiende a infinito, $t_n\to\infty$ con $t_n>a$ para todo $n$, entonces $\displaystyle F(t_n)=\int_a^{t_n} f(x)\, dx\to N$.
+  <li>Para todo valor $\epsilon >0$, existe un $b>a$ tal que si $b_2\geq b_1\geq b$, entonces $\displaystyle\left|\int_{b_1}^{b_2}f(x)\,dx\right|<\epsilon$.</li>
+</ol>
+
+## Criterios de convergencia
+
+<div class="dem">
+**Demostración**
+
+Demostraremos lo siguiente:
+$$
+1.\Leftrightarrow 3. \Leftrightarrow 2. \Rightarrow 4. \Rightarrow 3.
+$$
+Si demostramos lo anterior, podremos deducir que $i\Rightarrow j$ para todo $i,j\in \{1,2,3,4\}$.
+
+$1.\Leftrightarrow 3. \Leftrightarrow 2.$ Estas implicaciones son triviales ya que son simplemente aplicar la definición del límite a $\displaystyle \lim_{t\to\infty} \int_a^t f(x)\, dx =L$ en el apartado 2. o $\displaystyle \lim_{t\to\infty} \int_a^t f(x)\, dx =N$ en el apartado 3.
+
+
+
+</div>
+
+
+## Criterios de convergencia
+
+<div class="dem">
+$2. \Rightarrow 4.$ Tenemos que para todo $\epsilon >0$, existe un valor $M_\epsilon >a$ tal que si $t\geq M_\epsilon$, entonces $\displaystyle\left|\int_a^\infty f(x)\, dx-L\right|<\frac{\epsilon}{2}$.
+
+Sea $b=M_\epsilon$. Si $b_2\geq b_1\geq b$, tenemos que:
+$$
+\left|\int_{b_1}^{b_2}f(x)\,dx\right|=\left|\int_{a}^{b_2}f(x)\,dx-\int_{a}^{b_1}f(x)\,dx\right|\leq \left|\int_{a}^{b_2}f(x)\,dx-L\right|+\left|L-\int_{a}^{b_1}f(x)\,dx\right|<\frac{\epsilon}{2}+\frac{\epsilon}{2}=\epsilon.
+$$
+$4. \Rightarrow 3.$ Consideremos una sucesión $(t_n)_n$ con $t_n >a$ tal que $t_n\to\infty$. Sabemos que, dado un valor $\epsilon >0$, existe un $b>a$ tal que si $b_2\geq b_1\geq b$, entonces $\displaystyle\left|\int_{b_1}^{b_2}f(x)\,dx\right|<\epsilon$.
+
+Como $t_n\to\infty$, dado este $\epsilon >0$ y este $b>a$, existe un $n_0\in\mathbb{N}$ tal que si $n\geq n_0$, entonces $t_n\geq b$.
+
+
+
+</div>
+
+
+## Criterios de convergencia
+
+<div class="dem">
+Sean ahora $n,m\geq n_0$, entonces como $t_n,t_m\geq b$, 
+$$
+|F(t_n)-F(t_m)|=\left|\int_a^{t_n}f(x)\,dx-\int_a^{t_m} f(x)\, dx\right|=\left|\int_{t_n}^{t_m}f(x)\,dx\right|<\epsilon.
+$$
+En pocas palabras, la sucesión $\{F(t_n)\}_n$ es una sucesión de Cauchy y por tanto, convergente, que es lo que nos dice el apartado 3.
+
+</div>
+
+## Criterios de convergencia
+<div class="example">
+**Ejemplo**
+
+Vamos a estudiar si la integral impropia siguiente $\displaystyle\int_1^\infty\sin(x^2)\, dx$ es convergente usando el criterio de convergencia de Cauchy, concretamente el apartado 4. Es decir, veremos que dado un $\epsilon >0$, existe un valor $b>1$ tal que si $b_1,b_2\geq b$, entonces $\displaystyle\left|\int_{b_1}^{b_2}f(x)\,dx\right|=\left|\int_{b_1}^{b_2}\sin(x^2)\,dx\right|<\epsilon$.
+
+En primer lugar, arreglemos un poco la integral $\displaystyle \int_{b_1}^{b_2}\sin(x^2)\,dx$. 
+
+Si hacemos el cambio de variable $t=x^2$, tenemos que 
+
+* la relación entre los diferenciales es: $dt=2xdx$, de donde $dx=\frac{dt}{2x}=\frac{1}{2\sqrt{t}}\cdot dt$ ya que si $t=x^2$, $x=\sqrt{t}$ (pensad que, como $x\geq 1>0$, $x$ siempre será positivo y existirá su raíz cuadrada) y
+* los extremos de integración son los siguientes en función de la nueva variable $t$:
+  * para $x=b_1$, $t=x^2=b_1^2$ y
+  * para $x=b_2$, $t=x^2=b_2^2$.
+
+
+</div>
+
+
+## Criterios de convergencia
+<div class="example">
+La integral en función de la nueva variable $t$ será:
+$$
+\int_{b_1}^{b_2}\sin(x^2)\,dx =\int_{b_1^2}^{b_2^2}\frac{1}{2\sqrt{t}} \sin t \, dt.
+$$
+
+A continuación aplicamos la técnica de integración por partes a la integral anterior en función de la variable $t$ con:
+$$
+\begin{array}{ll}
+u & =\frac{1}{2\sqrt{t}},\ \Rightarrow du=-\frac{1}{4}t^{-\frac{3}{2}}dt, \\
+dv & = \sin t\, dt,\ \Rightarrow v=\int\sin t \,dt = -\cos t.
+\end{array}
+$$
+La integral nos quedarà:
+$$
+\int_{b_1^2}^{b_2^2}\frac{1}{2\sqrt{t}} \sin t \, dt =\left[\frac{1}{2\sqrt{t}}\cdot (-\cos t)\right]_{b_1^2}^{b_2^2}-\frac{1}{4}\int_{b_1^2}^{b_2^2} \cos t\cdot t^{-\frac{3}{2}}\, dt= \frac{\cos(b_1^2)}{2 b_1}-\frac{\cos(b_2^2)}{2 b_2}-\frac{1}{4}\int_{b_1^2}^{b_2^2}\frac{\cos t}{t^{\frac{3}{2}}}\, dt.
+$$
+Entonces, usando la propiedad de monotonía de la integral,
+$$
+\left|\int_{b_1}^{b_2}\sin(x^2)\,dx\right|\leq \left|\frac{\cos(b_1^2)}{2 b_1}\right|+\left|\frac{\cos(b_2^2)}{2 b_2}\right|+\frac{1}{4}\left|\int_{b_1^2}^{b_2^2}\frac{1}{t^{\frac{3}{2}}}\, dt\right|.
+$$
+</div>
+
+
+## Criterios de convergencia
+<div class="example">
+A continuación, vamos a acotar los tres términos de la expresión anterior.
+
+Intuitivamente, se ve que podemos hacer los términos tan pequeños como se quiera ya que fijarse que si hacemos tender $b_1, b_2$ hacia infinito, los términos anteriores tienden a cero. Formalicemos dicha intuición.
+
+Sea $\epsilon >0$ un valor cualquiera. Existe un valor $b'$ tal que si $b\geq b'$, entonces $\frac{1}{2b}< \frac{\epsilon}{3}$ porque $\displaystyle\lim_{b\to\infty}\frac{1}{2b}=0$.
+
+Por tanto, si $b_1,b_2\geq b'$, 
+$$
+\left|\frac{\cos(b_1^2)}{2 b_1}\right|\leq \frac{1}{2b_1}<\frac{\epsilon}{3},\quad \left|\frac{\cos(b_2^2)}{2 b_2}\right|\leq \frac{1}{2b_2}<\frac{\epsilon}{3}
+$$
+Por último, en un ejemplo anterior vimos que la integral impropia $\displaystyle\int_1^\infty \frac{1}{t^{\frac{3}{2}}}\, dt$ es convergente. Por tanto, aplicando el apartado 4. del criterio de Cauchy, existe un valor $b''$ tal que si $b_2\geq b_1\geq b''$ y, por tanto, $b_2^2\geq b_1^2\geq b_1\geq b''$, entonces $\displaystyle \left|\int_{b_1^2}^{b_2^2}\frac{1}{t^{\frac{3}{2}}}\, dt\right|<\frac{4\epsilon}{3}$.
+</div>
+
+
+## Criterios de convergencia
+<div class="example">
+Sea $b=\max\{b',b''\}$. Si $b_1,b_2\geq b$, se cumple lo siguiente:
+$$
+\left|\int_{b_1}^{b_2}\sin(x^2)\,dx\right|\leq \left|\frac{\cos(b_1^2)}{2 b_1}\right|+\left|\frac{\cos(b_2^2)}{2 b_2}\right|+\frac{1}{4}\left|\int_{b_1^2}^{b_2^2}\frac{1}{t^{\frac{3}{2}}}\, dt\right|<\frac{\epsilon}{3}+\frac{\epsilon}{3}+\frac{1}{4}\cdot\frac{4\epsilon}{3}=\epsilon.
+$$
+En resumen, dado un $\epsilon >0$, hemos hallado un $b>1$ tal que si $b_1,b_2\geq b$, entonces $\displaystyle\left|\int_{b_1}^{b_2}\sin(x^2)\,dx\right|<\epsilon$.
+
+Esta última condición es el apartado 4. del criterio de Cauchy. Concluimos, por tanto, que la integral impropia $\displaystyle\int_1^\infty \sin(x^2)\,dx$ es convergente.
+
+El cálculo de la integral en `Wolfram Alpha` se puede ver en el enlace siguiente:
+<l class="center">
+[![](Images/wolfram.png)](https://www.wolframalpha.com/input/?i=Integrate%5BSin%5Bx%5E2%5D%2C%7Bx%2C1%2CInfinity%7D%5D+)
+</l>
+</div>
+
+## Criterios de convergencia
+<div class="exercise">
+**Ejercicio**
+
+Ver que la integral impropia $\displaystyle\int_1^\infty \cos(x^2)\,dx$ es convergente.
+
+</div>
+
+
+## Criterios de convergencia
+<l class="prop">Teorema. Criterio integral de convergencia de una serie numérica.</l>
+
+Sea $\{a_n\}_n$ una sucesión de números reales positiva y decreciente, $a_n\geq 0$, $a_{n+1}\leq a_n$, para todo $n$. Sea $f:[1,\infty)\longrightarrow\mathbb{R}$ una función positiva y decreciente, $f(x)\geq 0$ y $f(x)\geq f(y)$, para todo $x, y\in [1,\infty)$ con $x<y$ tal que $f(n)=a_n$, para todo $n$, es decir, el valor de $f$ en los naturales es precisamente el valor de la sucesión anterior $(a_n)_n$. Entonces, la serie $\displaystyle\sum_{n=1}^\infty a_n$ y la integral impropia $\displaystyle\int_1^\infty f(x)\, dx$ tienen el mismo carácter, es decir, una es convergente si, y sólo si, la otra lo es y viceversa.
+
+## Criterios de convergencia
+```{r,echo=FALSE,fig.align='center'}
+xmin=0
+xmax=10
+ymin=0
+ymax=1
+tolx=0.02*(xmax-xmin)
+toly=0.05*(ymax-ymin)
+quantsx=10
+quantsy=4
+f = function(x){1/x}
+plot(c(xmin-tolx,xmax+tolx,xmin-tolx,xmax+tolx),c(ymin-toly,ymin-toly,ymax+toly,ymax+toly),type="n",xlab="",ylab="",xaxt="n",yaxt="n",axes=FALSE)
+x=seq(from=xmin,to=xmax,by=0.001)
+lines(c(0,0),c(ymin,ymax))
+lines(c(xmin,xmax),c(0,0))
+text(xmax-3*tolx,-150*tolx,"x")
+text(3*tolx,ymax+toly/2,"y")
+for (i in 0:(quantsx)){
+  lines(rep(xmin+((xmax-xmin)/quantsx)*i,2),c(-0.5*toly,+0.5*toly))
+  text(xmin+((xmax-xmin)/quantsx)*i,-1.25*toly,xmin+((xmax-xmin)/quantsx)*i,cex=0.75)
+}
+
+
+for (i in 0:(quantsy)){
+  lines(c(-tolx/2,tolx/2),ymin+rep(((ymax-ymin)/quantsy)*i,2))
+  #  text(-1.5*tolx,ymin+((ymax-ymin)/quantsy)*i,ymin+((ymax-ymin)/quantsy)*i,cex=0.75)
+}
+lines(x,f(x),col='firebrick2')
+
+for (i in 1:quantsx){
+  lines(rep(xmin+((xmax-xmin)/quantsx)*i,2),c(0,f(xmin+((xmax-xmin)/quantsx)*i)),lty=3)
+  lines(c(xmin+((xmax-xmin)/quantsx)*i,xmin+((xmax-xmin)/quantsx)*(i+1)),c(f(xmin+((xmax-xmin)/quantsx)*(i+1)),f(xmin+((xmax-xmin)/quantsx)*(i+1))),lty=3)
+  points(xmin+((xmax-xmin)/quantsx)*i,f(xmin+((xmax-xmin)/quantsx)*i),cex=1,pch=19)
+}
+
+text(tolx+xmin+((xmax-xmin)/quantsx)*1,f(xmin+((xmax-xmin)/quantsx)*1)+toly,expression(a[1]))
+text(xmin+((xmax-xmin)/quantsx)*2,f(xmin+((xmax-xmin)/quantsx)*2)+toly,expression(a[2]))
+text(xmin+((xmax-xmin)/quantsx)*3,f(xmin+((xmax-xmin)/quantsx)*3)+toly,expression(a[3]))
+text(xmin+((xmax-xmin)/quantsx)*4,f(xmin+((xmax-xmin)/quantsx)*4)+toly,expression(a[4]))
+text(xmin+((xmax-xmin)/quantsx)*5,f(xmin+((xmax-xmin)/quantsx)*5)+toly,expression(a[5]))
+text(xmin+((xmax-xmin)/quantsx)*6,f(xmin+((xmax-xmin)/quantsx)*6)+toly,expression(a[6]))
+text(xmin+((xmax-xmin)/quantsx)*7,f(xmin+((xmax-xmin)/quantsx)*7)+toly,expression(a[7]))
+text(xmin+((xmax-xmin)/quantsx)*8,f(xmin+((xmax-xmin)/quantsx)*8)+toly,expression(a[8]))
+text(xmin+((xmax-xmin)/quantsx)*9,f(xmin+((xmax-xmin)/quantsx)*9)+toly,expression(a[9]))
+text(xmin+((xmax-xmin)/quantsx)*10,f(xmin+((xmax-xmin)/quantsx)*10)+toly,expression(a[10]))
+
+text(1.6,0.85,expression(f(x)))
+```
+
+
+## Criterios de convergencia
+<div class="dem">
+**Demostración**
+
+Si observamos el gráfico anterior podemos escribir lo siguiente:
+$$
+a_2+\cdots + a_n\leq \int_1^n f(x)\, dx\leq a_1+\cdots +a_{n-1}.
+$$
+Escrito en otros términos,
+$$
+\sum_{i=1}^n a_i -a_1 \leq \int_1^n f(x)\, dx\leq\sum_{i=1}^{n-1} a_i.
+$$
+Veamos que si la serie $\displaystyle\sum_{n=1}^\infty a_n$ es convergente, también lo es la integral impropia $\displaystyle \int_1^\infty f(x)\, dx$.
+
+Si la serie $\displaystyle\sum_{n=1}^\infty a_n$ es convergente, entonces la sucesión de las sumas parciales $\displaystyle S_n = \sum_{i=1}^n a_i$ es convergente y, por tanto, estará acotada: existe un $K>0$ tal que $S_n\leq K$, para todo $n$.
+
+
+</div>
+
+
+## Criterios de convergencia
+<div class="dem">
+Para ver que la integral impropia $\displaystyle \int_1^\infty f(x)\, dx$ es convergente, como $f(x)\geq 0$, basta ver que la función $\displaystyle F(t)=\int_a^t f(x)\, dx$ está acotada.
+
+Sea $t>1$, por la propiedad arquimediana de los números reales, existe un natural $n\in\mathbb{R}$ tal que $n>t$. Entonces:
+$$
+F(t)=\int_a^t f(x)\, dx \leq \int_a^n f(x)\, dx\leq \sum_{i=1}^{n-1} a_i=S_{n-1}\leq K.
+$$
+Entonces $F(t)$ está acotada y, por tanto, la integral impropia $\displaystyle \int_1^\infty f(x)\, dx$ es convergente.
+
+
+</div>
+
+
+## Criterios de convergencia
+<div class="dem">
+
+Veamos la tesis inversa, supongamos que la integral impropia $\displaystyle \int_1^\infty f(x)\, dx$ es convergente y veamos que la serie  $\displaystyle\sum_{n=1}^\infty a_n$ es convergente. 
+
+Como la serie es de términos positivos, para ver que es convergente, basta demostrar que la sucesión de las sumas parciales está acotada.
+
+Como la integral impropia $\displaystyle \int_1^\infty f(x)\, dx$ es convergente, significa que $F(t)$ está acotada, es decir, existe un $M>0$ tal que $F(t)\leq M$ para todo $t$.
+
+Sea $n$ un natural cualquiera. Usando una desigualdad anterior, podemos escribir:
+$$
+S_n -a_1\leq \int_1^n f(x)\, dx = F(n)\leq M,
+$$
+de donde deducimos que $S_n\leq M+a_1$, para todo valor de $n$. Concluimos que las sumas parciales están acotadas y, por tanto, la serie $\displaystyle\sum_{n=1}^\infty a_n$ es convergente.
+
+
+</div>
+
+## Criterios de convergencia
+<div class="example">
+**Ejemplo**
+
+Vamos estudiar el carácter de la serie siguiente $\displaystyle\sum_{n=2}^\infty\frac{1}{n\ln^p n}$ según los valores de $p$.
+
+Aplicando el criterio anterior, estudiar el carácter de la serie anterior, es equivalente a estudiar el carácter de la siguiente integral impropia $\displaystyle\int_2^\infty \frac{1}{x\ln^p x}\, dx$:
+$$
+\lim_{t\to\infty}\int_2^t \frac{1}{x\ln^p x}\, dx.
+$$
+Para realizar la integral anterior, consideramos el siguiente cambio de variable $u=\ln x$. 
+
+* la relación entre los diferenciales es: $du=\frac{dx}{x}$ y 
+* los extremos de integración en la nueva variable $u$ son los siguientes:
+  * para $x=2$, $u=\ln 2$ y
+  * para $x=t$, $u=\ln t$.
+
+</div>
+
+
+## Criterios de convergencia
+<div class="example">
+El valor del límite anterior será en la nueva variable $u$:
+$$
+\lim_{t\to\infty}\int_{\ln 2}^{\ln t}\frac{1}{u^p}\, du =\lim_{s\to\infty}\int_{\ln 2}^s \frac{1}{u^p}\, du.
+$$
+La integral impropia $\displaystyle\int_{\ln 2}^\infty\frac{1}{u^p}\, du$ ya fue estudiada anteriormente y vimos que era convergente si, y sólo si, $p>1$. Por tanto, la serie anterior será convergente si, y sólo si, $p>1$.
+
+El cálculo de la integral en `Wolfram Alpha` se puede ver en el enlace siguiente:
+<l class="center">
+[![](Images/wolfram.png)](https://www.wolframalpha.com/input/?i=Integrate%5B1%2F%28x+Log%5Bx%5D%5Ep%29%2C%7Bx%2C2%2CInfinity%7D%5D+)
+</l>
+</div>
+
+## Criterios de convergencia
+El concepto de **convergencia absoluta** es importante para estudiar la convergencia de integrales impropias que van cambiando de signo:
+
+<l class="definition">Definición de convergencia absoluta.</l>
+
+Sea $f:[a,\infty)\longrightarrow\mathbb{R}$ una función tal que para todo $t>a$, la función es integrable en el intervalo $[a,t]$. Entonces diremos que la integral impropia $\displaystyle\int_a^\infty f(x)\,dx$ es **absolutamente convergente** si la integral impropia $\displaystyle\int_a^\infty |f(x)|\,dx$ es convergente.
+
+
+## Criterios de convergencia
+La proposición siguiente nos dice que la **convergencia absoluta** implica la **convergencia**:
+
+<l class="prop">Proposición.</l>
+
+Sea $f:[a,\infty)\longrightarrow\mathbb{R}$ una función tal que para todo $t>a$, la función es integrable en el intervalo $[a,t]$. Entonces si la integral impropia $\displaystyle\int_a^\infty f(x)\,dx$ es **absolutamente convergente**, entonces es convergente.
+
+<div class="dem">
+**Demostración**
+
+Teniendo en cuenta que para $b_1,b_2>a$, 
+$$
+\left|\int_{b_1}^{b_2}f(x)\, dx\right|\leq \int_{b_1}^{b_2}|f(x)|\, dx,
+$$
+si aplicamos el apartado 4. del criterio de Cauchy de convergencia, la proposición se demuestra fácilmente.
+</div>
+
+
+## Criterios de convergencia
+Los **criterios de convergencia de Leibniz** y de **Abel-Dirichlet** son claves para estudiar la convergencia de integrales impropias cuya función puede cambiar de signo.
+
+
+## Criterios de convergencia
+<l class="prop">Teorema. Criterio de convergencia de Leibniz.</l>
+
+Sea $f:[a,\infty)\longrightarrow\mathbb{R}$ una función tal que para todo $t>a$, la función es integrable en el intervalo $[a,t]$. Sean $a_1<a_2<\cdots < a_n <\cdots$ las raíces reales simples de la función $f$ en el intervalo $[a,\infty)$, es decir $f(a_i)=0$, $i=1,2,\ldots$ y el signo de $f$ en el intervalo $(a_i,a_{i+1})$ y en el intervalo $(a_{i+1},a_{i+2})$ es distinto.
+Suponiendo que $a_n\to \infty$, definimos $\displaystyle b_n =\int_{a_n}^{a_{n+1}} f(x)\, dx$, para $n=1,2,\ldots$ Los valores $b_n$ son valores alternados y, por tanto, la serie $\displaystyle\sum_{n=1}^\infty b_n$ es una serie alternada. Si $\displaystyle\lim_{n\to \infty}b_n =0$ y $|b_n|\geq |b_{n+1}|$, para todo $n$, la integral impropia $\displaystyle\int_a^\infty f(x)\, dx$ es convergente.
+
+
+## Criterios de convergencia
+<div class="dem">
+**Demostración**
+
+Por el criterio de Leibniz de convergencia de series alternadas, la serie alternada $\displaystyle\sum_{n=1}^\infty b_n$ es convergente.
+
+Sea un valor $b>a$. Sea $n$ el natural tal que $b\in (a_{n},a_{n+1})$. Entonces,
+$$
+\int_a^b f(x)\, dx =\int_a^{a_1} f(x)\, dx+\sum_{i=1}^{n-1}\int_{a_i}^{a_{i+1}} f(x)\, dx+\int_{a_n}^b f(x)\, dx =\int_a^{a_1} f(x)\, dx + S_{n-1} +\int_{a_n}^b f(x)\, dx,
+$$
+donde $S_n$ es la suma parcial de la serie $\displaystyle\sum_{n=1}^\infty b_n$.
+
+</div>
+
+## Criterios de convergencia
+<div class="dem">
+El tercer sumando de la igualdad anterior tiende a cero ya que:
+$$
+\left|\int_{a_n}^b f(x)\, dx\right|\leq \int_{a_n}^b |f(x)|\, dx \leq \int_{a_n}^{a_{n+1}} |f(x)|\, dx = |b_n|,
+$$
+y como la serie $\displaystyle \sum_{n=1}^\infty b_n$ es convergente, entonces $\displaystyle\lim_{n\to\infty}|b_n|=0$.
+
+Sea $\displaystyle S=\sum_{n=1}^\infty b_n$, entonces,
+$$
+\lim_{b\to\infty} \int_a^b f(x)\, dx =\int_a^{a_1} f(x)\, dx +\lim_{n\to\infty} S_{n-1}+\lim_{n\to\infty} \int_{a_n}^b f(x)\, dx=\int_a^{a_1} f(x)\, dx +S.
+$$
+Entonces la integral $\displaystyle\int_a^\infty f(x)\, dx$ es convergente tal como queríamos demostrar.
+</div>
+
+## Criterios de convergencia
+<div class="example">
+**Ejemplo**
+
+Estudiemos la convergencia de la integral impropia $\displaystyle\int_1^\infty \frac{\sin x}{x}\, dx$.
+
+En este caso, los ceros de la función $f(x)=\frac{\sin x}{x}$ en el intervalo $[1,\infty)$ son $\pi< 2\pi<\cdots <n\pi<\cdots$, con $n\in\mathbb{N}$.
+
+Los valores $b_n$ son los siguientes $\displaystyle b_n =\int_{n\pi}^{(n+1)\pi}\frac{\sin x}{x}\,dx$.
+
+Veamos que $\displaystyle\lim_{n\to\infty}|b_n|=0$:
+$$
+0\leq |b_n|=\left|\int_{n\pi}^{(n+1)\pi}\frac{\sin x}{x}\,dx\right|\leq \int_{n\pi}^{(n+1)\pi}\frac{1}{x}\, dx =[\ln x]_{n\pi}^{(n+1)\pi}=\ln ((n+1)\pi)-\ln(n\pi)=\ln\left(\frac{n+1}{n}\right).
+$$
+Como $\displaystyle\lim_{n\to\infty}\ln\left(\frac{n+1}{n}\right)=0$, por el criterio del sandwich, $\displaystyle\lim_{n\to\infty}|b_n|=0$.
+
+
+
+</div>
+
+## Criterios de convergencia
+<div class="example">
+A continuación, veamos que $|b_n|\geq |b_{n+1}|$. Recordemos el valor de $|b_n|$:
+$$
+|b_n|= \left|\int_{n\pi}^{(n+1)\pi}\frac{\sin x}{x}\,dx\right|.
+$$
+En la integral anterior, hacemos el cambio siguiente: $t=x+\pi$.
+
+* la relación entre los diferenciales es: $dt=dx$ y
+* los nuevos extremos de integración son:
+  * para $x=n\pi$, $t=n\pi +\pi = (n+1)\pi$ y
+  * para $x=(n+1)\pi$, $t=(n+1)\pi +\pi = (n+2)\pi$.
+  
+El valor de $|b_n|$ será en la nueva variable $t$:
+$$
+|b_n|=\left|\int_{(n+1)\pi}^{(n+2)\pi}\frac{\sin (t-\pi)}{t-\pi}\,dt\right|=\int_{(n+1)\pi}^{(n+2)\pi}\frac{|\sin t|}{t-\pi}\, dt\geq \int_{(n+1)\pi}^{(n+2)\pi}\frac{|\sin t|}{t}\, dt = |b_{n+1}|.
+$$
+
+</div>
+
+## Criterios de convergencia
+<div class="example">
+Por el criterio de Leibniz de series alternadas, la serie $\displaystyle \sum_{n=1}^\infty b_n$ es convergente y por el criterio de convergencia de Leibniz, la integral impropia $\displaystyle\int_1^\infty \frac{\sin x}{x}\, dx$ también será convergente.
+
+El cálculo de la integral en `Wolfram Alpha` se puede ver en el enlace siguiente:
+<l class="center">
+[![](Images/wolfram.png)](https://www.wolframalpha.com/input/?i=Integrate%5BSin%5Bx%5D%2Fx%2C%7Bx%2C1%2CInfinity%7D%5D)
+</l>
+</div>
+
+
+## Criterios de convergencia
+<l class="prop">Teorema. Criterio de Abel-Dirichlet.</l>
+
+Sea $g:[a,\infty)\longrightarrow\mathbb{R}$ una función con derivada continua a trozos donde suponemos que la función $g'$ es absolutamente integrable en $[a,\infty)$. Además suponemos que $\displaystyle\lim_{x\to\infty} g(x)=0$. 
+
+Sea $s:[a,\infty)\longrightarrow\mathbb{R}$ una función integrable en todo intervalo de la forma $[a,t]$ con $t>a$. Sea $S$ una primitiva de la función $s$, por ejemplo $\displaystyle S(t)=\int_a^t s(x)\, dx$. Suponemos que la función $S(t)$ está acotada en el intervalo $[a,\infty)$.
+
+Bajo las condiciones anteriores, la integral impropia $\displaystyle\int_a^\infty g(x)\cdot s(x)\, dx$ es convergente.
+
+## Criterios de convergencia
+<div class="dem">
+**Demostración** 
+
+La idea de la demostración es aplicar el apartado 4. del criterio de Cauchy de convergencia.
+
+Supongamos que $|S(t)|\leq C$ para todo $t\in [a,\infty)$. 
+
+Sea $[b_1,b_2]$ un intervalo cerrado con $b_2>b_1>a$. Integrando por partes la función $g(x)\cdot s(x)$, 
+
+* con $u=g(x)$, y, por tanto, $du=g'(x)\,dx$ y
+* $dv=s(x)\,dx$ y, por tanto, $v=S(x)$, obtenemos:
+$$
+\begin{array}{rl}
+\displaystyle\int_{b_1}^{b_2} g(x)\cdot s(x)\, dx & =  \displaystyle[g(x)\cdot S(x)]_{b_1}^{b_2}-\int_{b_1}^{b_2} g'(x)\cdot S(x)\, dx \\ &  =\displaystyle g(b_2)\cdot S(b_2)-g(b_1)\cdot S(b_1)-\int_{b_1}^{b_2} g'(x)\cdot S(x)\, dx.
+\end{array}
+$$
+
+</div>
+
+
+## Criterios de convergencia
+<div class="dem">
+Veamos a continuación que los términos anteriores tienden a cero cuando $b_1,b_2\to \infty$:
+
+* $|g(b_2)\cdot S(b_2)-g(b_1)\cdot S(b_1)|\leq 2C\max{|g(b_1)|,|g(b_2)|}$.
+Como $\displaystyle \lim_{x\to\infty} g(x)=0$, tendremos que $\displaystyle\lim_{b_1,b_2\to\infty} 2C\max{|g(b_1)|,|g(b_2)|}=0$ y, por el criterio del sandwich, $\displaystyle\lim_{b_1,b_2\to\infty} |g(b_2)\cdot S(b_2)-g(b_1)\cdot S(b_1)|=0$.
+
+* $\displaystyle\left|\int_{b_1}^{b_2} g'(x)\cdot S(x)\, dx\right|\leq C\cdot \int_{b_1}^{b_2} |g'(x)|\, dx$ que también tiende a cero ya que la función $g'$ es absolutamente integrable.
+
+Una vez establecidas las bases de la demostración, pasemos a la formalización de la misma.
+
+
+</div>
+
+
+## Criterios de convergencia
+<div class="dem">
+Sea $\epsilon >0$. Como $g'$ es absolutamente integrable, aplicando el apartado 4. del criterio de Cauchy, tenemos que existe un valor $b'>a$ tal que si $b_1,b_2\geq b'$, entonces $\displaystyle \int_{b_1}^{b_2} |g'(x)|\, dx<\frac{\epsilon}{2C}$.
+
+Como $\displaystyle\lim_{b_1,b_2\to\infty} |g(b_2)\cdot S(b_2)-g(b_1)\cdot S(b_1)|=0$, dado el valor $\epsilon >0$ anterior, existe un valor $b''$  tal que si $b_1,b_2\geq b''$, $|g(b_2)\cdot S(b_2)-g(b_1)\cdot S(b_1)|<\frac{\epsilon}{2}$.
+
+Sea $b=\max\{b',b''\}>a$. Sean $b_1,b_2\geq b$. Usando los cálculos anteriores, tenemos que:
+$$
+\left|\int_{b_1}^{b_2} g(x)\cdot s(x)\, dx\right|\leq |g(b_2)\cdot S(b_2)-g(b_1)\cdot S(b_1)|+C\cdot \left|\int_{b_1}^{b_2} |g'(x)|\, dx \right|<\frac{\epsilon}{2}+C\cdot\frac{\epsilon}{2C}=\epsilon.
+$$
+En resumen, dado un valor $\epsilon >0$, hemos sido capaces de hallar un $b>a$ tal que si $b_1,b_2\geq b$ entonces $\displaystyle \left|\int_{b_1}^{b_2} g(x)\cdot s(x)\, dx\right|<\epsilon$. La condición anterior es el apartado 4. del criterio de Cauchy de convergencia. Concluimos, por tanto, que la integral impropia $\displaystyle\int_a^\infty g(x)\cdot s(x)\, dx$ es convergente.
+</div>
+
+## Criterios de convergencia
+<div class="example">
+**Ejemplo**
+
+Estudiemos el carácter de la integral impropia siguiente: $\displaystyle\int_1^\infty \frac{x}{1+x^2}\sin(2x)\, dx$.
+
+Para ello, vamos a aplicar el criterio de Abel-Dirichlet con $g(x)=\frac{x}{1+x^2}$ y $s(x)=\sin(2x)$. Veamos que las funciones anteriores verifican las hipótesis del teorema anterior:
+
+* $g'(x)=\frac{1+x^2-2x^2}{(1+x^2)^2}=\frac{1-x^2}{(1+x^2)^2}$. Dicha función es absolutamente integrable ya que si aplicamos el criterio de comparación por cociente considerando la función $\frac{1}{x^2}$ obtenemos:
+$$
+\lim_{x\to\infty}\frac{\frac{1-x^2}{(1+x^2)^2}}{\frac{1}{x^2}}=\lim_{x\to\infty}\frac{x^2-x^4}{(1+x^2)^2}=-1,
+$$
+y por tanto, la integral impropia $\displaystyle\int_1^\infty g'(x)\, dx=\int_1^\infty \frac{1-x^2}{(1+x^2)^2}\, dx$ y la integral impropia $\displaystyle\int_1^\infty \frac{1}{x^2}\, dx$ tienen el mismo carácter. 
+</div>
+
+
+## Criterios de convergencia
+<div class="example">
+En un ejemplo anterior ya vimos que la integral impropia $\displaystyle\int_1^\infty \frac{1}{x^2}\, dx$ era convergente. Por tanto, la integral impropia $\displaystyle\int_1^\infty g'(x)\, dx=\int_1^\infty \frac{1-x^2}{(1+x^2)^2}\, dx$ también lo será.
+
+* Una primitiva de la función $s(x)=\sin (2x)$ es la siguiente: $S(x)=-\frac{1}{2}\cos (2x)$ ya que $S'(x)=-\frac{1}{2}(-2\sin(2x))=\sin(2x)=s(x)$. Dicha primitiva está acotada por $C=\frac{1}{2}$ ya que: $|S(x)|\leq\frac{1}{2}=C$.
+
+Usando el criterio de Abel-Dirichlet podemos afirmar que la integral impropia $\displaystyle\int_1^\infty \frac{x}{1+x^2}\sin(2x)\, dx$ es convergente.
+
+
+El cálculo de la integral en `Wolfram Alpha` se puede ver en el enlace siguiente:
+<l class="center">
+[![](Images/wolfram.png)](https://www.wolframalpha.com/input/?i=Integrate%5B%28x%2F%281%2Bx%5E2%29%29+Sin%5B2x%5D%2C%7Bx%2C1%2CInfinity%7D%5D)
+</l>
+</div>
+
+## Técnicas de integración en la integración impropia
+Los dos teoremas siguientes nos dicen que la técnica de integración por cambio de variable y por partes siguen siendo válidas en el caso de la integración impropia.
+
+## Cambio de variable
+
+<l class="prop">Teorema. Cambio de variable en una integral impropia.</l>
+
+Sea $f:[a,\infty)\longrightarrow\mathbb{R}$ una función **acotada** en el intervalo $[a,\infty)$ e **integrable** en todo intervalo de la forma $[a,t]$ con $t>a$. Sea $\phi$ una función de clase ${\cal C}^1$ en su intervalo de definición, es decir, una función **derivable** con función derivada continua. Supongamos el intervalo de definición de $\phi$ es $[\alpha,\beta]$, es decir $\phi:[\alpha,\beta]\longrightarrow\mathbb{R}$ con $\phi(\alpha)=a$ y $\displaystyle\lim_{s\to\beta}\phi(s)=\infty$ de tal forma que $\phi([\alpha,\beta])=[a,\infty)$. Entonces, en estas condiciones:
+$$
+\int_a^\infty f(x)\, dx= \int_\alpha^\beta f(\phi(t))\cdot \phi'(t)\, dt,
+$$
+con la condición de que al menos una de las dos integrales anteriores exista.
+
+## Cambio de variable
+<div class="example">
+**Ejemplo**
+
+Consideremos la siguiente integral impropia $\displaystyle\int_1^\infty \frac{x}{1+x^4}\, dx$.
+
+Para resolverla, nos planteamos el siguiente cambio de variable $t=x^2$:
+
+* la relación entre los diferenciales es la siguiente: $dt=2x\,dx$, de donde $x\,dx=\frac{1}{2}\,dt$.
+* los extremos de integración en la variable $t$ serán los siguientes:
+  * para $x=1$, $t=1^2=1$ y 
+  * para $x\to\infty$, $t=x^2\to \infty$.
+
+
+</div>
+
+## Cambio de variable
+<div class="example">
+La integral impropia será la siguiente en la nueva variable $t$:
+$$
+\begin{array}{rl}
+\displaystyle\int_1^\infty \frac{x}{1+x^4}\, dx & =\displaystyle\frac{1}{2}\int_1^\infty \frac{1}{1+t^2}\, dt=\frac{1}{2}\lim_{s\to\infty}\int_1^s \frac{1}{1+t^2}\, dt =\frac{1}{2}\lim_{s\to\infty}[\arctan t]_1^s \\ & \displaystyle =\frac{1}{2}\lim_{s\to\infty}(\arctan s-\arctan 1)=\frac{1}{2}\left(\frac{\pi}{2}-\frac{\pi}{4}\right)=\frac{\pi}{8}.
+\end{array}
+$$
+El cálculo de la integral en `Wolfram Alpha` se puede ver en el enlace siguiente:
+<l class="center">
+[![](Images/wolfram.png)](https://www.wolframalpha.com/input/?i=Integrate%5Bx%2F%281%2Bx%5E4%29%2C%7Bx%2C1%2CInfinity%7D%5D)
+</l>
+
+</div>
+
+<l class="observ">Observación.</l>
+
+A partir del ejemplo anterior, podemos observar que el valor de $\beta$ en el teorema anterior puede ser $\infty$.
+
+
+## Integración por partes
+<l class="prop">Teorema. Integración por partes en una integral impropia.</l>
+
+Sean $u,v:[a,\infty)\longrightarrow\mathbb{R}$ dos funciones **acotadas** y de clase ${\cal C^1}$ en $[a,\infty)$. Entonces:
+$$
+\int_a^\infty u(x)\cdot v'(x)\, dx=\lim_{t\to\infty}u(t)\cdot v(t)-u(a)\cdot v(a)-\int_a^\infty u'(x)\cdot v(x)\, dx,
+$$
+con el convenio de que si existen dos de los tres límites anteriores, existe el otro y se calcula según la expresión anterior.
+
+
+## Integración por partes
+<div class="example">
+**Ejemplo**
+
+Vamos a calcular la siguiente integral impropia $\displaystyle\int_0^\infty x^3\cdot\mathrm{e}^{-x^2}\, dx$.
+
+Para calcularla, la separaremos de la forma siguiente:
+
+* $u=x^2$ y, por tanto, $du=2x\, dx$,
+* $dv=x\cdot\mathrm{e}^{-x^2}\,dx$ y, por tanto, $v=\int x\cdot\mathrm{e}^{-x^2}\,dx=-\frac{1}{2}\mathrm{e}^{-x^2}$.
+
+Si aplicamos la técnica de integración por partes, obtenemos:
+$$
+\int_0^\infty x^3\cdot\mathrm{e}^{-x^2}\, dx =-\frac{1}{2}\lim_{t\to\infty}t^2\cdot \mathrm{e}^{-t^2}+\frac{1}{2}\cdot 0^2\cdot \mathrm{e}^{0^2}+\int_0^\infty x\cdot \mathrm{e}^{-x^2}\, dx.
+$$
+A continuación calculemos el límite $\displaystyle \lim_{t\to\infty}t^2\cdot \mathrm{e}^{-t^2}$ usando la Regla de l'Hôpital:
+$$
+\lim_{t\to\infty}t^2\cdot \mathrm{e}^{-t^2}=\lim_{t\to\infty}\frac{t^2}{\mathrm{e}^{t^2}}=\lim_{t\to\infty}\frac{2t}{2t\cdot \mathrm{e}^{t^2}}=\lim_{t\to\infty}\frac{1}{\mathrm{e}^{t^2}}=\frac{1}{\infty}=0.
+$$
+</div>
+
+## Integración por partes
+<div class="example">
+
+
+La integral que nos quedaba se puede calcular de la forma siguiente usando que la función $-\frac{1}{2}\mathrm{e}^{-x^2}$ es una primitiva de $x\cdot \mathrm{e}^{-x^2}$:
+$$
+\int_0^\infty x\cdot \mathrm{e}^{-x^2}\, dx =\lim_{t\to\infty}\int_0^t x\cdot \mathrm{e}^{-x^2}\, dx=\lim_{t\to\infty}\left[-\frac{1}{2}\mathrm{e}^{-x^2}\right]_0^t =-\frac{1}{2}\lim_{t\to\infty}(\mathrm{e}^{-t^2}-1)=\frac{1}{2}.
+$$
+El valor de la integral impropia inicial, será, por tanto:
+$$
+\int_0^\infty x^3\cdot\mathrm{e}^{-x^2}\, dx =\frac{1}{2}.
+$$
+
+El cálculo de la integral en `Wolfram Alpha` se puede ver en el enlace siguiente:
+<l class="center">
+[![](Images/wolfram.png)](https://www.wolframalpha.com/input/?i=Integrate%5Bx%5E3+E%5E%28-x%5E2%29%2C%7Bx%2C0%2CInfinity%7D%5D)
+</l>
+</div>
+
+## Integrales impropias de segunda especie
+Recordemos la definición de una integral impropia de segunda especie:
+
+<l class="definition">Definición de integral impropia de segunda especie.</l>
+
+Sea $f:(a,b]:\longrightarrow\mathbb{R}$ una función **integrable** en todo intervalo de la forma $[t,b]$, con $a<t\leq b$. Si existe el límite siguiente $\displaystyle\lim_{t\to a^+}\int_t^b f(x)\, dx$, diremos que la **integral impropia** $\displaystyle\int_a^b f(x)\, dx$ existe. Si el límite anterior es finito de valor $L$, diremos que la **integral impropia** es **convergente** y escribiremos $\displaystyle\int_a^b f(x)\, dx=L$. En caso en que la integral no converja, diremos que es **divergente**.
+
+
+## Integrales impropias de segunda especie
+<l class="observ">Observación.</l>
+
+Tiene sentido considerar la integral impropia de segunda especie cuando la función $f$ tiene una asíntota vertical en el extremo de la izquierda $x=a$. Si tuviese una asíntota vertical en el extremo derecho $x=b$, podríamos definir de manera parecida la integral impropia de segunda especie con el límite siguiente: 
+$$\displaystyle\lim_{t\to b^-}\int_a^t f(x)\, dx.$$
+
+
+## Integrales impropias de segunda especie
+<div class="example">
+**Ejemplo**
+
+Estudiemos la convergencia de la integral de segunda especie $\displaystyle\int_0^1\frac{1}{x^p}\, dx$ con $p>0$. 
+
+Fijémonos que en este caso la función $\frac{1}{x^p}$ tiene una asíntota vertical en $x=0$.
+
+El límite a calcular es el siguiente:
+$$
+\lim_{t\to 0^+}\int_t^1\frac{1}{x^p}\, dx=\lim_{t\to 0^+}\left[\frac{x^{1-p}}{(1-p)}\right]_t^1 =\frac{1}{1-p}\left(\lim_{t\to 0^+} x^{1-p}-1\right)=\begin{cases} \frac{1}{p-1}, & \mbox{si }0<p<1, \\
+\infty, & \mbox{si } p>1.\end{cases}
+$$
+Falta estudiar el caso $p=1$:
+$$
+\lim_{t\to 0^+}\int_t^1\frac{1}{x}\, dx=\lim_{t\to 0^+}[\ln x]_t^1 =\lim_{t\to 0^+}(-\ln t)=\infty.
+$$
+El cálculo de la integral en `Wolfram Alpha` se puede ver en el enlace siguiente:
+<l class="center">
+[![](Images/wolfram.png)](https://www.wolframalpha.com/input/?i=Integrate%5B1%2Fx%5Ep%2C%7Bx%2C0%2C1%7D%5D)
+</l>
+</div>
+
+## Integrales impropias de tercera especie
+Para entender el concepto de **integral impropia de tercera especie** necesitamos introducir el concepto de **punto singular**:
+
+<l class="definition">Definición de punto singular.</l>
+Sea $f$ una función definida en un intervalo $(a,b)$ donde admitimos que $a$ pueda ser un valor real o $-\infty$ y $b$ pueda ser un valor real o $b=\infty$. Diremos que un punto $c\in (a,b)$ es un **punto singular** de la función $f$ en los casos siguientes:
+
+* $c=-\infty$ o $c=\infty$.
+* si $f$ no es **integrable en el sentido ordinario** en ningún entorno de $c$, por ejemplo si $f$ tiene una **asíntota vertical** en $x=c$.
+* si $c$ coincide en alguno de los extremos $a$ o $b$ y $f$ no es integrable en el sentido ordinario en la intersección del intervalo $(a,b)$ con ningún entorno de $c$, por ejemplo, si $f$ tiene una **asíntota vertical** en $x=c$.
+
+## Integrales impropias de tercera especie
+<l class="definition">Definición de integral impropia de tercera especie.</l>
+
+Sea $f:(a,b)\longrightarrow\mathrm{R}$ una función real de variable real donde admitimos que $a$ pueda ser un valor real o $-\infty$ y $b$ pueda ser un valor real o $b=\infty$. Supongamos que $f$ tiene un número finito de **puntos singulares** en su dominio de definición $(a,b)$, los llamamos $c_1 < c_2<\cdots < c_n$. Si $f$ es continua a trozos en el conjunto $(a,b)\setminus\{c_1,\ldots,c_n\}$ diremos que la integral $\displaystyle\int_a^b f(x)\,dx$ es **impropia de tercera especie**.
+ 
+
+## Integrales impropias de tercera especie
+Para estudiar la **convergencia** de una integral **impropia de tercera especie**, hemos de calcular para cada intervalo $(c_i,c_{i+1})$ los límites siguientes:
+$$
+\lim_{t\to c_i^+}\int_t^{p_i}f(x)\, dx,\quad \lim_{t\to c_{i+1}^-}\int_{p_i}^t f(x)\, dx,
+$$
+donde $p_i\in (c_i,c_{i+1})$ es un valor del interior del intervalo $(c_i,c_{i+1})$, por ejemplo, si $c_i$ y $c_{i+1}$ son valores reales, su punto medio, $p_i=\frac{c_i+c_{i+1}}{2}$, y si $a\neq c_1$, hay que calcular aparte el límite $\displaystyle \displaystyle \lim_{t\to c_1-}\int_a^t f(x)\, dx$ y si $c_n\neq b$, el límite $\displaystyle \lim_{t\to c_n+}\int_t^b f(x)\, dx$.
+
+
+## Integrales impropias de tercera especie
+
+Si todos los límites anteriores existen y son finitos, diremos que la **integral impropia de tercera especie** converge y su valor es:
+$$
+\int_a^b f(x)\, dx = \int_a^{c_1}f(x)\, dx+\sum_{i=1}^{n-1}\int_{c_i}^{c_{i+1}}f(x)\, dx+\int_{c_n}^b f(x)\, dx,
+$$
+
+## Integrales impropias de tercera especie
+donde 
+$$
+\begin{array}{rl}
+\displaystyle\int_a^{c_1}f(x)\, dx & =\displaystyle \lim_{t\to c_1-}\int_a^t f(x)\, dx, \\
+\displaystyle\int_{c_i}^{c_{i+1}}f(x)\, dx & = \displaystyle \lim_{t\to c_i^+}\int_t^{p_i}f(x)\, dx+\lim_{t\to c_{i+1}^-}\int_{p_i}^t f(x)\, dx, \\
+\displaystyle\int_{c_n}^{b}f(x)\, dx & =\displaystyle \lim_{t\to c_n+}\int_t^b f(x)\, dx.
+\end{array}
+$$
+
+## Integrales impropias de tercera especie
+<div class="example">
+**Ejemplo**
+
+Nos planteamos estudiar la convergencia de la integral impropia $\displaystyle\int_0^\infty\frac{\cos x}{\sqrt{x}}\, dx$.
+
+En primer lugar, observamos que hay dos puntos singulares: $c_1 =0$ y $c_2=\infty$. Consideramos $p_1=\frac{\pi}{2}\in (0,\infty)$ un punto dentro del intervalo $(c_1,c_2)$.
+
+Para estudiar la convergencia de la integral impropia de tercera especie, hemos de estudiar los límites siguientes:
+$$
+\lim_{t\to 0^+}\int_t^{\frac{\pi}{2}}\frac{\cos x}{\sqrt{x}}\, dx,\quad \lim_{t\to \infty}\int_{\frac{\pi}{2}}^\infty\frac{\cos x}{\sqrt{x}}\, dx.
+$$
+Para resolver el primer límite usamos la integración por partes con:
+
+* $u=\cos x$ y, por tanto, $du=-\sin x\, dx$ y
+* $dv=\frac{1}{\sqrt{x}}\,dx=x^{-\frac{1}{2}}\, dx$ y, por tanto, $v=2\cdot x^{\frac{1}{2}}=2\sqrt{x}$.
+
+
+</div>
+
+
+## Integrales impropias de tercera especie
+<div class="example">
+El primer límite será:
+$$
+\lim_{t\to 0^+}\int_t^{\frac{\pi}{2}}\frac{\cos x}{\sqrt{x}}\, dx =\lim_{t\to 0^+} \left([2\sqrt{x}\cos x]_t^{\frac{\pi}{2}}+2\int_t^{\frac{\pi}{2}}\sqrt{x}\sin x\, dx\right)=2\int_0^{\frac{\pi}{2}}\sqrt{x}\sin x \, dx.
+$$
+La integral anterior ya no es impropia y existe, por tanto, el primer límite existe y tiene un valor real.
+
+Para ver si el segundo límite existe, aplicamos el criterio de Abel-Dirichlet con:
+
+* $g(x)=\frac{1}{\sqrt{x}}$. El valor de $g'(x)$ vale: $g'(x)=-\frac{1}{2}\cdot x^{-\frac{3}{2}}$ y en un ejemplo anterior vimos que la integral impropia de primera especie $\displaystyle\int_{\frac{\pi}{2}}^\infty |g'(x)|\, dx=\frac{1}{2}\int_{\frac{\pi}{2}}^\infty\frac{1}{x^{\frac{3}{2}}}\, dx$ era convergente.
+
+* $s(x)=\cos x$. Una primitiva de la función anterior es $S(x)=\sin x$ que está acotada por $1$.
+
+Por el criterio de Abel-Dirichlet, el segundo límite existe y, por tanto, concluimos que la integral impropia de tercera especie $\displaystyle\int_0^\infty\frac{\cos x}{\sqrt{x}}\, dx$ es convergente.
+
+</div>
+
+
+## Integrales impropias de tercera especie
+<div class="example">
+
+El cálculo de la integral en `Wolfram Alpha` se puede ver en el enlace siguiente:
+<l class="center">
+[![](Images/wolfram.png)](https://www.wolframalpha.com/input/?i=Integrate%5BCos%5Bx%5D%2FSqrt%5Bx%5D%2C%7Bx%2C0%2CInfinity%7D%5D)
+</l>
+donde vemos que el valor de la integral es $\sqrt{\frac{\pi}{2}}$.
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
